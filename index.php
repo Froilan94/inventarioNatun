@@ -201,12 +201,6 @@ if ($role !== 'admin_super') {
                 <label class="form-label">Rol</label>
                 <select name="rol_id" class="form-select" required>
                     <option value="">Seleccione...</option>
-                    <option value="1">Med_Operador</option>
-                    <option value="2">Med_Supervisor</option>
-                    <option value="3">MP_Operador</option>
-		    <option value="4">MP_Supervisor</option>
-                    <option value="5">Supervisor_General</option>
-                    <option value="6">Super_usuario</option>
                 </select>
             </div>
 
@@ -229,9 +223,6 @@ if ($role !== 'admin_super') {
                 <label class="form-label">Departamento</label>
                 <select name="departamento_id" class="form-select">
                     <option value="">Seleccione...</option>
-                    <option value="1">Salud Y Nutrición</option>
-                    <option value="2">Desarrollo Economico</option>
-                    <option value="3">Operaciones</option>
                 </select>
             </div>
 

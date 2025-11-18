@@ -42,3 +42,28 @@ function mostrarSeccion(id) {
  }
     // Mostrar la sección de usuarios
 
+document.addEventListener("DOMContentLoaded", function () {
+    
+    // Cargar Roles
+    fetch("get_roles.php")
+        .then(res => res.json())
+        .then(data => {
+            let select = document.querySelector("select[name='rol_id']");
+            select.innerHTML = `<option value="">Seleccione...</option>`;
+            data.forEach(r => {
+                select.innerHTML += `<option value="${r.id_rol}">${r.nombre_rol}</option>`;
+            });
+        });
+
+    // Cargar Departamentos
+    fetch("get_departamentos.php")
+        .then(res => res.json())
+        .then(data => {
+            let select = document.querySelector("select[name='departamento_id']");
+            select.innerHTML = `<option value="">Seleccione...</option>`;
+            data.forEach(d => {
+                select.innerHTML += `<option value="${d.id_departamento}">${d.nombre_departamento}</option>`;
+            });
+        });
+
+});

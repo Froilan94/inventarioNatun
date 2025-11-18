@@ -43,9 +43,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.getElementById("formRegistro").addEventListener("submit", function(e) {
-    e.preventDefault(); // evita que vaya al PHP directamente
+    e.preventDefault();
 
-    const formData = new FormData(this);
+    const form = this;     // ← IMPORTANTE
+    const formData = new FormData(form);
 
     fetch("insert_usuario.php", {
         method: "POST",
@@ -61,7 +62,8 @@ document.getElementById("formRegistro").addEventListener("submit", function(e) {
                 <div style="color: green; padding: 10px; font-weight: bold;">
                     ✅ ${data.mensaje}
                 </div>`;
-            this.reset();
+
+            form.reset();   // ← ahora sí funciona bien
         } else {
             msg.innerHTML = `
                 <div style="color: red; padding: 10px; font-weight: bold;">
@@ -74,3 +76,4 @@ document.getElementById("formRegistro").addEventListener("submit", function(e) {
             `<div style="color: red;">❌ Error al conectar con el servidor.</div>`;
     });
 });
+

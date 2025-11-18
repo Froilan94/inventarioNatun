@@ -1,0 +1,122 @@
+-Función plegable automaticamente, de ingresos de llaves foraneas.  LISTO
+
+-Registro de Ingresos con documentos
+-Registro de detalle de ingresos con documentos
+-Registro de salidas con documentos
+-Registro de detalle de salidas con documentos
+
+-Consulta de usuarios, con eliminación y actualización de datos.
+
+-Consulta de demás opciones con eliminacion y actualización de datos.
+
+Reportes.
+
+-Existencias
+-Movimientos
+-Valorización
+
+Estructura:
+
+/inventario/
+│
+├── /config/
+│   └── db.php                # Conexión MySQL
+│
+├── /includes/
+│   ├── header.php
+│   ├── navbar.php
+│   └── footer.php
+│
+├── /mod_mp/
+│   ├── dashboard_mp.php
+│   ├── categorias.php
+│   ├── productos.php
+│   ├── proveedores.php
+│   └── stock.php
+│
+├── /mod_med/
+│   ├── dashboard_med.php
+│   ├── categorias.php
+│   ├── medicamentos.php
+│   ├── proveedores.php
+│   └── stock.php
+│
+├── /consultas_global/
+│   └── dashboard_global.php
+│
+├── /assets/
+│   ├── /css/
+│   ├── /js/
+│   └── /img/
+│
+├── login.php
+├── logout.php
+└── index.php
+└── README.md
+
+/htdocs/inventario/
+├── config/
+│   └── db.php
+├── includes/
+│   ├── header.php
+│   ├── navbar.php
+│   └── footer.php
+├── mod_med/
+│   └── dashboard_med.php
+├── mod_mp/
+│   └── dashboard_mp.php
+├── consultas_global/
+│   └── dashboard_global.php
+├── assets/
+│   ├── js/
+│   │   └── main.js
+│   └── css/
+│       └── custom.css
+├── login.php
+├── logout.php
+└── index.php
+
+INSERCIONES
+
+USE control_inventarios;
+
+-- roles
+INSERT INTO roles (nombre_rol, descripcion) VALUES
+('med_editor','Inserción y consultas MED'),
+('med_viewer','Solo consultas MED'),
+('mp_editor','Inserción y consultas MP'),
+('mp_viewer','Solo consultas MP'),
+('consultas_global','Solo consultas MED y MP'),
+('admin_super','Superusuario con todos los permisos');
+
+-- departamentos
+INSERT INTO departamentos (nombre_departamento, descripcion) VALUES
+('Salud y Nutrición','Intervenciones por temas de salud comunitaria'),
+('Desarrollo Economico','Intervenciones en temas de Emprendimiento y talleres vocacionales'),
+('Operaciones','Intervención en Finanzas y Operaciones generales'),
+('Contabilidad','Intervención en tema Financiamiento');
+
+-- programas
+INSERT INTO programas (nombre_programa, codigo_programa, descripcion) VALUES
+('Programa 1','MED01','programa para intervención 1'),
+('Programa 2','MED02','programa para intervención 2'),
+('Programa 3','DE01','programa para intervención 3'),
+('Programa 4','DE02','programa para intervención 4');
+
+--comunidades
+INSERT INTO comunidades (nombre_comunidad, direccion) VALUES
+('Panajachel','Calle del rastro, zona 2, panajachel, solola'),
+('Tierra Linda','aldea Tierra Linda', Sololá, Sololá'),
+('Peña Blanca','aldea Peña Blanca, Sololá, Sololá'),
+('Santa María','Caserío Santa María, aldea El Tablon, Sololá, Sololá');
+
+--usuarios
+INSERT INTO usuarios (nombre_completo, nombre_usuario, correo, telefono, password_hash, rol_id, dpi_usuario, genero_usuario,  departamento_id) VALUES
+('Froilan Sánchez Calabay','froilan','micorreo@gmail.com','12548798','$2y$10$yuPys94z1RHzGEuL1l0Gm.keeYEce/tj3Sya5wXM27umE5gE4aKii',1,'147258369789','Masculino',4);
+--TuPasswordSeguro123
+
+--Modificar atributo de campos en ciertas tablas
+ALTER TABLE usuarios
+MODIFY password_hash VARCHAR(255) NOT NULL;
+
+    <link rel="icon" href="img/favicon.png" type="image/png" sizes="16x16 32x32">
