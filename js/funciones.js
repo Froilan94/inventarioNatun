@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                         }
                                     </td>
                                     <td>
-                                        <button class="btn btn-warning btn-sm" onclick="editarUsuario(${u.id_usuario})">Editar</button>
+		        <button class="btn btn-warning btn-sm" onclick="abrirModalEditar(${u.id_usuario})">Editar</button>
                                         <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${u.id_usuario})">Eliminar</button>
                                     </td>
                                 </tr>`;
@@ -64,6 +64,63 @@ function eliminarUsuario(id) {
             }
         });
 }
+
+// Cargar roles y departamentos cuando se abre el modal
+function cargarCombosEditar() {
+
+    // Cargar roles
+    fetch("get_roles.php")
+        .then(r => r.json())
+        .then(roles => {
+            let html = "";
+            roles.forEach(r => {
+                html += `<option value="${r.id_rol}">${r.nombre_rol}</option>`;
+            });
+            document.getElementById("edit_rol_id").innerHTML = html;
+        });
+
+    // Cargar departamentos
+    fetch("get_departamentos.php")
+        .then(r => r.json())
+        .then(departamentos => {
+            let html = "";
+            departamentos.forEach(r => {
+                html += `<option value="${r.id_departamento}">${r.nombre_departamento}</option>`;
+            });
+            document.getElementById("edit_departamento_id").innerHTML = html;
+        });
+}
+
+
+function abrirModalEditar(id) {
+
+    cargarCombosEditar(); // Cargar roles y departamentos
+
+    fetch("obtener_usuario.php?id=" + id)
+        .then(res => res.json())
+        .then(u => {
+
+            document.getElementById("edit_id_usuario").value = u.id_usuario;
+            document.getElementById("edit_nombre_completo").value = u.nombre_completo;
+            document.getElementById("edit_nombre_usuario").value = u.nombre_usuario;
+            document.getElementById("edit_correo").value = u.correo;
+            document.getElementById("edit_telefono").value = u.telefono;
+            document.getElementById("edit_dpi_usuario").value = u.dpi_usuario;
+            document.getElementById("edit_genero_usuario").value = u.genero_usuario;
+            document.getElementById("edit_activo").value = u.activo;
+
+            // Esperar 300 ms para asegurar que roles y deptos están cargados
+            setTimeout(() => {
+                document.getElementById("edit_rol_id").value = u.rol_id;
+                document.getElementById("edit_departamento_id").value = u.departamento_id;
+            }, 300);
+
+            let modal = new bootstrap.Modal(document.getElementById("modalEditarUsuario"));
+            modal.show();
+        });
+}
+
+
 
 // =============================
 //   FUNCIÓN EDITAR

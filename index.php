@@ -158,7 +158,7 @@ if ($role !== 'admin_super') {
                 <th>DPI</th>
                 <th>Género</th>
                 <th>Estado</th>
-                <th>Acciones</th> <!-- Acá aparecerán las acciones del js para editar y eliminar-->                
+                <th>Acciones</th>  <!--Acá aparecerán las acciones del js para editar y eliminar-->                
             </tr>
         </thead>
         <tbody id="tablaUsuarios"></tbody>
@@ -233,7 +233,7 @@ if ($role !== 'admin_super') {
 
 <!-- ============================
      EDITAR USUARIO
-=============================== -->
+===============================
 <div id="vistaEditarUsuario" class="seccion" style="display:none;">
     <h2>Editar Usuario</h2>
 
@@ -263,7 +263,7 @@ if ($role !== 'admin_super') {
 
         <div class="mb-3">
             <label class="form-label">DPI</label>
-            <input type="text" name="dpi_usuario" id="edit_dpi_usuario" class="form-control">
+            <input type="text" name="dpi_usuario" id="edit_dpi_usuario" class="form-control" maxlength="12>
         </div>
 
         <div class="mb-3">
@@ -286,6 +286,86 @@ if ($role !== 'admin_super') {
         <button type="submit" class="btn btn-success">Guardar Cambios</button>
         <button type="button" class="btn btn-secondary" onclick="toggleMenu('vistaVerUsuarios')">Cancelar</button>
     </form>
+</div> 
+-->
+
+<!-- MODAL EDITAR USUARIO-->
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="formEditarUsuario">
+
+            <input type="hidden" name="id_usuario" id="edit_id_usuario">
+
+            <div class="mb-3">
+                <label class="form-label">Nombre Completo</label>
+                <input type="text" name="nombre_completo" id="edit_nombre_completo" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Usuario</label>
+                <input type="text" name="nombre_usuario" id="edit_nombre_usuario" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Correo</label>
+                <input type="email" name="correo" id="edit_correo" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Teléfono</label>
+                <input type="text" name="telefono" id="edit_telefono" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">DPI</label>
+                <input type="text" name="dpi_usuario" id="edit_dpi_usuario" class="form-control" maxlength="12">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Género</label>
+                <select name="genero_usuario" id="edit_genero_usuario" class="form-control">
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Otros">Otros</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Rol</label>
+                <select name="rol_id" id="edit_rol_id" class="form-control"></select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Departamento</label>
+                <select name="departamento_id" id="edit_departamento_id" class="form-control"></select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Estado</label>
+                <select name="activo" id="edit_activo" class="form-control">
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
+                </select>
+            </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" form="formEditarUsuario" class="btn btn-success">Guardar Cambios</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 
