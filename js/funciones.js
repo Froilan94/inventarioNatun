@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     let filas = "";
 
                     if (data.length === 0) {
-                        filas = `<tr><td colspan="8" class="text-center">No hay usuarios registrados</td></tr>`;
+                        filas = `<tr><td colspan="9" class="text-center">No hay usuarios registrados</td></tr>`;
                     } else {
                         data.forEach((u, i) => {
                             filas += `
@@ -28,6 +28,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                             : '<span class="badge bg-danger">Inactivo</span>'
                                         }
                                     </td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm" onclick="editarUsuario(${u.id_usuario})">Editar</button>
+                                        <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${u.id_usuario})">Eliminar</button>
+                                    </td>
                                 </tr>`;
                         });
                     }
@@ -40,6 +44,69 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         });
     }
+});
+
+// =============================
+//   FUNCIÓN ELIMINAR
+// =============================
+function eliminarUsuario(id) {
+
+    if (!confirm("¿Seguro que desea eliminar este usuario?")) return;
+
+    fetch("eliminar_usuario.php?id=" + id)
+        .then(res => res.text())
+        .then(resp => {
+            if (resp === "ok") {
+                alert("Usuario eliminado.");
+                document.getElementById("btnCargarUsuarios").click();
+            } else {
+                alert("Error al eliminar");
+            }
+        });
+}
+
+// =============================
+//   FUNCIÓN EDITAR
+// =============================
+function editarUsuario(id) {
+
+    fetch("obtener_usuario.php?id=" + id)
+        .then(response => response.json())
+        .then(u => {
+
+            document.getElementById("edit_id_usuario").value = u.id_usuario;
+            document.getElementById("edit_nombre_completo").value = u.nombre_completo;
+            document.getElementById("edit_nombre_usuario").value = u.nombre_usuario;
+            document.getElementById("edit_correo").value = u.correo;
+            document.getElementById("edit_telefono").value = u.telefono;
+            document.getElementById("edit_dpi_usuario").value = u.dpi_usuario;
+            document.getElementById("edit_genero_usuario").value = u.genero_usuario;
+            document.getElementById("edit_activo").value = u.activo;
+
+            toggleMenu('vistaEditarUsuario');
+        });
+}
+
+document.getElementById("formEditarUsuario").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const datos = new FormData(this);
+
+    fetch("update_usuario.php", {
+        method: "POST",
+        body: datos
+    })
+    .then(res => res.text())
+    .then(resp => {
+
+        if (resp === "ok") {
+            alert("Usuario actualizado correctamente");
+            toggleMenu('vistaVerUsuarios');
+            document.getElementById("btnCargarUsuarios").click(); // refresca la tabla
+        } else {
+            alert("Error al actualizar");
+        }
+    });
 });
 
 document.getElementById("formRegistro").addEventListener("submit", function(e) {

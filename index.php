@@ -46,7 +46,6 @@ if ($role !== 'admin_super') {
         <div id="usuarios" class="sub-submenu">
             <a onclick="mostrarSeccion('vistaVerUsuarios')">Ver Usuarios</a>
             <a onclick="mostrarSeccion('vistaRegistrar')">Ingresar Usuarios</a>
-            <a onclick="mostrarSeccion('vistaEliminar')">Eliminar Usuarios</a>
         </div>
 
         <!-- Submenú medicamentos anidado -->
@@ -159,6 +158,7 @@ if ($role !== 'admin_super') {
                 <th>DPI</th>
                 <th>Género</th>
                 <th>Estado</th>
+                <th>Acciones</th> <!-- Acá aparecerán las acciones del js para editar y eliminar-->                
             </tr>
         </thead>
         <tbody id="tablaUsuarios"></tbody>
@@ -231,13 +231,63 @@ if ($role !== 'admin_super') {
         </form>
     </div>
 
-    <!-- ============================
-         ELIMINAR USUARIOS
-    ===============================-->
-    <div id="vistaEliminar" class="seccion" style="display:none;">
-        <h2>Eliminar Usuarios</h2>
-        <p>Aquí irá el formulario de eliminación.</p>
-    </div>
+<!-- ============================
+     EDITAR USUARIO
+=============================== -->
+<div id="vistaEditarUsuario" class="seccion" style="display:none;">
+    <h2>Editar Usuario</h2>
+
+    <form id="formEditarUsuario" class="mt-4 col-md-8">
+
+        <input type="hidden" name="id_usuario" id="edit_id_usuario">
+
+        <div class="mb-3">
+            <label class="form-label">Nombre Completo</label>
+            <input type="text" name="nombre_completo" id="edit_nombre_completo" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Usuario</label>
+            <input type="text" name="nombre_usuario" id="edit_nombre_usuario" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input type="email" name="correo" id="edit_correo" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Teléfono</label>
+            <input type="text" name="telefono" id="edit_telefono" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">DPI</label>
+            <input type="text" name="dpi_usuario" id="edit_dpi_usuario" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Género</label>
+            <select name="genero_usuario" id="edit_genero_usuario" class="form-control">
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otros">Otros</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Estado</label>
+            <select name="activo" id="edit_activo" class="form-control">
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+        <button type="button" class="btn btn-secondary" onclick="toggleMenu('vistaVerUsuarios')">Cancelar</button>
+    </form>
+</div>
+
 
     <!-- ============================
          VER MEDICAMENTOS
