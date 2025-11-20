@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $numero_lote       = trim($_POST["numero_lote"] ?? '');
     $fecha_vencimiento = trim($_POST["fecha_vencimiento"] ?? '');
     $cantidad_inicial  = intval($_POST["cantidad_inicial"] ?? 0);
-    $cantidad_final    = intval($_POST["cantidad_final"] ?? 0);
+    $cantidad_final    = intval($_POST["cantidad_actual"] ?? 0);
 
     $errores = [];
 
@@ -28,11 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     try {
         $sql = "INSERT INTO lotes_med 
-                (medicamento_id, numero_lote, fecha_vencimiento, cantidad_inicial, cantidad_final)
+                (medicamento_id, numero_lote, fecha_vencimiento, cantidad_inicial, cantidad_actual)
                 VALUES (?, ?, ?, ?, ?)";
 
         $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("issii", $medicamento_id, $numero_lote, $fecha_vencimiento, $cantidad_inicial, $cantidad_final);
+        $stmt->bind_param("issii", $medicamento_id, $numero_lote, $fecha_vencimiento, $cantidad_inicial, $cantidad_actual);
 
         if ($stmt->execute()) {
             echo json_encode(["status" => "success", "mensaje" => "Lote registrado correctamente."]);

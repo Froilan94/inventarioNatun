@@ -231,64 +231,6 @@ if ($role !== 'admin_super') {
         </form>
     </div>
 
-<!-- ============================
-     EDITAR USUARIO
-===============================
-<div id="vistaEditarUsuario" class="seccion" style="display:none;">
-    <h2>Editar Usuario</h2>
-
-    <form id="formEditarUsuario" class="mt-4 col-md-8">
-
-        <input type="hidden" name="id_usuario" id="edit_id_usuario">
-
-        <div class="mb-3">
-            <label class="form-label">Nombre Completo</label>
-            <input type="text" name="nombre_completo" id="edit_nombre_completo" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Usuario</label>
-            <input type="text" name="nombre_usuario" id="edit_nombre_usuario" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Correo</label>
-            <input type="email" name="correo" id="edit_correo" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Teléfono</label>
-            <input type="text" name="telefono" id="edit_telefono" class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">DPI</label>
-            <input type="text" name="dpi_usuario" id="edit_dpi_usuario" class="form-control" maxlength="12>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Género</label>
-            <select name="genero_usuario" id="edit_genero_usuario" class="form-control">
-                <option value="Masculino">Masculino</option>
-                <option value="Femenino">Femenino</option>
-                <option value="Otros">Otros</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Estado</label>
-            <select name="activo" id="edit_activo" class="form-control">
-                <option value="1">Activo</option>
-                <option value="0">Inactivo</option>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-success">Guardar Cambios</button>
-        <button type="button" class="btn btn-secondary" onclick="toggleMenu('vistaVerUsuarios')">Cancelar</button>
-    </form>
-</div> 
--->
-
 <!-- MODAL EDITAR USUARIO-->
 <div class="modal fade" id="modalEditarUsuario" tabindex="-1">
   <div class="modal-dialog modal-lg">
@@ -383,8 +325,7 @@ if ($role !== 'admin_super') {
     <div id="vistaRegistrarMedicamentos" class="seccion" style="display:none;">
         <h2>Registro de Medicamentos</h2>
 
-        <form action="insert_medicamento.php" method="POST" class="mt-4 col-md-8">
-
+        <form id="formRegistro_med" class="mt-4 col-md-8">
             <div class="mb-3">
                 <label class="form-label">Nombre Comercial</label>
                 <input type="text" name="nombre_comercial" class="form-control" required>
@@ -399,8 +340,6 @@ if ($role !== 'admin_super') {
                 <label class="form-label">Categoria</label>
                 <select name="categoria_id" class="form-select" required>
                     <option value="">Seleccione...</option>
-                    <option value="1">Generico</option>
-                    <option value="2">Originales</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Registrar Medicamento</button>
@@ -523,8 +462,8 @@ if ($role !== 'admin_super') {
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Cantidad Final</label>
-                <input type="text" name="cantidad_final" class="form-control">
+                <label class="form-label">Cantidad Actual</label>
+                <input type="text" name="cantidad_actual" class="form-control">
             </div>
 
             <button type="submit" class="btn btn-primary">Registrar Lotes</button>
@@ -620,7 +559,7 @@ if ($role !== 'admin_super') {
 
             <div class="mb-3">
                 <label class="form-label">Teléfono</label>
-                <input type="text" name="telefono" class="form-control">
+                <input type="text" name="telefono" class="form-control" maxlength="8">
             </div>
 
             <div class="mb-3">
@@ -753,7 +692,7 @@ if ($role !== 'admin_super') {
 <div id="vistaRegistrarIngresoMed" class="seccion" style="display:none;">
     <h2>Registrar Ingreso de Medicamentos</h2>
 
-    <form action="insert_ingreso_med.php" method="POST" class="mt-4 col-md-10">
+    <form action="insertar_ingreso_med.php" method="POST" class="mt-4 col-md-10">
 
         <!-- =====================================
              DATOS GENERALES DEL INGRESO
@@ -761,23 +700,36 @@ if ($role !== 'admin_super') {
         <h4 class="mt-3">Datos del Ingreso</h4>
 
         <div class="mb-3">
-            <label class="form-label">Fecha de ingreso</label>
-            <input type="date" name="fecha_ingreso" class="form-control" required>
+            <label class="form-label">Tipo de documento</label>
+            <select name="tipo_documento" class="form-select" required>
+                <option value="">Seleccione...</option>
+                <option value="Factura">Factura</option>
+                <option value="Recibo_donacion">Recibo Donación</option>
+                <option value="Cardex">Cardex</option>
+                <option value="Acta">Acta</option>
+            </select>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Documento</label>
-            <select name="documento_id" class="form-select" required>
-                <option value="">Seleccione...</option>
-                <!-- Cargar con PHP -->
-            </select>
+            <label class="form-label">Número documento</label>
+            <input type="text" name="numero_documento" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Serie</label>
+            <input type="text" name="serie_documento" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Fecha de ingreso</label>
+            <input type="date" name="fecha_ingreso" class="form-control" required>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Proveedor</label>
             <select name="proveedor_id" class="form-select" required>
                 <option value="">Seleccione...</option>
-                <!-- Cargar con PHP -->
+                <?php include "registromed/get_proveedores.php"; ?>
             </select>
         </div>
 
@@ -785,10 +737,9 @@ if ($role !== 'admin_super') {
             <label class="form-label">Recibido por</label>
             <select name="recibido_por" class="form-select" required>
                 <option value="">Seleccione...</option>
-                <!-- Cargar con PHP -->
+                <?php include "registromed/get_usuarios.php"; ?>
             </select>
         </div>
-
 
         <!-- =====================================
              DETALLES DEL INGRESO
@@ -814,14 +765,14 @@ if ($role !== 'admin_super') {
                     <td>
                         <select name="medicamento_id[]" class="form-select" required>
                             <option value="">Seleccione...</option>
-                            <!-- PHP -->
+                            <?php include "registromed/get_medicamentos.php"; ?>
                         </select>
                     </td>
 
                     <td>
                         <select name="lote_id[]" class="form-select">
                             <option value="">Seleccione...</option>
-                            <!-- PHP -->
+                            <?php include "registromed/get_lotes.php"; ?>
                         </select>
                     </td>
 
@@ -832,14 +783,14 @@ if ($role !== 'admin_super') {
                     <td>
                         <select name="unidad_id[]" class="form-select">
                             <option value="">Seleccione...</option>
-                            <!-- PHP -->
+                            <?php include "registromed/get_unidades.php"; ?>
                         </select>
                     </td>
 
                     <td>
                         <select name="presentacion_id[]" class="form-select">
                             <option value="">Seleccione...</option>
-                            <!-- PHP -->
+                            <?php include "registromed/get_presentaciones.php"; ?>
                         </select>
                     </td>
 
@@ -866,6 +817,7 @@ if ($role !== 'admin_super') {
         <button type="submit" class="btn btn-primary">Registrar Ingreso</button>
     </form>
 </div>
+
 <script src="js/funciones.js"></script>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

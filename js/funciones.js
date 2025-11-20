@@ -65,7 +65,7 @@ function eliminarUsuario(id) {
         });
 }
 
-// Cargar roles y departamentos cuando se abre el modal
+/*// Cargar roles y departamentos cuando se abre el modal
 function cargarCombosEditar() {
 
     // Cargar roles
@@ -89,7 +89,7 @@ function cargarCombosEditar() {
             });
             document.getElementById("edit_departamento_id").innerHTML = html;
         });
-}
+}*/
 
 
 function abrirModalEditar(id) {
@@ -201,3 +201,37 @@ document.getElementById("formRegistro").addEventListener("submit", function(e) {
     });
 });
 
+document.getElementById("formRegistro_med").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const form = this;     // ← IMPORTANTE
+    const formData = new FormData(form);
+
+    fetch("insert_medicamento.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        const msg = document.getElementById("mensaje");
+
+        if (data.status === "success") {
+            msg.innerHTML = `
+                <div style="color: green; padding: 10px; font-weight: bold;">
+                    ✅ ${data.mensaje}
+                </div>`;
+
+            form.reset();   // ← ahora sí funciona bien
+        } else {
+            msg.innerHTML = `
+                <div style="color: red; padding: 10px; font-weight: bold;">
+                    ❌ ${(data.mensaje) ? data.mensaje : data.errores.join("<br>")}
+                </div>`;
+        }
+    })
+    .catch(() => {
+        document.getElementById("mensaje").innerHTML =
+            `<div style="color: red;">❌ Error al conectar con el servidor.</div>`;
+    });
+});

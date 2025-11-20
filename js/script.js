@@ -43,7 +43,25 @@ function mostrarSeccion(id) {
     // Mostrar la sección de usuarios
 
 document.addEventListener("DOMContentLoaded", function () {
-    
+    //cargarRoles() 
+    //cargarDepartamentos()
+});
+
+function cargarCategorias() {
+    fetch("get_categorias.php")
+        .then(res => res.json())
+        .then(data => {
+            let select = document.querySelector("select[name='categoria_id']");
+             if (!select) return;
+
+            select.innerHTML = `<option value="">Seleccione...</option>`;
+            data.forEach(d => {
+                select.innerHTML += `<option value="${d.id_categoria}">${d.nombre_categoria}</option>`;
+            });
+        });   
+}        
+
+/*function cargarRoles() {
     // Cargar Roles
     fetch("get_roles.php")
         .then(res => res.json())
@@ -54,7 +72,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 select.innerHTML += `<option value="${r.id_rol}">${r.nombre_rol}</option>`;
             });
         });
+}             */  
 
+/*function cargarDepartamentos() {        
     // Cargar Departamentos
     fetch("get_departamentos.php")
         .then(res => res.json())
@@ -64,6 +84,5 @@ document.addEventListener("DOMContentLoaded", function () {
             data.forEach(d => {
                 select.innerHTML += `<option value="${d.id_departamento}">${d.nombre_departamento}</option>`;
             });
-        });
-
-});
+        });    
+}               */ 
