@@ -65,7 +65,7 @@ function eliminarUsuario(id) {
         });
 }
 
-/*// Cargar roles y departamentos cuando se abre el modal
+// Cargar roles y departamentos cuando se abre el modal
 function cargarCombosEditar() {
 
     // Cargar roles
@@ -89,7 +89,7 @@ function cargarCombosEditar() {
             });
             document.getElementById("edit_departamento_id").innerHTML = html;
         });
-}*/
+}
 
 
 function abrirModalEditar(id) {
@@ -201,7 +201,7 @@ document.getElementById("formRegistro").addEventListener("submit", function(e) {
     });
 });
 
-document.getElementById("formRegistro_med").addEventListener("submit", function(e) {
+/*document.getElementById("formRegistro_med").addEventListener("submit", function(e) {
     e.preventDefault();
 
     const form = this;     // ← IMPORTANTE
@@ -234,4 +234,4 @@ document.getElementById("formRegistro_med").addEventListener("submit", function(
         document.getElementById("mensaje").innerHTML =
             `<div style="color: red;">❌ Error al conectar con el servidor.</div>`;
     });
-});
+});*/

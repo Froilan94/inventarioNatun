@@ -43,8 +43,9 @@ function mostrarSeccion(id) {
     // Mostrar la sección de usuarios
 
 document.addEventListener("DOMContentLoaded", function () {
-    //cargarRoles() 
-    //cargarDepartamentos()
+    cargarRoles() 
+    cargarDepartamentos()
+  //  cargarCategorias()
 });
 
 function cargarCategorias() {
@@ -52,7 +53,7 @@ function cargarCategorias() {
         .then(res => res.json())
         .then(data => {
             let select = document.querySelector("select[name='categoria_id']");
-             if (!select) return;
+             //if (!select) return;
 
             select.innerHTML = `<option value="">Seleccione...</option>`;
             data.forEach(d => {
@@ -61,7 +62,7 @@ function cargarCategorias() {
         });   
 }        
 
-/*function cargarRoles() {
+function cargarRoles() {
     // Cargar Roles
     fetch("get_roles.php")
         .then(res => res.json())
@@ -72,9 +73,9 @@ function cargarCategorias() {
                 select.innerHTML += `<option value="${r.id_rol}">${r.nombre_rol}</option>`;
             });
         });
-}             */  
+}               
 
-/*function cargarDepartamentos() {        
+function cargarDepartamentos() {        
     // Cargar Departamentos
     fetch("get_departamentos.php")
         .then(res => res.json())
@@ -85,4 +86,4 @@ function cargarCategorias() {
                 select.innerHTML += `<option value="${d.id_departamento}">${d.nombre_departamento}</option>`;
             });
         });    
-}               */ 
+}                

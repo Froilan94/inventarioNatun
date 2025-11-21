@@ -71,8 +71,14 @@ try {
     }
 
     // Todo bien 👍
-    $mysqli->commit();
-    header("Location: ingresos_med.php?exito=1");
+    //$mysqli->commit();
+   // header("Location: insertar_ingresos_med.php?exito=1");
+
+    echo json_encode([
+    "status" => "success",
+    "mensaje" => "Ingreso registrado con éxito"
+]);
+exit;
 
 } catch (Exception $e) {
 
