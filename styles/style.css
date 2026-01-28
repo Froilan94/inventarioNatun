@@ -7,7 +7,7 @@
         .sidebar {
             width: 240px;
             height: 100vh;
-            background: #1e3a8a;
+            background: #606163;
             color: white;
             position: fixed;
             padding-top: 20px;
@@ -30,11 +30,11 @@
         }
 
         .menu-item:hover {
-            background: #314fb1;
+            background: #302f2f;
         }
 
         .submenu {
-            background: #2a46a3;
+            background: #606163;
             display: none;
         }
 
@@ -48,14 +48,14 @@
         }
 
         .submenu a:hover {
-            background: #3b5cd3;
+            background: #a2a2a0;
         }
 
         /* Submenú "usuarios" dentro de Maestros */
         .sub-submenu {
             padding-left: 30px;
             display: none;
-            background: #334fb6;
+            background:#a2a2a0;
         }
 
         .content {

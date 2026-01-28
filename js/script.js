@@ -30,16 +30,54 @@ document.addEventListener("input", function(e) {
 
 function toggleMenu(id) {
     let submenu = document.getElementById(id);
-    submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+    
+    // Verificar si está visible actualmente
+    let estabaVisible = (submenu.style.display === "block");
+    
+    // Identificar el tipo de menú
+    let menusPrincipales = ['maestros', 'movimientos', 'reportes'];
+    let esMenuPrincipal = menusPrincipales.includes(id);
+    
+    if (esMenuPrincipal) {
+        // Cerrar todos los menús principales
+        menusPrincipales.forEach(function(menuId) {
+            document.getElementById(menuId).style.display = "none";
+        });
+        
+        // Cerrar todos los sub-submenús
+        let todosSubSubMenus = document.querySelectorAll('.sub-submenu');
+        todosSubSubMenus.forEach(function(elem) {
+            elem.style.display = "none";
+        });
+        
+        // Abrir el menú clickeado solo si estaba cerrado
+        if (!estabaVisible) {
+            submenu.style.display = "block";
+        }
+    } else {
+        // Es un sub-submenú
+        let todosSubSubMenus = document.querySelectorAll('.sub-submenu');
+        todosSubSubMenus.forEach(function(elem) {
+            elem.style.display = "none";
+        });
+        
+        // Abrir el sub-submenú clickeado solo si estaba cerrado
+        if (!estabaVisible) {
+            submenu.style.display = "block";
+        }
+    }
 }
 
 function mostrarSeccion(id) {
-    // Ocultar todas
-    document.querySelectorAll(".seccion").forEach(s => s.style.display = "none");
+    // Ocultar todas las secciones
+    let todasLasSecciones = document.querySelectorAll(".seccion");
+    todasLasSecciones.forEach(function(seccion) {
+        seccion.style.display = "none";
+    });
 
     // Mostrar la sección seleccionada
     document.getElementById(id).style.display = "block";
- }
+}
     // Mostrar la sección de usuarios
 
 document.addEventListener("DOMContentLoaded", function () {

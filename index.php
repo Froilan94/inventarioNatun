@@ -1,5 +1,4 @@
 <?php
-// index.php
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -8,19 +7,10 @@ if (!isset($_SESSION['user_id'])) {
 $role = $_SESSION['role_name'] ?? '';
 
 if ($role !== 'admin_super') {
-    // si no es admin, lo mandamos a su dashboard el rol de cada usuario, esto para mantener la seguridad de la info.
     if (strpos($role, 'mp') !== false) header('Location: mod_mp/dashboard_mp.php');
     if (strpos($role, 'med') !== false) header('Location: mod_med/dashboard_med.php');
     if ($role === 'consultas_global') header('Location: consultas_global/dashboard_global.php');
 }
-//include ("consulta_usuarios.php")
-// Consultar roles
-//$roles = $mysqli->query("SELECT id_rol, nombre_rol FROM roles ORDER BY nombre_rol");
-
-// Consultar departamentos
-//$departamentos = $mysqli->query("SELECT id_departamento, nombre_departamento FROM departamentos ORDER //BY nombre_departamento");
-//include 'includes/header.php';
-//include 'includes/navbar.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -28,12 +18,12 @@ if ($role !== 'admin_super') {
     <meta charset="UTF-8">
     <title>Sistema de Inventarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 <body>
 
-<div class="sidebar">
-    <h2>Inventarios</h2>
+<div class="sidebar">   
+    <h2>Inventario</h2>
 
 <div class="menu-item" onclick="window.location.href='index.php'">🗄️ Panel principal</div>
 
@@ -302,7 +292,9 @@ if ($role !== 'admin_super') {
       </div>
 
       <div class="modal-footer">
-        <button type="submit" form="formEditarUsuario" class="btn btn-success">Guardar Cambios</button>
+        <button type="submit" form="formEditarUsuario" class="btn btn-success" id="btnGuardarCambios">
+        <span id="textoGuardar">Guardar Cambios</span>
+        <span id="spinnerGuardar" class="spinner-border spinner-border-sm d-none"></span></button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
       </div>
 
@@ -818,9 +810,53 @@ if ($role !== 'admin_super') {
     </form>
 </div>
 
-<script src="js/funciones.js"></script>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/funciones.js"></script>
 <script src="js/script.js"></script>
+
+<!-- Contenedor de Toasts -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999">
+    <!-- Toast de Éxito -->
+    <div id="toastExito" class="toast align-items-center text-bg-success border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body">
+                ✅ <span id="mensajeExito">Operación exitosa</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+    <!-- Toast de Error -->
+    <div id="toastError" class="toast align-items-center text-bg-danger border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body">
+                ❌ <span id="mensajeError">Error en la operación</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+
+    <!-- Toast de Advertencia -->
+    <div id="toastWarning" class="toast align-items-center text-bg-warning border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body">
+                ⚠️ <span id="mensajeWarning">Advertencia</span>
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+
+    <!-- Toast de Info -->
+    <div id="toastInfo" class="toast align-items-center text-bg-info border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body text-white">
+                ℹ️ <span id="mensajeInfo">Información</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
 </body>
 </html>

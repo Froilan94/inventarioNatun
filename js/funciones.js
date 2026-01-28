@@ -1,8 +1,12 @@
+//llenar tabla usuarios de manera automatica cuando se carga la pagina, lo hará una vez y permanentemente, Correcto?
 document.addEventListener("DOMContentLoaded", function () {
     const btnCargar = document.getElementById("btnCargarUsuarios");
 
     if (btnCargar) {
         btnCargar.addEventListener("click", function () {
+            // Mostrar feedback visual
+            btnCargar.disabled = true;
+            btnCargar.textContent = "Cargando...";
 
             fetch("consultar_usuarios.php")
                 .then(response => response.json())
@@ -29,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                         }
                                     </td>
                                     <td>
-		        <button class="btn btn-warning btn-sm" onclick="abrirModalEditar(${u.id_usuario})">Editar</button>
+                                        <button class="btn btn-warning btn-sm" onclick="abrirModalEditar(${u.id_usuario})">Editar</button>
                                         <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${u.id_usuario})">Eliminar</button>
                                     </td>
                                 </tr>`;
@@ -41,6 +45,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 .catch(error => {
                     console.error("Error:", error);
                     alert("No se pudo cargar la lista de usuarios.");
+                })
+                .finally(() => {
+                    // Restaurar botón
+                    btnCargar.disabled = false;
+                    btnCargar.textContent = "Cargar Usuarios";
                 });
         });
     }
@@ -50,19 +59,54 @@ document.addEventListener("DOMContentLoaded", function () {
 //   FUNCIÓN ELIMINAR
 // =============================
 function eliminarUsuario(id) {
+    // Confirmación con SweetAlert2 (o confirm nativo)
+    Swal.fire({
+        title: '¿Eliminar Dato',
+        text: "Esta acción no se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Mostrar loading
+            Swal.fire({
+                title: 'Eliminando...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
 
-    if (!confirm("¿Seguro que desea eliminar este usuario?")) return;
+            // Eliminar usuario
+            fetch(`eliminar_usuario.php?id=${id}`)
+                .then(response => response.text())
+                .then(resp => {
+                    Swal.close(); // Cerrar loading
 
-    fetch("eliminar_usuario.php?id=" + id)
-        .then(res => res.text())
-        .then(resp => {
-            if (resp === "ok") {
-                alert("Usuario eliminado.");
-                document.getElementById("btnCargarUsuarios").click();
-            } else {
-                alert("Error al eliminar");
-            }
-        });
+                    if (resp === "ok") {
+                        // ✅ Toast de éxito
+                        mostrarToast('exito', 'Usuario eliminado exitosamente');
+                        
+                        // Recargar tabla
+                        setTimeout(() => {
+                            document.getElementById("btnCargarUsuarios").click();
+                        }, 800);
+                    } else {
+                        // ❌ Toast de error
+                        mostrarToast('error', 'No se pudo eliminar el usuario');
+                    }
+                })
+                .catch(error => {
+                    Swal.close();
+                    console.error("Error:", error);
+                    mostrarToast('error', 'Error de conexión con el servidor');
+                });
+        }
+    });
 }
 
 // Cargar roles y departamentos cuando se abre el modal
@@ -121,31 +165,17 @@ function abrirModalEditar(id) {
 }
 
 
-
-// =============================
-//   FUNCIÓN EDITAR
-// =============================
-function editarUsuario(id) {
-
-    fetch("obtener_usuario.php?id=" + id)
-        .then(response => response.json())
-        .then(u => {
-
-            document.getElementById("edit_id_usuario").value = u.id_usuario;
-            document.getElementById("edit_nombre_completo").value = u.nombre_completo;
-            document.getElementById("edit_nombre_usuario").value = u.nombre_usuario;
-            document.getElementById("edit_correo").value = u.correo;
-            document.getElementById("edit_telefono").value = u.telefono;
-            document.getElementById("edit_dpi_usuario").value = u.dpi_usuario;
-            document.getElementById("edit_genero_usuario").value = u.genero_usuario;
-            document.getElementById("edit_activo").value = u.activo;
-
-            toggleMenu('vistaEditarUsuario');
-        });
-}
-
 document.getElementById("formEditarUsuario").addEventListener("submit", function(e){
     e.preventDefault();
+
+    const btn = document.getElementById("btnGuardarCambios");
+    const texto = document.getElementById("textoGuardar");
+    const spinner = document.getElementById("spinnerGuardar");
+
+    // UI: bloquea botón + spinner
+    btn.disabled = true;
+    texto.classList.add("d-none");
+    spinner.classList.remove("d-none");
 
     const datos = new FormData(this);
 
@@ -156,15 +186,47 @@ document.getElementById("formEditarUsuario").addEventListener("submit", function
     .then(res => res.text())
     .then(resp => {
 
+        // UI reset
+        btn.disabled = false;
+        texto.classList.remove("d-none");
+        spinner.classList.add("d-none");
+
         if (resp === "ok") {
-            alert("Usuario actualizado correctamente");
+
+            // Toast éxito
+            new bootstrap.Toast(
+                document.getElementById("toastExito")
+            ).show();
+
+            // Cerrar modal
+            const modalEl = document.getElementById("modalEditarUsuario");
+            bootstrap.Modal.getInstance(modalEl).hide();
+
+            // Mostrar vista usuarios
             toggleMenu('vistaVerUsuarios');
-            document.getElementById("btnCargarUsuarios").click(); // refresca la tabla
+
+            // Recargar tabla
+            document.getElementById("btnCargarUsuarios").click();
+
         } else {
-            alert("Error al actualizar");
+            new bootstrap.Toast(
+                document.getElementById("toastError")
+            ).show();
         }
+    })
+    .catch(() => {
+        btn.disabled = false;
+        texto.classList.remove("d-none");
+        spinner.classList.add("d-none");
+
+        new bootstrap.Toast(
+            document.getElementById("toastError")
+        ).show();
     });
 });
+
+
+
 
 document.getElementById("formRegistro").addEventListener("submit", function(e) {
     e.preventDefault();
@@ -201,37 +263,38 @@ document.getElementById("formRegistro").addEventListener("submit", function(e) {
     });
 });
 
-/*document.getElementById("formRegistro_med").addEventListener("submit", function(e) {
-    e.preventDefault();
 
-    const form = this;     // ← IMPORTANTE
-    const formData = new FormData(form);
+/**
+ * Muestra un toast de Bootstrap
+ * @param {string} tipo - 'exito', 'error', 'warning', 'info'
+ * @param {string} mensaje - Mensaje a mostrar
+ * @param {number} duracion - Duración en ms (opcional, default 3000)
+ */
+function mostrarToast(tipo, mensaje, duracion = 3000) {
+    const tipos = {
+        'exito': { id: 'toastExito', spanId: 'mensajeExito' },
+        'error': { id: 'toastError', spanId: 'mensajeError' },
+        'warning': { id: 'toastWarning', spanId: 'mensajeWarning' },
+        'info': { id: 'toastInfo', spanId: 'mensajeInfo' }
+    };
 
-    fetch("insert_medicamento.php", {
-        method: "POST",
-        body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
+    const config = tipos[tipo];
+    if (!config) {
+        console.error('Tipo de toast no válido');
+        return;
+    }
 
-        const msg = document.getElementById("mensaje");
+    const toastEl = document.getElementById(config.id);
+    const mensajeSpan = document.getElementById(config.spanId);
+    
+    // Actualizar mensaje
+    mensajeSpan.textContent = mensaje;
 
-        if (data.status === "success") {
-            msg.innerHTML = `
-                <div style="color: green; padding: 10px; font-weight: bold;">
-                    ✅ ${data.mensaje}
-                </div>`;
-
-            form.reset();   // ← ahora sí funciona bien
-        } else {
-            msg.innerHTML = `
-                <div style="color: red; padding: 10px; font-weight: bold;">
-                    ❌ ${(data.mensaje) ? data.mensaje : data.errores.join("<br>")}
-                </div>`;
-        }
-    })
-    .catch(() => {
-        document.getElementById("mensaje").innerHTML =
-            `<div style="color: red;">❌ Error al conectar con el servidor.</div>`;
+    // Crear y mostrar toast
+    const toast = new bootstrap.Toast(toastEl, {
+        autohide: true,
+        delay: duracion
     });
-});*/
+
+    toast.show();
+}
