@@ -99,7 +99,7 @@ if ($role !== 'admin_super') {
        <div class="menu-item" onclick="toggleMenu('movimientos')">📦 Movimientos</div>
        <div id="movimientos" class="submenu">
             <a onclick="mostrarSeccion('vistaRegistrarDocumentoMed')">Documentos</a>       
-            <a onclick="mostrarSeccion('vistaRegistrarIngresoMed')">Entradas</a>
+            <a onclick="mostrarSeccion('vistaRegistrarIngresoMed')">Entradas</a> 
             <a onclick="mostrarSeccion('vistaRegistrarBeneficiarios')">Salidas</a>
             <a onclick="mostrarSeccion('vistaActualizarEliminarBeneficiarios')">Ajustes</a>
         </div>
@@ -107,12 +107,12 @@ if ($role !== 'admin_super') {
     <!-- REPORTES -->
     <div class="menu-item" onclick="toggleMenu('reportes')">📊 Reportes</div>
     <div id="reportes" class="submenu">
-        <a href="reporte_existencias.php">Existencias</a>
-        <a href="reporte_movimientos.php">Movimientos</a>
-        <a href="reporte_valorizacion.php">Valorización</a>
+        <a onclick="mostrarSeccion('vistaVerUsuarios')">Existencias</a>
+        <a onclick="mostrarSeccion('VistaReporteExistencias')">Movimientos</a>
+        <a onclick="mostrarSeccion('VistaReporteExistencias')">Valorización</a>
     </div>
 
-    <!-- SEGURIDAD 
+    <!-- SEGURIDAD VistaReporteExistencias
     <div class="menu-item" onclick="toggleMenu('seguridad')">🔐 Seguridad</div>
     <div id="seguridad" class="submenu">
         <a href="roles.php">Roles</a>
@@ -808,7 +808,86 @@ if ($role !== 'admin_super') {
 
         <button type="submit" class="btn btn-primary">Registrar Ingreso</button>
     </form>
+</div>    
+    <!-- Reporte Existencias -->
+<!-- ================== REPORTE DE EXISTENCIAS ================== -->
+<div id="VistaReporteExistencias" class="seccion" style="display:none;">
+    
+    <h2 class="mb-3">Reporte de Existencias</h2>
+
+    <!-- ======= FILTROS ======= -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Filtros de búsqueda</h5>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-label">Fecha inicio</label>
+                    <input type="date" id="fechaInicio" class="form-control">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Fecha fin</label>
+                    <input type="date" id="fechaFin" class="form-control">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Medicamento</label>
+                    <select id="filtroMedicamento" class="form-control">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Proveedor / Donante</label>
+                    <select id="filtroProveedor" class="form-control">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-3 text-end">
+                <button id="btnAplicarFiltros" class="btn btn-primary">
+                    Aplicar filtros
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======= BOTONES DE EXPORTACIÓN ======= -->
+    <div class="d-flex justify-content-end mb-3">
+        <button id="btnExportarPDF" class="btn btn-danger me-2">
+            Exportar PDF
+        </button>
+        <button id="btnExportarExcel" class="btn btn-success">
+            Exportar Excel
+        </button>
+    </div>
+
+    <!-- ======= TABLA DE REPORTE ======= -->
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>No.</th>
+                <th>Medicamento</th>
+                <th>Nombre genérico</th>
+                <th>Lote</th>
+                <th>Fecha ingreso</th>
+                <th>Fecha vencimiento</th>
+                <th>Cantidad existente</th>
+                <th>Valor unitario</th>
+                <th>Monto existente</th>
+                <th>Proveedor / Donante</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody id="tablaReporteExistencias">
+            <!-- Contenido dinámico -->
+        </tbody>
+    </table>
+
 </div>
+<!-- ================== FIN REPORTE DE EXISTENCIAS ================== -->
 
 
 <!-- Bootstrap JS -->
@@ -816,6 +895,7 @@ if ($role !== 'admin_super') {
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/funciones.js"></script>
 <script src="js/script.js"></script>
+<script src="js/reporte_existencias.js"></script>
 
 <!-- Contenedor de Toasts -->
 <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999">
