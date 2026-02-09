@@ -69,14 +69,18 @@ function toggleMenu(id) {
 }
 
 function mostrarSeccion(id) {
-    // Ocultar todas las secciones
-    let todasLasSecciones = document.querySelectorAll(".seccion");
-    todasLasSecciones.forEach(function(seccion) {
-        seccion.style.display = "none";
+    // Ocultar todas
+    document.querySelectorAll(".seccion").forEach(sec => {
+        sec.style.display = "none";
     });
 
-    // Mostrar la sección seleccionada
-    document.getElementById(id).style.display = "block";
+    const seccion = document.getElementById(id);
+    if (!seccion) {
+        console.warn("No existe la sección:", id);
+        return;
+    }
+
+    seccion.style.display = "block";
 }
     // Mostrar la sección de usuarios
 

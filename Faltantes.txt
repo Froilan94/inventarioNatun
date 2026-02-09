@@ -120,3 +120,125 @@ ALTER TABLE usuarios
 MODIFY password_hash VARCHAR(255) NOT NULL;
 
     <link rel="icon" href="img/favicon.png" type="image/png" sizes="16x16 32x32">
+
+ESTRUCTURA DEL PROYECTO
+
+inventarios/
+│
+├── public/            ← ÚNICO directorio accesible desde el navegador
+├── api/               ← Backend (JSON)
+├── app/               ← Lógica del sistema
+├── config/            ← Configuración sensible
+├── storage/           ← Archivos generados
+├── logs/              ← Logs del sistema
+└── .htaccess
+
+public/
+│
+├── index.php
+│
+├── views/
+│   ├── dashboard.php
+│   ├── medicamentos.php
+│   ├── artesanias.php
+│   └── materia_prima.php
+│
+├── js/
+│   ├── core/
+│   │   ├── app.js          ← DOMContentLoaded, helpers
+│   │   ├── auth.js
+│   │   └── csrf.js
+│   │
+│   ├── inventarios/
+│   │   ├── medicamentos.js
+│   │   ├── artesanias.js
+│   │   └── materia_prima.js
+│   │
+│   └── utils/
+│       └── fetchSecure.js
+│
+├── css/
+│   ├── main.css
+│   └── tables.css
+│
+└── assets/
+    └── img/
+
+api/
+│
+├── inventarios/
+│   ├── medicamentos/
+│   │   ├── get.php
+│   │   ├── insert.php
+│   │   ├── update.php
+│   │   └── delete.php
+│   │
+│   ├── artesanias/
+│   │   ├── get.php
+│   │   ├── insert.php
+│   │   ├── update.php
+│   │   └── delete.php
+│   │
+│   └── materia_prima/
+│       ├── get.php
+│       ├── insert.php
+│       ├── update.php
+│       └── delete.php
+│
+├── auth/
+│   ├── login.php
+│   └── logout.php
+│
+└── catalogos/
+    ├── categorias.php
+    └── proveedores.php
+
+app/
+│
+├── models/
+│   ├── Medicamento.php
+│   ├── Artesania.php
+│   └── MateriaPrima.php
+│
+├── services/
+│   ├── InventarioService.php
+│   └── AuthService.php
+│
+├── validators/
+│   ├── MedicamentoValidator.php
+│   └── CommonValidator.php
+│
+└── helpers/
+    ├── response.php
+    ├── security.php
+    └── csrf.php
+
+config/
+│
+├── db.php
+├── env.php
+├── permissions.php
+└── session.php
+
+storage/
+│
+├── reportes/
+│   ├── medicamentos.xlsx
+│   ├── artesanias.xlsx
+│   └── materia_prima.xlsx
+│
+└── uploads/
+
+logs/
+├── errors.log
+└── access.log
+
+/public/.htaccess:
+Options -Indexes
+Header set X-Content-Type-Options nosniff
+Header set X-Frame-Options DENY
+Header set X-XSS-Protection "1; mode=block"
+
+En raíz del proyecto:
+
+Deny from all

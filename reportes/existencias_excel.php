@@ -1,14 +1,28 @@
 <?php
-require "../config/db.php";
+require_once "../config/db.php";
 
-header("Content-Type: application/vnd.ms-excel");
+header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 header("Content-Disposition: attachment; filename=reporte_existencias.xls");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+$sql = "SELECT * FROM vw_reporte_existencias";
+$result = $mysqli->query($sql);
+
+if (!$result) {
+    echo "Error SQL\t" . $mysqli->error;
+    exit;
+}
 
 echo "Medicamento\tLote\tVencimiento\tCantidad\tMonto\tProveedor\n";
 
-$sql = "SELECT * FROM vw_reporte_existencias";
-$data = $pdo->query($sql);
-
-foreach ($data as $r) {
-    echo "{$r['medicamento']}\t{$r['numero_lote']}\t{$r['fecha_vencimiento']}\t{$r['cantidad_existente']}\t{$r['monto_existente']}\t{$r['proveedor_donante']}\n";
+while ($r = $result->fetch_assoc()) {
+    echo $r['medicamento'] . "\t";
+    echo $r['numero_lote'] . "\t";
+    echo $r['fecha_vencimiento'] . "\t";
+    echo $r['cantidad_actual'] . "\t";
+    echo $r['monto_existente'] . "\t";
+    echo $r['proveedor_donante'] . "\n";
 }
+
+exit;

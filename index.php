@@ -41,9 +41,8 @@ if ($role !== 'admin_super') {
         <!-- Submenú medicamentos anidado -->
         <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('medicamentos')">💊 Medicamentos </div>
         <div id="medicamentos" class="sub-submenu">
-            <a onclick="mostrarSeccion('vistaVerMedicamentos')">Ver Medicamentos</a>
+            <a onclick="mostrarSeccion('vistaMedicamentos')">Ver Medicamentos</a>
             <a onclick="mostrarSeccion('vistaRegistrarMedicamentos')">Ingresar Medicamentos</a>
-            <a onclick="mostrarSeccion('vistaActualizarEliminarRegistros')">Actualizar/eliminar Registros</a>
         </div>
 
         <!-- Submenú Categorias anidado -->
@@ -124,7 +123,7 @@ if ($role !== 'admin_super') {
 
 <div class="content">
     <h1>Bienvenido al Sistema de Inventarios</h1>
-    <p>Seleccione una opción del menú para comenzar.</p>
+    <!--<p>Seleccione una opción del menú para comenzar.</p>-->
 </div>
 <!-- Contenido principal -->
 <div class="content">
@@ -158,9 +157,9 @@ if ($role !== 'admin_super') {
          REGISTRO DE USUARIOS
     ===============================-->
     <div id="vistaRegistrar" class="seccion" style="display:none;">
-        <h2>Registro de Usuarios</h2>
+        <h2 class="d-flex justify-content-center">Registro de Usuarios</h2>
 
-        <form id="formRegistro" class="mt-4 col-md-8">
+        <form id="formRegistro" class="mt-4 col-md-6 mx-auto p-4 shadow-sm rounded bg-light">
 
             <div class="mb-3">
                 <label class="form-label">Nombre Completo</label>
@@ -306,18 +305,34 @@ if ($role !== 'admin_super') {
     <!-- ============================
          VER MEDICAMENTOS
     ===============================-->
-    <div id="vistaVerMedicamentos" class="seccion" style="display:none;">
-        <h2>Lista de Medicamentos</h2>
-        <p>Aquí irá la tabla con los usuarios.</p>
-    </div>
+<div id="vistaMedicamentos" class="seccion" style="display:none;">
+    <h2>Lista de Medicamentos</h2>
+
+    <button id="btnCargarMedicamentos" class="btn btn-primary mt-3">
+        Cargar Medicamentos
+    </button>
+
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>No.</th>
+                <th>Nombre Comercial</th>
+                <th>Nombre Genérico</th>
+                <th>Categoría</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody id="tablaMedicamentos"></tbody>
+    </table>
+</div>
 
     <!-- ============================
          REGISTRO DE MEDICAMENTOS
     ===============================-->
     <div id="vistaRegistrarMedicamentos" class="seccion" style="display:none;">
-        <h2>Registro de Medicamentos</h2>
+        <h2 class="d-flex justify-content-center">Registro de Medicamentos</h2>
 
-        <form id="formRegistro_med" class="mt-4 col-md-8">
+        <form id="formRegistro_med" class="mt-4 col-md-6 mx-auto p-4 shadow-sm rounded bg-light">
             <div class="mb-3">
                 <label class="form-label">Nombre Comercial</label>
                 <input type="text" name="nombre_comercial" class="form-control" required>
@@ -336,14 +351,6 @@ if ($role !== 'admin_super') {
             </div>
             <button type="submit" class="btn btn-primary">Registrar Medicamento</button>
         </form>
-    </div>
-
-    <!-- ============================
-         ELIMINAR REGISTRO MEDICAMENTOS
-    ===============================-->
-    <div id="vistaActualizarEliminarRegistros" class="seccion" style="display:none;">
-        <h2>Eliminar Medicamento</h2>
-        <p>Aquí irá el formulario de eliminación.</p>
     </div>
 
     <!-- ============================

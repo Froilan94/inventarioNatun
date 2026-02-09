@@ -1,20 +1,22 @@
-//llenar tabla usuarios de manera automatica cuando se carga la pagina, lo hará una vez y permanentemente, Correcto?
 document.addEventListener("DOMContentLoaded", function () {
-    const btnCargar = document.getElementById("btnCargarUsuarios");
-
-    if (btnCargar) {
-        btnCargar.addEventListener("click", function () {
+    console.log("JS cargado correctamente y DOM listo");
+    /* ============================
+       CARGAR USUARIOS (YA EXISTE)
+       ============================ */
+    const btnCargarUsuarios = document.getElementById("btnCargarUsuarios");
+    if (btnCargarUsuarios) {
+        btnCargarUsuarios.addEventListener("click", function () {
             // Mostrar feedback visual
-            btnCargar.disabled = true;
-            btnCargar.textContent = "Cargando...";
+            btnCargarUsuarios.disabled = true;
+            btnCargarUsuarios.textContent = "Cargando...";
 
-            fetch("consultar_usuarios.php")
-                .then(response => response.json())
+            fetch("api/inventarios/medicamentos/consultar_usuarios.php")
+                .then(res => res.json())
                 .then(data => {
                     let filas = "";
 
                     if (data.length === 0) {
-                        filas = `<tr><td colspan="9" class="text-center">No hay usuarios registrados</td></tr>`;
+                        filas = `<tr><td colspan="9" class="text-center">No hay usuarios</td></tr>`;
                     } else {
                         data.forEach((u, i) => {
                             filas += `
@@ -32,28 +34,81 @@ document.addEventListener("DOMContentLoaded", function () {
                                             : '<span class="badge bg-danger">Inactivo</span>'
                                         }
                                     </td>
-                                    <td>
-                                        <button class="btn btn-warning btn-sm" onclick="abrirModalEditar(${u.id_usuario})">Editar</button>
-                                        <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${u.id_usuario})">Eliminar</button>
-                                    </td>
+                                    <td> <button class="btn btn-warning btn-sm" onclick="abrirModalEditar(${u.id_usuario})">
+                                    Editar
+                                    </button> <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${u.id_usuario})">
+                                    Eliminarr</button> </td>
                                 </tr>`;
                         });
                     }
 
                     document.getElementById("tablaUsuarios").innerHTML = filas;
                 })
-                .catch(error => {
-                    console.error("Error:", error);
-                    alert("No se pudo cargar la lista de usuarios.");
-                })
                 .finally(() => {
                     // Restaurar botón
-                    btnCargar.disabled = false;
-                    btnCargar.textContent = "Cargar Usuarios";
+                    btnCargarUsuarios.disabled = false;
+                    btnCargarUsuarios.textContent = "Cargar Usuarios";
                 });
         });
     }
+
+
+    /* ============================
+       CARGAR MEDICAMENTOS (NUEVO)
+       ============================ */
+    const btnCargarMedicamentos = document.getElementById("btnCargarMedicamentos");
+
+    if (btnCargarMedicamentos) {
+        btnCargarMedicamentos.addEventListener("click", function () {
+            // Mostrar feedback visual
+            btnCargarMedicamentos.disabled = true;
+            btnCargarMedicamentos.textContent = "Cargando...";
+
+            fetch("api/inventarios/medicamentos/consultar_medicamentos.php")
+                .then(res => res.json())
+                .then(data => {
+                    let filas = "";
+
+                    if (data.length === 0) {
+                        filas = `<tr>
+                            <td colspan="5" class="text-center">
+                                No hay medicamentos registrados
+                            </td>
+                        </tr>`;
+                    } else {
+                        data.forEach((m, i) => {
+                            filas += `
+                                <tr>
+                                    <td>${i + 1}</td>
+                                    <td>${m.nombre_comercial}</td>
+                                    <td>${m.nombre_generico ?? ""}</td>
+                                    <td>${m.nombre_categoria ?? ""}</td>
+                                    <td>
+                                        ${m.activo == 1
+                                            ? '<span class="badge bg-success">Activo</span>'
+                                            : '<span class="badge bg-danger">Inactivo</span>'
+                                        }
+                                    </td>
+                                </tr>`;
+                        });
+                    }
+
+                    document.getElementById("tablaMedicamentos").innerHTML = filas;
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Error al cargar medicamentos");
+                })
+                .finally(() => {
+                    // Restaurar botón
+                    btnCargarMedicamentos.disabled = false;
+                    btnCargarMedicamentos.textContent = "Cargar Medicamentos";
+                });
+        });
+    }
+
 });
+
 
 // =============================
 //   FUNCIÓN ELIMINAR
