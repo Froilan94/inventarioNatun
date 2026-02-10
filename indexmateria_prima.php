@@ -28,25 +28,18 @@ if ($role !== 'admin_super') {
 <div class="menu-item" onclick="window.location.href='index.php'">🗄️ Panel principal</div>
 
     <!-- MAESTROS -->
-    <div class="menu-item" onclick="toggleMenu('maestros')">📘 Maestros</div>
+    <div class="menu-item" onclick="toggleMenu('maestros')">🗃️ Catálogo </div>
     <div id="maestros" class="submenu">
 
-        <!-- Submenú usuarios anidado -->
-        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('usuarios')">👤 Usuarios</div>
-        <div id="usuarios" class="sub-submenu">
-            <a onclick="mostrarSeccion('vistaVerUsuarios')">Ver Usuarios</a>
-            <a onclick="mostrarSeccion('vistaRegistrar')">Ingresar Usuarios</a>
-        </div>
-
         <!-- Submenú medicamentos anidado -->
-        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('medicamentos')">💊 Medicamentos </div>
-        <div id="medicamentos" class="sub-submenu">
+        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('materiales')"> 📦Materiales </div>
+        <div id="materiales" class="sub-submenu">
             <a onclick="mostrarSeccion('vistaMedicamentos')">Ver Medicamentos</a>
             <a onclick="mostrarSeccion('vistaRegistrarMedicamentos')">Ingresar Medicamentos</a>
         </div>
 
         <!-- Submenú Categorias anidado -->
-        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('categorias')"> 📦Categorias </div>
+        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('categorias')"> 🏷️Categorias </div>
         <div id="categorias" class="sub-submenu">
             <a onclick="mostrarSeccion('vistaVerCategorias')">Ver Categorias</a>
             <a onclick="mostrarSeccion('vistaRegistrarCategorias')">Ingresar Categorias</a>
@@ -54,7 +47,7 @@ if ($role !== 'admin_super') {
         </div>
 
         <!-- Submenú unidades_de_medida anidado -->
-        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('unidades_de_medida')"> &#x1F4D0 Unidades de Medida </div>
+        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('unidades_de_medida')"> ⚖️ Unidades de Medida </div>
         <div id="unidades_de_medida" class="sub-submenu">
             <a onclick="mostrarSeccion('vistaVerUnidades')">Ver Unidades de Medida</a>
             <a onclick="mostrarSeccion('vistaRegistrarUnidades')">Ingresar Unidades de Medida</a>
@@ -62,7 +55,7 @@ if ($role !== 'admin_super') {
         </div>
 
         <!-- Submenú Lote de Medicamentos anidado -->
-        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('lote_de_medicamentos')"> &#x1F4DD Lote de Medicamentos </div>
+        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('lote_de_medicamentos')"> 📚 Cursos Cursos </div>
         <div id="lote_de_medicamentos" class="sub-submenu">
             <a onclick="mostrarSeccion('vistaVerLotedeMedicamentos')">Ver Lote de Medicamentos</a>
             <a onclick="mostrarSeccion('vistaRegistrarLotedeMedicamentos')">Ingresar Numero de Lotes</a>
@@ -70,7 +63,7 @@ if ($role !== 'admin_super') {
         </div>
 
         <!-- Submenú Presentacion de medicinas anidado -->
-        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('presentaciones')"> &#x1F4C9 Presentacion de medicamentos </div>
+        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('presentaciones')"> &#x1F4C9 Presentacion </div>
         <div id="presentaciones" class="sub-submenu">
             <a onclick="mostrarSeccion('vistaVerPresentaciones')">Ver Presentacion de Medicamentos</a>
             <a onclick="mostrarSeccion('vistaRegistrarPresentaciones')">Ingresar Presentaciones</a>
@@ -95,7 +88,7 @@ if ($role !== 'admin_super') {
     </div>
 
        <!-- MOVIMIENTOS -->
-       <div class="menu-item" onclick="toggleMenu('movimientos')">📦 Movimientos</div>
+       <div class="menu-item" onclick="toggleMenu('movimientos')">📑 Movimientos</div>
        <div id="movimientos" class="submenu">
             <a onclick="mostrarSeccion('vistaRegistrarDocumentoMed')">Documentos</a>       
             <a onclick="mostrarSeccion('vistaRegistrarIngresoMed')">Entradas</a> 
@@ -110,13 +103,6 @@ if ($role !== 'admin_super') {
         <a onclick="mostrarSeccion('VistaReporteExistencias')">Movimientos</a>
         <a onclick="mostrarSeccion('VistaReporteExistencias')">Valorización</a>
     </div>
-
-    <!-- SEGURIDAD VistaReporteExistencias
-    <div class="menu-item" onclick="toggleMenu('seguridad')">🔐 Seguridad</div>
-    <div id="seguridad" class="submenu">
-        <a href="roles.php">Roles</a>
-        <a href="permisos.php">Permisos</a>
-    </div>-->
 
     <a class="menu-item" href="index.php" style="background:#dc2626;">🚪 Cerrar sesión</a>
 </div>

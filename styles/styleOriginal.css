@@ -1,0 +1,68 @@
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+        }
+
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            background: #606163;
+            color: white;
+            position: fixed;
+            padding-top: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 22px;
+        }
+
+        .menu-item {
+            padding: 14px 20px;
+            display: block;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .menu-item:hover {
+            background: #302f2f;
+        }
+
+        .submenu {
+            background: #606163;
+            display: none;
+        }
+
+        .submenu a {
+            display: block;
+            padding: 12px 40px;
+            font-size: 14px;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .submenu a:hover {
+            background: #a2a2a0;
+        }
+
+        /* Submenú "usuarios" dentro de Maestros */
+        .sub-submenu {
+            padding-left: 30px;
+            display: none;
+            background:#a2a2a0;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 25px;
+        }
+
+        h1 {
+            color: #333;
+        }

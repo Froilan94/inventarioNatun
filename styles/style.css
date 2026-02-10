@@ -1,68 +1,91 @@
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-        }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f1f3f6;
+    color: #333;
+}
 
-        .sidebar {
-            width: 240px;
-            height: 100vh;
-            background: #606163;
-            color: white;
-            position: fixed;
-            padding-top: 20px;
-            overflow-y: auto;
-        }
+/* SIDEBAR */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: linear-gradient(180deg, #2f3542, #1e272e);
+    color: #ecf0f1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 25px;
+    overflow-y: auto;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.15);
+}
 
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 22px;
-        }
+/* TÍTULO */
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 35px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
 
-        .menu-item {
-            padding: 14px 20px;
-            display: block;
-            color: white;
-            text-decoration: none;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+/* ITEMS PRINCIPALES */
+.menu-item {
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ecf0f1;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.3s ease, padding-left 0.3s ease;
+}
 
-        .menu-item:hover {
-            background: #302f2f;
-        }
+.menu-item:hover {
+    background: rgba(255,255,255,0.08);
+    padding-left: 28px;
+}
 
-        .submenu {
-            background: #606163;
-            display: none;
-        }
+/* SUBMENÚ */
+.submenu {
+    background: rgba(255,255,255,0.05);
+    display: none;
+}
 
-        .submenu a {
-            display: block;
-            padding: 12px 40px;
-            font-size: 14px;
-            color: white;
-            text-decoration: none;
-            cursor: pointer;
-        }
+.submenu a {
+    display: block;
+    padding: 12px 45px;
+    font-size: 14px;
+    color: #dcdde1;
+    text-decoration: none;
+    transition: background 0.3s;
+}
 
-        .submenu a:hover {
-            background: #a2a2a0;
-        }
+.submenu a:hover {
+    background: rgba(255,255,255,0.1);
+}
 
-        /* Submenú "usuarios" dentro de Maestros */
-        .sub-submenu {
-            padding-left: 30px;
-            display: none;
-            background:#a2a2a0;
-        }
+/* SUB-SUBMENU */
+.sub-submenu {
+    padding-left: 20px;
+    display: none;
+    background: rgba(255,255,255,0.08);
+}
 
-        .content {
-            margin-left: 240px;
-            padding: 25px;
-        }
+.sub-submenu a {
+    padding: 10px 55px;
+    font-size: 13px;
+}
 
-        h1 {
-            color: #333;
-        }
+/* CONTENIDO */
+.content {
+    margin-left: 250px;
+    padding: 30px;
+}
+
+/* TITULOS */
+h1 {
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #2f3640;
+}

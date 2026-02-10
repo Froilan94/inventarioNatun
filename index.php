@@ -121,6 +121,21 @@ if ($role !== 'admin_super') {
             </a>
         </div>
 
+                <!-- Gestionar Usuarios -->
+        <div class="col-md-4">
+            <a href="gestionarusuarios.php" class="text-decoration-none">
+                <div class="card card-dashboard text-center p-4">
+                    <div class="icon-box text-success mb-3">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <h5 class="card-title">Gestionar Usuarios</h5>
+                    <p class="text-muted">
+                        Agregar, modificar y eliminar Usuarios
+                    </p>
+                </div>
+            </a>
+        </div>
+
     </div>
 </div>
 
