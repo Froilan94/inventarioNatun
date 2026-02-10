@@ -12,8 +12,11 @@
 Reportes.
 
 -Existencias
+------Consulta de toda clase de medicamentos, fecha de ingreso, lotes, valor unitario y monto existente
 -Movimientos
+------Consulta de Ingresos y egresos por fecha, documento, lotes, con valor unitario y montos egresados.
 -Valorización
+
 
 Estructura:
 
@@ -138,10 +141,14 @@ public/
 ├── index.php
 │
 ├── views/
-│   ├── dashboard.php
-│   ├── medicamentos.php
-│   ├── artesanias.php
-│   └── materia_prima.php
+│   ├── dashboard.php				 ← Doc html SuperUsuario				panel para los tres inventarios con CRUD
+│   ├── medicamentos.php  			 ← Doc html  Medicamentos				INSERT, UPDATE, CONSULT
+│   ├── cosult_medic.php  		 	 ← Doc html  Consulta medicamentos		CONSULT
+│   ├── artesanias.php				 ← Doc html  Artesanías					INSERT, UPDATE, CONSULT
+│   ├── consultart.php  			 ← Doc html  Medicamentos				CONSULT
+│   ├── materia_prima.php   		 ← Doc html  Materia Prima				INSERT, UPDATE, CONSULT
+│   ├── Consultmateria_prima.php   ← Doc html  Materia Prima				CONSULT
+│   └── ConsultARTyMP.php   		← Doc html  artesanías Y Materia Prima	Panel para artesanías y materia prima con CONSULT
 │
 ├── js/
 │   ├── core/
@@ -195,23 +202,23 @@ api/
 
 app/
 │
-├── models/
-│   ├── Medicamento.php
+├── models/			← Estructura de datos
+│   ├── Medicamento.php		←Solo define cómo es un medicamento: No hace consultas, no valida y no imprime nada
 │   ├── Artesania.php
 │   └── MateriaPrima.php
 │
-├── services/
-│   ├── InventarioService.php
-│   └── AuthService.php
+├── services/			← Reglas del negocio
+│   ├── InventarioService.php	←Se encarga de:Entradas, Salidas, Ajustes, Cálculo de existencias
+│   └── AuthService.php		←Controla: login, roles y permisos
 │
-├── validators/
-│   ├── MedicamentoValidator.php
-│   └── CommonValidator.php
+├── validators/			←Validar entradas
+│   ├── MedicamentoValidator.php	←Defensa de datos, Se ejecuta antes de Guardar, Evita: SQL basura, Datos corruptos y errores lógicos
+│   └── CommonValidator.php	←Reglas reutilizables
 │
-└── helpers/
-    ├── response.php
-    ├── security.php
-    └── csrf.php
+└── helpers/			← Utilidades y seguridad
+    ├── response.php		←Respuesta estandar: Todas las APIs respondan igual y evita respuestas inconsistentes
+    ├── security.php		←Seguridad básica: 
+    └── csrf.php			←Protección CSRF: Evita ataques tipo: “un formulario falso envía datos sin que el usuario lo sepa” con Generación de TOKENS
 
 config/
 │
@@ -242,3 +249,14 @@ Header set X-XSS-Protection "1; mode=block"
 En raíz del proyecto:
 
 Deny from all
+
+
+Salud y Nutrición
+Documentos
+--Planilla de Entregas
+
+Componentes:
+--Creciendo Sano
+--Salud de la Mujer
+
+
