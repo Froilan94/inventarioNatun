@@ -31,12 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         header('Location: index.php');
                         exit;
                     }
-                    if (strpos($role, 'med') !== false) {
-                        header('Location: mod_med/dashboard_med.php');
+                    if (strpos($role, 'med_editor') !== false) {
+                        header('Location: views/editors/indexmedicamentos.php');
                         exit;
                     }
                     if (strpos($role, 'mp') !== false) {
-                        header('Location: mod_mp/dashboard_mp.php');
+                        header('Location: views/editors/indexmateria_prima.php');
                         exit;
                     }
                     if ($role === 'consultas_global') {
