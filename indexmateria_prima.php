@@ -86,7 +86,7 @@ if ($role !== 'admin_super') {
         </div>
 
         <!-- Submenú Benericiarios anidado -->
-        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('beneficiarios')"> 🙍‍♀ Beneficiarios </div>
+        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('beneficiarios')"> 🙍‍♀ Participantes </div>
         <div id="beneficiarios" class="sub-submenu">
             <a onclick="mostrarSeccion('vistaVerBeneficiarios')">Ver Beneficiarios</a>
             <a onclick="mostrarSeccion('vistaRegistrarBeneficiarios')">Ingresar Beneficiarios</a>
