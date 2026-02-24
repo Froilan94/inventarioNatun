@@ -25,7 +25,7 @@ if ($role !== 'med') {
 <div class="sidebar">   
     <h2>Inventario</h2>
 
-<div class="menu-item" onclick="window.location.href='index.php'">🗄️ Panel principal</div>
+<div class="menu-item" onclick="window.location.href='index.php'">🗄️ Ir al Panel principal</div>
 
     <!-- MAESTROS -->
     <div class="menu-item" onclick="toggleMenu('maestros')">📘 Maestros</div>
@@ -86,7 +86,7 @@ if ($role !== 'med') {
         </div>
 
         <!-- Submenú Benericiarios anidado -->
-        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('beneficiarios')"> 🙍‍♀ Beneficiarios </div>
+        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('beneficiarios')"> 🙍‍♀ Participante</div>
         <div id="beneficiarios" class="sub-submenu">
             <a onclick="mostrarSeccion('vistaVerBeneficiarios')">Ver Beneficiarios</a>
             <a onclick="mostrarSeccion('vistaRegistrarBeneficiarios')">Ingresar Beneficiarios</a>
