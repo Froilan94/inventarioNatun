@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
             btnCargarUsuarios.disabled = true;
             btnCargarUsuarios.textContent = "Cargando...";
 
-            fetch("api/inventarios/medicamentos/consultar_usuarios.php")
+            fetch("../api/inventarios/medicamentos/consultar_usuarios.php")
                 .then(res => res.json())
                 .then(data => {
                     let filas = "";
@@ -64,14 +64,14 @@ document.addEventListener("DOMContentLoaded", function () {
             btnCargarMedicamentos.disabled = true;
             btnCargarMedicamentos.textContent = "Cargando...";
 
-            fetch("api/inventarios/medicamentos/consultar_medicamentos.php")
+            fetch("../api/inventarios/medicamentos/consultar_medicamentos.php")
                 .then(res => res.json())
                 .then(data => {
                     let filas = "";
 
                     if (data.length === 0) {
                         filas = `<tr>
-                            <td colspan="5" class="text-center">
+                            <td colspan="4" class="text-center">
                                 No hay medicamentos registrados
                             </td>
                         </tr>`;
@@ -82,7 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <td>${i + 1}</td>
                                     <td>${m.nombre_comercial}</td>
                                     <td>${m.nombre_generico ?? ""}</td>
-                                    <td>${m.nombre_categoria ?? ""}</td>
                                     <td>
                                         ${m.activo == 1
                                             ? '<span class="badge bg-success">Activo</span>'
@@ -137,7 +136,7 @@ function eliminarUsuario(id) {
             });
 
             // Eliminar usuario
-            fetch(`eliminar_usuario.php?id=${id}`)
+            fetch(`../eliminar_usuario.php?id=${id}`)
                 .then(response => response.text())
                 .then(resp => {
                     Swal.close(); // Cerrar loading
@@ -168,7 +167,7 @@ function eliminarUsuario(id) {
 function cargarCombosEditar() {
 
     // Cargar roles
-    fetch("get_roles.php")
+    fetch("../get_roles.php")
         .then(r => r.json())
         .then(roles => {
             let html = "";
@@ -179,7 +178,7 @@ function cargarCombosEditar() {
         });
 
     // Cargar departamentos
-    fetch("get_departamentos.php")
+    fetch("../get_departamentos.php")
         .then(r => r.json())
         .then(departamentos => {
             let html = "";
@@ -195,7 +194,7 @@ function abrirModalEditar(id) {
 
     cargarCombosEditar(); // Cargar roles y departamentos
 
-    fetch("obtener_usuario.php?id=" + id)
+    fetch("../obtener_usuario.php?id=" + id)
         .then(res => res.json())
         .then(u => {
 
@@ -234,7 +233,7 @@ document.getElementById("formEditarUsuario").addEventListener("submit", function
 
     const datos = new FormData(this);
 
-    fetch("update_usuario.php", {
+    fetch("../update_usuario.php", {
         method: "POST",
         body: datos
     })
@@ -289,7 +288,7 @@ document.getElementById("formRegistro").addEventListener("submit", function(e) {
     const form = this;     // ← IMPORTANTE
     const formData = new FormData(form);
 
-    fetch("insert_usuario.php", {
+    fetch("../insert_usuario.php", {
         method: "POST",
         body: formData
     })
@@ -317,7 +316,41 @@ document.getElementById("formRegistro").addEventListener("submit", function(e) {
             `<div style="color: red;">❌ Error al conectar con el servidor.</div>`;
     });
 });
+/*
+document.getElementById("formMedicamento").addEventListener("submit", function(e) {
+    e.preventDefault();
 
+    const form = this;
+    const formData = new FormData(form);
+
+    fetch("insert_medicamento.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        const msg = document.getElementById("mensajeMedicamento");
+
+        if (data.status === "success") {
+            msg.innerHTML = `
+                <div style="color: green; padding: 10px; font-weight: bold;">
+                    ✅ ${data.mensaje}
+                </div>`;
+
+            form.reset();
+        } else {
+            msg.innerHTML = `
+                <div style="color: red; padding: 10px; font-weight: bold;">
+                    ❌ ${(data.mensaje) ? data.mensaje : data.errores.join("<br>")}
+                </div>`;
+        }
+    })
+    .catch(() => {
+        document.getElementById("mensajeMedicamento").innerHTML =
+            `<div style="color: red;">❌ Error al conectar con el servidor.</div>`;
+    });
+});*/
 
 /**
  * Muestra un toast de Bootstrap

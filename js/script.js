@@ -106,7 +106,7 @@ function cargarCategorias() {
 
 function cargarRoles() {
     // Cargar Roles
-    fetch("get_roles.php")
+    fetch("../get_roles.php")
         .then(res => res.json())
         .then(data => {
             let select = document.querySelector("select[name='rol_id']");
@@ -119,7 +119,7 @@ function cargarRoles() {
 
 function cargarDepartamentos() {        
     // Cargar Departamentos
-    fetch("get_departamentos.php")
+    fetch("../get_departamentos.php")
         .then(res => res.json())
         .then(data => {
             let select = document.querySelector("select[name='departamento_id']");
