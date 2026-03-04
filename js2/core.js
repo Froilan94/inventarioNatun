@@ -1,6 +1,7 @@
 function toggleMenu(id) {
     let submenu = document.getElementById(id);
-    
+    if (!submenu) return; // ✅ El menú no existe en el DOM
+
     // Verificar si está visible actualmente
     let estabaVisible = (submenu.style.display === "block");
     
@@ -11,7 +12,8 @@ function toggleMenu(id) {
     if (esMenuPrincipal) {
         // Cerrar todos los menús principales
         menusPrincipales.forEach(function(menuId) {
-            document.getElementById(menuId).style.display = "none";
+            let el = document.getElementById(menuId);
+            if (el) el.style.display = "none";
         });
         
         // Cerrar todos los sub-submenús

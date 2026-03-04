@@ -1,4 +1,8 @@
 <?php
+require_once '../../../auth/roles.php';
+
+requireRoles(['admin_super', 'operadormed']);
+
 include "../../../config/db.php";
 
 $id = intval($_POST["id_medicamento"]);

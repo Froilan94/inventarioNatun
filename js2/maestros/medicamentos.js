@@ -35,10 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                             : '<span class="badge bg-danger">Inactivo</span>'
                                         }
                                     </td>                                        
-                                    <td> <button class="btn btn-warning btn-sm" onclick="abrirModalEditarMed(${m.id_medicamento})">
-                                    Editar
-                                    </button> <button class="btn btn-danger btn-sm" onclick="eliminarMedicamento(${m.id_medicamento})">
-                                    Eliminarr</button> </td>
+                                            <td>${botonesMedicamentos(m.id_medicamento)}</td>
                                 </tr>`;
                         });
                     }
@@ -219,4 +216,28 @@ function eliminarMedicamento(id) {
                 });
         }
     });
+}
+
+function botonesMedicamentos(id) {
+    let html = '';
+
+    if (['admin_super', 'operadormed'].includes(USER_ROLE)) {
+        html += `
+            <button class="btn btn-warning btn-sm"
+                onclick="abrirModalEditarMed(${id})">
+                Editar
+            </button>
+        `;
+    }
+
+    if (USER_ROLE === 'admin_super') {
+        html += `
+            <button class="btn btn-danger btn-sm"
+                onclick="eliminarMedicamento(${id})">
+                Eliminar
+            </button>
+        `;
+    }
+
+    return html;
 }

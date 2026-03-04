@@ -1,16 +1,11 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
-$role = $_SESSION['role_name'] ?? '';
+require_once 'auth/roles.php';
 
-if ($role !== 'admin_super') {
-    if (strpos($role, 'mp') !== false) header('Location: indexmateria_prima.php');
-    if (strpos($role, 'med') !== false) header('Location: index_medicamentos.php');
-    if ($role === 'consultas_global') header('Location: consultas_global/dashboard_global.php');
-}
+requireRoles([
+    'admin_super',
+    'operadorart',
+    'supervisorart'
+]);
 ?>
 <!DOCTYPE html>
 <html lang="es">

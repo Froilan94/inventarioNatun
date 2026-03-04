@@ -1,4 +1,12 @@
 <?php
+require_once '../../../auth/roles.php';
+
+requireRoles([
+    'admin_super',
+    'operadormed',
+    'supervisormed'
+]);
+
 include "../../../config/db.php";
 
 $sql = "

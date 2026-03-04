@@ -1,4 +1,7 @@
 <?php
+require_once '../../../auth/roles.php';
+
+requireRoles(['admin_super', 'operadormed']);
 // me llamo obtener medicamento
 include "../../../config/db.php";
 

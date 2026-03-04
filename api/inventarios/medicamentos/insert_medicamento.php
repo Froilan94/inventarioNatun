@@ -1,17 +1,10 @@
 <?php
-session_start();
-require_once "../../../config/db.php";
+require_once '../../../auth/roles.php';
 
-header('Content-Type: application/json');
+requireRoles(['admin_super', 'operadormed']);
 
-if (!isset($_SESSION['role_name']) || $_SESSION['role_name'] !== 'admin_super') {
-    http_response_code(403);
-    echo json_encode([
-        "status" => "error",
-        "mensaje" => "No tiene permisos para realizar esta acción."
-    ]);
-    exit;
-}
+include "../../../config/db.php";
+
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 

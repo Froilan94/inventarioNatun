@@ -1,28 +1,9 @@
 <?php
-session_start();
+require_once 'auth/roles.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
-
-$role = $_SESSION['role_name'] ?? '';
-
-// Si NO es super admin, redirige a su módulo
-if ($role !== 'admin_super') {
-    if (strpos($role, 'mp') !== false) {
-        header('Location: indexmateria_prima.php');
-        exit;
-    }
-    if (strpos($role, 'med') !== false) {
-        header('Location: indexmedicamentos.php');
-        exit;
-    }
-    if ($role === 'consultas_global') {
-        header('Location: consultas_global/dashboard_global.php');
-        exit;
-    }
-}
+requireRoles([
+    'admin_super'
+]);
 ?>
 <!DOCTYPE html>
 <html lang="es">
