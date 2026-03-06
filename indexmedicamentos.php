@@ -98,18 +98,12 @@ requireRoles([
     <div class="menu-item" onclick="toggleMenu('reportes')">📊 Reportes</div>
     <div id="reportes" class="submenu">
         <a onclick="mostrarSeccion('VistaReporteExistencias')">Existencias</a>
-        <a onclick="mostrarSeccion('VistaReporteExistencias')">Movimientos</a>
-        <a onclick="mostrarSeccion('VistaReporteExistencias')">Valorización</a>
+        <a onclick="mostrarSeccion('VistaReporteMovimientos')">Movimientos</a>
+        <a onclick="mostrarSeccion('VistaReporteValorizacion')">Valorización</a>
     </div>
 
     <a class="menu-item" href="logout.php" style="background:#dc2626;">🚪 Cerrar sesión</a>
 </div>
-
-<div class="content">
-    <!--<h1>Bienvenido al Sistema de Inventarios Medicamentos</h1>
-    <p>Seleccione una opción del menú para comenzar.</p>-->
-</div>
-<!-- Contenido principal -->
 <div class="content">
     <!-- ============================
          VER MEDICAMENTOS
@@ -149,10 +143,9 @@ requireRoles([
 
             <div class="mb-3">
                 <label class="form-label">Nombre Generico</label>
-                <input type="text" name="nombre_generico" class="form-control" maxlength="10" required>
+                <input type="text" name="nombre_generico" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-primary">Registrar Medicamento</button>
-           <div id="mensajeMedicamento"style="margin-top:10px;"></div>            
+            <button type="submit" class="btn btn-primary">Registrar Medicamento</button>          
         </form>
     </div>
 
@@ -511,63 +504,61 @@ requireRoles([
         ====================================== -->
         <h4 class="d-flex justify-content-center">Datos del Ingreso</h4>
 
-    <div class="mb-3" style="display: flex; gap: 15px;">        
-        <div style="flex: 1;">
-            <label class="form-label">Tipo de documento</label>
-            <select name="tipo_documento" class="form-select" required>
-                <option value="">Seleccione...</option>
-                <option value="Factura">Factura</option>
-                <option value="Recibo_donacion">Recibo Donación</option>
-                <option value="Cardex">Cardex</option>
-                <option value="Acta">Acta</option>
-            </select>
+        <div class="mb-3" style="display: flex; gap: 15px;">        
+            <div style="flex: 1;">
+                <label class="form-label">Tipo de documento</label>
+                <select name="tipo_documento" class="form-select" required>
+                    <option value="">Seleccione...</option>
+                    <option value="Factura">Factura</option>
+                    <option value="Recibo_donacion">Recibo Donación</option>
+                    <option value="Cardex">Cardex</option>
+                    <option value="Acta">Acta</option>
+                </select>
+            </div>        
+            <div style="flex: 1;">
+                <label class="form-label">Número documento</label>
+                <input type="text" name="numero_documento" class="form-control">
+            </div>
+        </div>         
+
+        <div class="mb-3" style="display: flex; gap: 15px;">        
+            <div style="flex: 1;">
+                <label class="form-label">Serie</label>
+                <input type="text" name="serie_documento" class="form-control">
+            </div>
+            <div style="flex: 1;">
+                <label class="form-label">Fecha de ingreso</label>
+                <input type="date" name="fecha_ingreso" class="form-control" required>
+            </div>
         </div>        
 
-        <div style="flex: 1;">
-            <label class="form-label">Número documento</label>
-            <input type="text" name="numero_documento" class="form-control">
-        </div>
-    </div>         
-
-    <div class="mb-3" style="display: flex; gap: 15px;">        
-        <div style="flex: 1;">
-            <label class="form-label">Serie</label>
-            <input type="text" name="serie_documento" class="form-control">
-        </div>
-        <div style="flex: 1;">
-            <label class="form-label">Fecha de ingreso</label>
-            <input type="date" name="fecha_ingreso" class="form-control" required>
-        </div>
-    </div>        
-
-    <div class="mb-3" style="display: flex; gap: 15px;">
-        <div style="flex: 1;">
-            <label class="form-label">Número de Lote</label>
-            <input type="text" name="lote" class="form-control" required>
-        </div>
-        <div style="flex: 1;">
-            <label class="form-label">Fecha de Vencimiento</label>
-            <input type="date" name="fecha_vencimiento" class="form-control" required>
-        </div>
-    </div>
-
-    <div class="mb-3" style="display: flex; gap: 15px;">    
-        <div style="flex: 1;">
-            <label class="form-label">Proveedor</label>
-            <select name="proveedor_id" class="form-select" required>
-                <option value="">Seleccione...</option>
-                <?php include "registromed/get_proveedores.php"; ?>
-            </select>
+        <div class="mb-3" style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <label class="form-label">Número de Lote</label>
+                <input type="text" name="lote" class="form-control" required>
+            </div>
+            <div style="flex: 1;">
+                <label class="form-label">Fecha de Vencimiento</label>
+                <input type="date" name="fecha_vencimiento" class="form-control" required>
+            </div>
         </div>
 
-        <div style="flex: 1;">
-            <label class="form-label">Recibido por</label>
-            <select name="recibido_por" class="form-select" required>
-                <option value="">Seleccione...</option>
-                <?php include "registromed/get_usuarios.php"; ?>
-            </select>
+        <div class="mb-3" style="display: flex; gap: 15px;">    
+            <div style="flex: 1;">
+                <label class="form-label">Proveedor</label>
+                <select name="proveedor_id" class="form-select" required>
+                    <option value="">Seleccione...</option>
+                    <?php include "registromed/get_proveedores.php"; ?>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label class="form-label">Recibido por</label>
+                <select name="recibido_por" class="form-select" required>
+                    <option value="">Seleccione...</option>
+                    <?php include "registromed/get_usuarios.php"; ?>
+                </select>
+            </div>
         </div>
-    </div>
 
         <!-- =====================================
              DETALLES DEL INGRESO
@@ -652,7 +643,7 @@ requireRoles([
 <div id="vistaRegistrarEgresosMed" class="seccion" style="display:none;">
     <h2 class="d-flex justify-content-center">Registrar Salida de Medicamentos</h2>
 
-    <form action="insertar_ingreso_med.php" method="POST" class="mt-4 col-md-10 mx-auto p-4 shadow-sm rounded bg-light">
+    <form action="insertar_egreso_med.php" method="POST" class="mt-4 col-md-10 mx-auto p-4 shadow-sm rounded bg-light">
 
         <!-- =====================================
              DATOS GENERALES DEL EGRESOS
@@ -709,7 +700,7 @@ requireRoles([
         ====================================== -->
         <h4 class="mt-4">Detalles del Egresos</h4>
 
-        <table class="table table-bordered" id="tablaDetalles">
+        <table class="table table-bordered" id="tablaDetallesIngresos">
             <thead class="table-light">
                 <tr>
                     <th>Medicamento</th>
@@ -772,24 +763,136 @@ requireRoles([
 
             </tbody>
         </table>
-
         <button type="button" class="btn btn-success" onclick="agregarFila()">Agregar detalle</button>
-
         <br><br>
-
         <button type="submit" class="btn btn-primary">Registrar Salida</button>
     </form>
 </div>    
 
 <!-- ================== REPORTE DE EXISTENCIAS ================== -->
 <div id="VistaReporteExistencias" class="seccion" style="display:none;">
+
+<h2 class="d-flex justify-content-center">📦 Reporte de Existencias</h2>
+
+<div class="card mb-4">
+<div class="card-body">
+
+<h5 class="card-title mb-3">🔍 Filtros</h5>
+
+<div class="row" style="display:flex; gap:15px;">
+
+<div style="flex:1;">
+<label class="form-label">Medicamento</label>
+<select id="filtroMedicamentoExistencia" class="form-control">
+<option value="">Todos</option>
+</select>
+</div>
+
+<div style="flex:1;">
+<label class="form-label">Lote</label>
+<select id="filtroLoteExistencia" class="form-control">
+<option value="">Todos</option>
+</select>
+</div>
+
+<div style="flex:1;">
+<label class="form-label">Estado de Stock</label>
+<select id="filtroStock" class="form-control">
+
+<option value="">Todos</option>
+<option value="agotado">Agotado</option>
+<option value="bajo">Stock bajo</option>
+<option value="normal">Stock normal</option>
+
+</select>
+</div>
+
+<div style="flex:1;">
+<label class="form-label">Vencimiento</label>
+<select id="filtroVencimiento" class="form-control">
+
+<option value="">Todos</option>
+<option value="vencido">Vencidos</option>
+<option value="proximo">Próximos a vencer</option>
+
+</select>
+</div>
+
+</div>
+
+<div class="mt-3 text-end">
+
+<button class="btn btn-secondary" onclick="limpiarFiltrosExistencias()">🔄 Limpiar</button>
+<button class="btn btn-primary" onclick="buscarExistencias()">🔍 Buscar</button>
+
+</div>
+
+</div>
+</div>
+
+
+<div class="card">
+
+<div class="card-body">
+
+<h5 class="card-title mb-3">📊 Inventario Actual</h5>
+
+<div class="table-responsive">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Medicamento</th>
+<th>Presentación</th>
+<th>Unidad</th>
+<th>Lote</th>
+<th>Vencimiento</th>
+<th>Stock</th>
+<th>Precio Unitario</th>
+<th>Valor Total</th>
+<th>Estado</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tablaExistencias">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================== REPORTE DE MOVIMIENTOS ================== -->
+<div id="VistaReporteMovimientos" class="seccion" style="display:none;">
     
-    <h2 class="mb-3">Reporte de Existencias</h2>
+    <h2 class="d-flex justify-content-center">Reporte de Movimientos</h2>
 
     <!-- ======= FILTROS ======= -->
     <div class="card mb-4">
         <div class="card-body">
             <h5 class="card-title mb-3">🔍 Filtros de Búsqueda</h5>
+
+            <div class="row" style="display: flex; gap: 15px;">
+                <div style="flex: 1;">
+                    <label class="form-label">Tipo de Movimiento</label>
+                    <select id="filtro-tipo" class="form-control">
+                        <option value="">Todos</option>
+                        <option value="INGRESO">Ingresos</option>
+                        <option value="SALIDA">Salidas</option>
+                    </select>
+                </div>
+            </div>                
 
             <div class="row" style="display: flex; gap: 15px;">
                 <div style="flex: 1;">
@@ -825,27 +928,17 @@ requireRoles([
             </div>
 
             <div class="mt-3 text-end">
-          <button class="btn btn-secondary" onclick="limpiarFiltros()">
-            🔄 Limpiar
-          </button>
-          <button id="btnAplicarFiltros" class="btn btn-primary" onclick="aplicarFiltros()">
-            🔍 Buscar
-          </button>                
+                <button class="btn btn-secondary" onclick="limpiarFiltros()">🔄 Limpiar</button>
+                <button id="btnAplicarFiltros" class="btn btn-primary" onclick="aplicarFiltros()">🔍 Buscar</button>                
             </div>
         </div>
     </div>
 
     <!-- ======= BOTONES DE EXPORTACIÓN ======= -->
     <div class="d-flex justify-content-end mb-3">
-        <button id="btnExportarExcel" class="btn btn-success" onclick="exportarReporte('excel')">
-          📊 Excel
-        </button>        
-        <button id="btnExportarPDF" class="btn btn-danger me-2" onclick="exportarReporte('pdf')">
-          📄 PDF
-        </button>
-        <button id="btnExportarCSV" class="btn btn-success" onclick="exportarReporte('csv')">
-          📋 CSV
-        </button>
+        <button id="btnExportarExcel" class="btn btn-success" onclick="exportarReporte('excel')">📊 Excel</button>        
+        <button id="btnExportarPDF" class="btn btn-danger me-2" onclick="exportarReporte('pdf')">📄 PDF</button>
+        <button id="btnExportarCSV" class="btn btn-success" onclick="exportarReporte('csv')">📋 CSV</button>
     </div>
 
 
@@ -870,19 +963,118 @@ requireRoles([
             <!-- Contenido dinámico -->
         </tbody>
     </table>
+</div>
+
+<!-- ================== REPORTE DE VALORIZACIÓN-EXISTENCIAS ================== -->
+<div id="VistaReporteValorizacion" class="seccion" style="display:none;">
+
+    <h2 class="d-flex justify-content-center">📦 Reporte de Existencias</h2>
+
+    <!-- ======= FILTROS ======= -->
+    <div class="card mb-4">
+        <div class="card-body">
+
+            <h5 class="card-title mb-3">🔍 Filtros</h5>
+
+            <div class="row" style="display:flex; gap:15px;">
+
+                <div style="flex:1;">
+                    <label class="form-label">Medicamento</label>
+                    <select id="filtroMedicamentoExistencia" class="form-control">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+
+                <div style="flex:1;">
+                    <label class="form-label">No. Lote</label>
+                    <select id="filtroLoteExistencia" class="form-control">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+
+                <div style="flex:1;">
+                    <label class="form-label">Estado de Stock</label>
+                    <select id="filtroStock" class="form-control">
+                        <option value="">Todos</option>
+                        <option value="bajo">Stock bajo</option>
+                        <option value="normal">Stock normal</option>
+                        <option value="agotado">Agotado</option>
+                    </select>
+                </div>
+
+                <div style="flex:1;">
+                    <label class="form-label">Vencimiento</label>
+                    <select id="filtroVencimiento" class="form-control">
+                        <option value="">Todos</option>
+                        <option value="vencido">Vencidos</option>
+                        <option value="proximo">Próximos a vencer</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="mt-3 text-end">
+                <button class="btn btn-secondary" onclick="limpiarFiltrosExistencias()">🔄 Limpiar</button>
+                <button class="btn btn-primary" onclick="buscarExistencias()">🔍 Buscar</button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ======= TABLA DE EXISTENCIAS ======= -->
+    <div class="card">
+        <div class="card-body">
+
+            <h5 class="card-title mb-3">📊 Inventario Actual</h5>
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead class="table-dark">
+
+                        <tr>
+                            <th>Código</th>
+                            <th>Medicamento</th>
+                            <th>Presentación</th>
+                            <th>Lote</th>
+                            <th>Vencimiento</th>
+                            <th>Stock Actual</th>
+                            <th>Costo Unitario</th>
+                            <th>Valor Total</th>
+                            <th>Estado</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaExistencias">
+
+                        <!-- Aquí se llenará con JS -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
 
 </div>
+</div> <!--cierre div content-->
 <!-- ================== FIN REPORTE DE EXISTENCIAS ================== -->
-<script>
-    window.USER_ROLE = "<?= $_SESSION['role_name'] ?>";
-</script>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js2/maestros/medicamentos.js" defer></script>
+<script src="js2/movimientos/entradas.js" defer></script>
 <script src="js2/core.js" defer></script>
 <script src="js/reporte_existencias.js" defer></script>
-
+<script>
+    window.USER_ROLE = "<?= $_SESSION['role_name'] ?>";
+</script>
 <!-- Contenedor de Toasts -->
 <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999">
     <!-- Toast de Éxito -->

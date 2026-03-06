@@ -69,25 +69,25 @@ document.getElementById("formMedicamento").addEventListener("submit", function(e
     .then(res => res.json())
     .then(data => {
 
-        const msg = document.getElementById("mensajeMedicamento");
-
         if (data.status === "success") {
-            msg.innerHTML = `
-                <div style="color: green; padding: 10px; font-weight: bold;">
-                    ✅ ${data.mensaje}
-                </div>`;
+
+            mostrarToast('exito', data.mensaje);
 
             form.reset();
+
         } else {
-            msg.innerHTML = `
-                <div style="color: red; padding: 10px; font-weight: bold;">
-                    ❌ ${(data.mensaje) ? data.mensaje : data.errores.join("<br>")}
-                </div>`;
+
+            const mensajeError = data.mensaje 
+                ? data.mensaje 
+                : data.errores.join(" - ");
+
+            mostrarToast('error', mensajeError, 5000);
         }
     })
     .catch(() => {
-        document.getElementById("mensajeMedicamento").innerHTML =
-            `<div style="color: red;">❌ Error al conectar con el servidor.</div>`;
+
+        mostrarToast('error', 'Error al conectar con el servidor', 5000);
+
     });
 });
 
