@@ -53,6 +53,11 @@ function mostrarSeccion(id) {
     }
 
     seccion.style.display = "block";
+
+        // ── Inicializadores por sección ──────────────────
+    if (id === 'vistaRegistrarIngresoMed') initFormIngresoMed();
+    if (id === 'vistaRegistrarEgresosMed')  initFormSalidaMed();
+    if (id === 'VistaReporteExistencias')  initVistaExistencias();
 }
 
 /**

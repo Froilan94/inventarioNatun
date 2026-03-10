@@ -1,59 +1,80 @@
 <?php
-// login.php
+declare(strict_types=1);
+
 session_start();
-require 'config/db.php';
+require_once __DIR__ . '/config/db.php';
 
 $errors = [];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $usuario = trim($_POST['usuario'] ?? '');
+
+    $usuario  = trim($_POST['usuario'] ?? '');
     $password = $_POST['password'] ?? '';
 
     if ($usuario === '' || $password === '') {
         $errors[] = "Ingrese usuario y contraseña.";
     } else {
-        $sql = "SELECT u.id_usuario, u.nombre_completo, u.nombre_usuario, u.password_hash, r.id_rol, r.nombre_rol
+
+        $sql = "SELECT u.id_usuario, u.nombre_completo,
+                       u.password_hash, r.id_rol, r.nombre_rol
                 FROM usuarios u
-                JOIN roles r ON u.rol_id = r.id_rol
-                WHERE u.nombre_usuario = ?";
+                INNER JOIN roles r ON u.rol_id = r.id_rol
+                WHERE u.nombre_usuario = ?
+                LIMIT 1";
+
         if ($stmt = $mysqli->prepare($sql)) {
+
             $stmt->bind_param('s', $usuario);
             $stmt->execute();
-            $res = $stmt->get_result();
-            if ($row = $res->fetch_assoc()) {
-                if (password_verify($password, $row['password_hash'])) {
-                    $_SESSION['user_id'] = $row['id_usuario'];
-                    $_SESSION['user_name'] = $row['nombre_completo'];
-                    $_SESSION['role_id'] = $row['id_rol'];
-                    $_SESSION['role_name'] = $row['nombre_rol'];
+            $result = $stmt->get_result();
+            $user = $result->fetch_assoc();
 
-                    $role = $row['nombre_rol'];
-                    if ($role === 'admin_super') {
-                        header('Location: index.php');
-                        exit;
-                    }
-                    if (strpos($role, 'operadormed') !== false) {
-                        header('Location: indexmedicamentos.php');
-                        exit;
-                    }
-                    if (strpos($role, 'supervisormed') !== false) {
-                        header('Location: indexmedicamentos.php');
-                        exit;
-                    }
-                    if ($role === 'consultas_global') {
-                        header('Location: consultas_global/dashboard_global.php');
-                        exit;
-                    }
-                    header('Location: index.php');
+            if ($user && password_verify($password, $user['password_hash'])) {
+
+                // 🔐 Protección contra fijación de sesión
+                session_regenerate_id(true);
+
+                $_SESSION['user_id']   = $user['id_usuario'];
+                $_SESSION['user_name'] = $user['nombre_completo'];
+                $_SESSION['role_id']   = $user['id_rol'];
+                $_SESSION['role_name'] = $user['nombre_rol'];
+
+                $role = $user['nombre_rol'];
+
+                // 🏗 Mapa profesional de redirecciones
+                $redirectMap = [
+                    'admin_super'   => 'index.php',
+
+                    // Medicamentos
+                    'operadormed'   => 'indexmedicamentos.php',
+                    'supervisormed' => 'indexmedicamentos.php',
+
+                    // Materia Prima
+                    'operadormp'    => 'materiaprima/dashboard.php',
+                    'supervisormp'  => 'materiaprima/dashboard.php',
+
+                    // Artículos
+                    'operadorart'   => 'articulos/dashboard.php',
+                    'supervisorart' => 'articulos/dashboard.php',
+                ];
+
+                if (isset($redirectMap[$role])) {
+                    header('Location: ' . $redirectMap[$role]);
                     exit;
-                } else {
-                    $errors[] = "Usuario o contraseña incorrecta.";
                 }
+
+                // Rol no definido
+                session_destroy();
+                $errors[] = "Rol no autorizado.";
+
             } else {
-                $errors[] = "Usuario no encontrado.";
+                $errors[] = "Usuario o contraseña incorrectos.";
             }
+
             $stmt->close();
+
         } else {
-            $errors[] = "Error en la consulta.";
+            $errors[] = "Error interno del sistema.";
         }
     }
 }

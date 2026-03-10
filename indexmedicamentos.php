@@ -489,73 +489,66 @@ requireRoles([
         <h2>Eliminar Beneficiarios</h2>
         <p>Aquí irá el formulario de eliminación.</p>
     </div>
-<?php include "config/db.php"; ?>
 
     <!-- ============================
          Registro Documento
     ===============================-->
 <div id="vistaRegistrarIngresoMed" class="seccion" style="display:none;">
+
     <h2 class="d-flex justify-content-center">Registrar Ingreso de Medicamentos</h2>
 
-    <form action="insertar_ingreso_med.php" method="POST" class="mt-4 col-md-10 mx-auto p-4 shadow-sm rounded bg-light">
+    <!-- Alertas dinámicas (el JS las inyecta aquí) -->
+    <div id="alertaIngreso"></div>
+
+    <form id="formIngresoMed" class="mt-4 col-md-15 mx-auto p-4 shadow-sm rounded bg-light">
 
         <!-- =====================================
              DATOS GENERALES DEL INGRESO
         ====================================== -->
         <h4 class="d-flex justify-content-center">Datos del Ingreso</h4>
 
-        <div class="mb-3" style="display: flex; gap: 15px;">        
+        <div class="mb-3" style="display: flex; gap: 15px;">
             <div style="flex: 1;">
                 <label class="form-label">Tipo de documento</label>
-                <select name="tipo_documento" class="form-select" required>
+                <select id="ingresoTipoDoc" class="form-select" required>
                     <option value="">Seleccione...</option>
                     <option value="Factura">Factura</option>
                     <option value="Recibo_donacion">Recibo Donación</option>
                     <option value="Cardex">Cardex</option>
                     <option value="Acta">Acta</option>
                 </select>
-            </div>        
+            </div>
             <div style="flex: 1;">
                 <label class="form-label">Número documento</label>
-                <input type="text" name="numero_documento" class="form-control">
-            </div>
-        </div>         
-
-        <div class="mb-3" style="display: flex; gap: 15px;">        
-            <div style="flex: 1;">
-                <label class="form-label">Serie</label>
-                <input type="text" name="serie_documento" class="form-control">
-            </div>
-            <div style="flex: 1;">
-                <label class="form-label">Fecha de ingreso</label>
-                <input type="date" name="fecha_ingreso" class="form-control" required>
-            </div>
-        </div>        
-
-        <div class="mb-3" style="display: flex; gap: 15px;">
-            <div style="flex: 1;">
-                <label class="form-label">Número de Lote</label>
-                <input type="text" name="lote" class="form-control" required>
-            </div>
-            <div style="flex: 1;">
-                <label class="form-label">Fecha de Vencimiento</label>
-                <input type="date" name="fecha_vencimiento" class="form-control" required>
+                <input type="text" id="ingresoNumDoc" class="form-control" maxlength="30">
             </div>
         </div>
 
-        <div class="mb-3" style="display: flex; gap: 15px;">    
+        <div class="mb-3" style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <label class="form-label">Serie</label>
+                <input type="text" id="ingresoSerie" class="form-control" maxlength="30">
+            </div>
+            <div style="flex: 1;">
+                <label class="form-label">Fecha de ingreso</label>
+                <input type="date" id="ingresoFecha" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="mb-3" style="display: flex; gap: 15px;">
             <div style="flex: 1;">
                 <label class="form-label">Proveedor</label>
-                <select name="proveedor_id" class="form-select" required>
-                    <option value="">Seleccione...</option>
-                    <?php include "registromed/get_proveedores.php"; ?>
+                <!-- Poblado por JS con get_datos_iniciales -->
+                <select id="ingresoProveedor" class="form-select">
+                    <option value="">Cargando...</option>
                 </select>
             </div>
             <div style="flex: 1;">
                 <label class="form-label">Recibido por</label>
-                <select name="recibido_por" class="form-select" required>
-                    <option value="">Seleccione...</option>
-                    <?php include "registromed/get_usuarios.php"; ?>
+                <!-- Si hay sesión activa el JS lo fija y deshabilita;
+                     si no, muestra lista de operadores -->
+                <select id="ingresoRecibidoPor" class="form-select" required>
+                    <option value="">Cargando...</option>
                 </select>
             </div>
         </div>
@@ -565,207 +558,148 @@ requireRoles([
         ====================================== -->
         <h4 class="mt-4">Detalles del Ingreso</h4>
 
-        <table class="table table-bordered" id="tablaDetalles">
-            <thead class="table-light">
-                <tr>
-                    <th>Medicamento</th>
-                    <th>Lote</th>
-                    <th>Cantidad</th>
-                    <th>Unidad</th>
-                    <th>Presentación</th>
-                    <th>Precio Unitario</th>
-                    <th>Subtotal</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="tablaDetalles">
+                <thead class="table-light">
+                    <tr>
+                        <th>Medicamento</th>
+                        <th>Lote</th>
+                        <th>Fecha de Vencimiento</th>
+                        <th>Cantidad</th>
+                        <th>Unidad</th>
+                        <th>Presentación</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <!-- El JS inserta y gestiona las filas aquí -->
+                <tbody id="tbodyDetallesIngreso">
+                </tbody>
+            </table>
+        </div>
 
-                <tr>
-                    <td>
-                        <select name="medicamento_id[]" class="form-select" required>
-                            <option value="">Seleccione...</option>
-                            <?php include "registromed/get_medicamentos.php"; ?>
-                        </select>
-                    </td>
-
-                    <td>
-                        <select name="lote_id[]" class="form-select">
-                            <option value="">Seleccione...</option>
-                            <?php include "registromed/get_lotes.php"; ?>
-                        </select>
-                    </td>
-
-                    <td>
-                        <input type="number" step="0.0001" name="cantidad[]" class="form-control cantidad" required>
-                    </td>
-
-                    <td>
-                        <select name="unidad_id[]" class="form-select">
-                            <option value="">Seleccione...</option>
-                            <?php include "registromed/get_unidades.php"; ?>
-                        </select>
-                    </td>
-
-                    <td>
-                        <select name="presentacion_id[]" class="form-select">
-                            <option value="">Seleccione...</option>
-                            <?php include "registromed/get_presentaciones.php"; ?>
-                        </select>
-                    </td>
-
-                    <td>
-                        <input type="number" step="0.0001" name="precio_unitario[]" class="form-control precio" required>
-                    </td>
-
-                    <td>
-                        <input type="text" name="subtotal[]" class="form-control subtotal" readonly>
-                    </td>
-
-                    <td>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">X</button>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-
-        <button type="button" class="btn btn-success" onclick="agregarFila()">Agregar detalle</button>
+        <button type="button"
+                class="btn btn-success"
+                onclick="agregarDetalleIngreso()">
+            Agregar detalle
+        </button>
 
         <br><br>
 
-        <button type="submit" class="btn btn-primary">Registrar Ingreso</button>
+        <button type="button"
+                id="btnRegistrarIngreso"
+                class="btn btn-primary"
+                onclick="registrarIngreso()">
+            Registrar Ingreso
+        </button>
+
     </form>
-</div>    
+</div>
 
     <!-- ============================
          Registro de Egresos
     ===============================-->
 <div id="vistaRegistrarEgresosMed" class="seccion" style="display:none;">
+
     <h2 class="d-flex justify-content-center">Registrar Salida de Medicamentos</h2>
 
-    <form action="insertar_egreso_med.php" method="POST" class="mt-4 col-md-10 mx-auto p-4 shadow-sm rounded bg-light">
+    <!-- Alertas dinámicas -->
+    <div id="alertaSalida"></div>
+
+    <form id="formSalidaMed" class="mt-4 col-md-15 mx-auto p-4 shadow-sm rounded bg-light">
 
         <!-- =====================================
-             DATOS GENERALES DEL EGRESOS
+             DATOS GENERALES DEL EGRESO
         ====================================== -->
-        <h4 class="d-flex justify-content-center">Datos del Egresos</h4>
+        <h4 class="d-flex justify-content-center">Datos del Egreso</h4>
 
-    <div class="mb-3" style="display: flex; gap: 15px;">        
-        <div style="flex: 1;">
-            <label class="form-label">Tipo de documento</label>
-            <select name="tipo_documento" class="form-select" required>
-                <option value="">Seleccione...</option>
-                <option value="Factura">Factura</option>
-                <option value="Recibo_donacion">Recibo Donación</option>
-                <option value="Cardex">Cardex</option>
-                <option value="Acta">Acta</option>
-            </select>
-        </div>        
-        <div style="flex: 1;">
-            <label class="form-label">Número documento</label>
-            <input type="text" name="numero_documento" class="form-control">
+        <div class="mb-3" style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <label class="form-label">Tipo de documento</label>
+                <select id="salidaTipoDoc" class="form-select" required>
+                    <option value="">Seleccione...</option>
+                    <option value="Factura">Factura</option>
+                    <option value="Recibo_donacion">Recibo Donación</option>
+                    <option value="Cardex">Cardex</option>
+                    <option value="Acta">Acta</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label class="form-label">Número documento</label>
+                <input type="text" id="salidaNumDoc" class="form-control" maxlength="30">
+            </div>
         </div>
-    </div>         
 
-    <div class="mb-3" style="display: flex; gap: 15px;">        
-        <div style="flex: 1;">
-            <label class="form-label">Serie/ Año</label>
-            <input type="text" name="serie_documento" class="form-control">
+        <div class="mb-3" style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <label class="form-label">Serie / Año</label>
+                <input type="text" id="salidaSerie" class="form-control" maxlength="30">
+            </div>
+            <div style="flex: 1;">
+                <label class="form-label">Fecha de Salida</label>
+                <input type="date" id="salidaFecha" class="form-control" required>
+            </div>
         </div>
-        <div style="flex: 1;">
-            <label class="form-label">Fecha de Salida</label>
-            <input type="date" name="fecha_ingreso" class="form-control" required>
-        </div>
-    </div>        
 
-    <div class="mb-3" style="display: flex; gap: 15px;">    
-        <div style="flex: 1;">
-            <label class="form-label">Componente</label>
-            <select name="proveedor_id" class="form-select" required>
-                <option value="">Seleccione...</option>
-                <?php include "registromed/get_proveedores.php"; ?>
-            </select>
+        <div class="mb-3" style="display: flex; gap: 15px;">
+            <div style="flex: 1;">
+                <label class="form-label">Componente</label>
+                <!-- Poblado por JS con get_datos_iniciales -->
+                <select id="salidaComponente" class="form-select" required>
+                    <option value="">Cargando...</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label class="form-label">Entregado por</label>
+                <!-- Si hay sesión activa el JS lo fija; si no, muestra lista -->
+                <select id="salidaEntregadoPor" class="form-select" required>
+                    <option value="">Cargando...</option>
+                </select>
+            </div>
         </div>
-        <div style="flex: 1;">
-            <label class="form-label">Entregado por</label>
-            <select name="recibido_por" class="form-select" required>
-                <option value="">Seleccione...</option>
-                <?php include "registromed/get_usuarios.php"; ?>
-            </select>
-        </div>
-    </div>
 
         <!-- =====================================
-             DETALLES DEL INGRESO
+             DETALLES DEL EGRESO
         ====================================== -->
-        <h4 class="mt-4">Detalles del Egresos</h4>
+        <h4 class="mt-4">Detalles del Egreso</h4>
 
-        <table class="table table-bordered" id="tablaDetallesIngresos">
-            <thead class="table-light">
-                <tr>
-                    <th>Medicamento</th>
-                    <th>Lote</th>
-                    <th>Cantidad</th>
-                    <th>Unidad</th>
-                    <th>Presentación</th>
-                    <th>Precio Unitario</th>
-                    <th>Subtotal</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="tablaDetallesSalida">
+                <thead class="table-light">
+                    <tr>
+                        <th>Medicamento</th>
+                        <th>Lote</th>
+                        <th>Cantidad</th>
+                        <th>Unidad</th>
+                        <th>Presentación</th>
+                        <th>Beneficiaria</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <!-- El JS inserta y gestiona las filas aquí -->
+                <tbody id="tbodyDetallesSalida">
+                </tbody>
+            </table>
+        </div>
 
-                <tr>
-                    <td>
-                        <select name="medicamento_id[]" class="form-select" required>
-                            <option value="">Seleccione...</option>
-                            <?php include "registromed/get_medicamentos.php"; ?>
-                        </select>
-                    </td>
+        <button type="button"
+                class="btn btn-success"
+                onclick="agregarDetalleSalida()">
+            Agregar detalle
+        </button>
 
-                    <td>
-                        <select name="lote_id[]" class="form-select">
-                            <option value="">Seleccione...</option>
-                            <?php include "registromed/get_lotes.php"; ?>
-                        </select>
-                    </td>
-
-                    <td>
-                        <input type="number" step="0.0001" name="cantidad[]" class="form-control cantidad" required>
-                    </td>
-
-                    <td>
-                        <select name="unidad_id[]" class="form-select">
-                            <option value="">Seleccione...</option>
-                            <?php include "registromed/get_unidades.php"; ?>
-                        </select>
-                    </td>
-
-                    <td>
-                        <select name="presentacion_id[]" class="form-select">
-                            <option value="">Seleccione...</option>
-                            <?php include "registromed/get_presentaciones.php"; ?>
-                        </select>
-                    </td>
-
-                    <td>
-                        <input type="number" step="0.0001" name="precio_unitario[]" class="form-control precio" required>
-                    </td>
-
-                    <td>
-                        <input type="text" name="subtotal[]" class="form-control subtotal" readonly>
-                    </td>
-
-                    <td>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">X</button>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <button type="button" class="btn btn-success" onclick="agregarFila()">Agregar detalle</button>
         <br><br>
-        <button type="submit" class="btn btn-primary">Registrar Salida</button>
+
+        <button type="button"
+                id="btnRegistrarSalida"
+                class="btn btn-primary"
+                onclick="registrarSalida()">
+            Registrar Salida
+        </button>
+
     </form>
 </div>    
 
@@ -783,14 +717,21 @@ requireRoles([
 
 <div style="flex:1;">
 <label class="form-label">Medicamento</label>
-<select id="filtroMedicamentoExistencia" class="form-control">
-<option value="">Todos</option>
+<select id="filtroMedicamentoExistencia" class="form-select">
+<option value="">Todosss</option>
+</select>
+</div>
+
+<div style="flex:1;">
+<label class="form-label">Presentación</label>
+<select id="filtroPresentacionExistencia" class="form-select">
+<option value="">Todas</option>
 </select>
 </div>
 
 <div style="flex:1;">
 <label class="form-label">Lote</label>
-<select id="filtroLoteExistencia" class="form-control">
+<select id="filtroLoteExistencia" class="form-select">
 <option value="">Todos</option>
 </select>
 </div>
@@ -836,6 +777,11 @@ requireRoles([
 <div class="card-body">
 
 <h5 class="card-title mb-3">📊 Inventario Actual</h5>
+    <div class="d-flex justify-content-end mb-3">
+        <button id="btnExportarExcel" class="btn btn-success" onclick="exportarReporte('excel')">📊 Excel</button>        
+        <button id="btnExportarPDF" class="btn btn-danger me-2" onclick="exportarReporte('pdf')">📄 PDF</button>
+        <button id="btnExportarCSV" class="btn btn-success" onclick="exportarReporte('csv')">📋 CSV</button>
+    </div>
 
 <div class="table-responsive">
 
@@ -935,6 +881,10 @@ requireRoles([
     </div>
 
     <!-- ======= BOTONES DE EXPORTACIÓN ======= -->
+
+    <div class="card">
+    <div class="card-body">
+
     <div class="d-flex justify-content-end mb-3">
         <button id="btnExportarExcel" class="btn btn-success" onclick="exportarReporte('excel')">📊 Excel</button>        
         <button id="btnExportarPDF" class="btn btn-danger me-2" onclick="exportarReporte('pdf')">📄 PDF</button>
@@ -964,7 +914,8 @@ requireRoles([
         </tbody>
     </table>
 </div>
-
+</div>
+</div>
 <!-- ================== REPORTE DE VALORIZACIÓN-EXISTENCIAS ================== -->
 <div id="VistaReporteValorizacion" class="seccion" style="display:none;">
 
@@ -1068,10 +1019,12 @@ requireRoles([
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="js2/maestros/medicamentos.js" defer></script>
-<script src="js2/movimientos/entradas.js" defer></script>
-<script src="js2/core.js" defer></script>
-<script src="js/reporte_existencias.js" defer></script>
+<script src="js2/core.js?v=<?= filemtime('js2/core.js') ?>"></script>
+<script src="js2/maestros/medicamentos.js?v=<?= filemtime('js2/maestros/medicamentos.js') ?>"></script>
+<script src="js2/movimientos/entradas8.js?v=<?= filemtime('js2/movimientos/entradas8.js') ?>"></script>
+<script src="js2/movimientos/salidas.js?v=<?= filemtime('js2/movimientos/salidas.js') ?>"></script>
+<script src="js2/reportes/existencias.js?v=<?= filemtime('js2/reportes/existencias.js') ?>"></script>
+<!--<script src="js/reporte_existencias.js"></script>-->
 <script>
     window.USER_ROLE = "<?= $_SESSION['role_name'] ?>";
 </script>
