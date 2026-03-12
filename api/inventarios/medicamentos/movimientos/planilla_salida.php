@@ -239,17 +239,19 @@ $html = "
 ";
 
 // ── Generar PDF con mPDF ──────────────────────────────────────────────────
-require_once 'vendor/autoload.php';  // mPDF vía Composer
+require_once '../../../../vendor/autoload.php';  // mPDF vía Composer
 
-$mpdf = new \Mpdf\Mpdf([
-    'mode'          => 'utf-8',
-    'format'        => 'Letter',
-    'margin_top'    => 12,
-    'margin_bottom' => 12,
-    'margin_left'   => 12,
-    'margin_right'  => 12,
-]);
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
-$mpdf->SetTitle("Planilla Salida #{$salida_id}");
-$mpdf->WriteHTML($html);
-$mpdf->Output("planilla_salida_{$salida_id}.pdf", 'I'); // 'I' = mostrar en navegador
+$options = new Options();
+$options->set('defaultFont', 'Arial');
+$options->set('isHtml5ParserEnabled', true);
+
+$dompdf = new Dompdf($options);
+$dompdf->loadHtml($html, 'UTF-8');
+$dompdf->setPaper('Letter', 'portrait');
+$dompdf->render();
+$dompdf->stream("planilla_salida_{$salida_id}.pdf", [ // 'I' = mostrar en navegador
+    'Attachment' => false  // false = mostrar en navegador, true = descargar
+]); 

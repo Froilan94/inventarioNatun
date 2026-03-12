@@ -90,8 +90,8 @@ switch ($action) {
         $usuario_sesion = null;
         $operadores     = [];
 
-        if (!empty($_SESSION['id_usuario'])) {
-            $uid = (int)$_SESSION['id_usuario'];
+        if (!empty($_SESSION['user_id'])) {
+            $uid = (int)$_SESSION['user_id'];
             $usuario_sesion = query_one($mysqli, "
                 SELECT id_usuario      AS id,
                        nombre_completo  AS nombre
@@ -243,7 +243,7 @@ switch ($action) {
                 $cant_total = $grupo['cantidad_total'];
 
                 // ¿Ya existe este lote para este medicamento?
-                $chk = $mysqli->prepare("
+               /* $chk = $mysqli->prepare("
                     SELECT id_lote_med, cantidad_actual
                     FROM   lotes_med
                     WHERE  medicamento_id = ? AND numero_lote = ?
@@ -283,8 +283,19 @@ switch ($action) {
                     if (!$ins->execute()) throw new Exception('Error al insertar lote: ' . $ins->error);
                     $lote_id = $mysqli->insert_id;
                     $ins->close();
-                }
+                }*/
 
+                $ins = $mysqli->prepare("
+                    INSERT INTO lotes_med
+                        (medicamento_id, numero_lote, cantidad_inicial,
+                        cantidad_actual, fecha_vencimiento)
+                    VALUES (?, ?, ?, ?, ?)
+                ");
+                $ins->bind_param('isdds', $med_id, $num_lote, $cant_total, $cant_total, $fecha_venc);
+                if (!$ins->execute()) throw new Exception('Error al insertar lote: ' . $ins->error);
+                $lote_id = $mysqli->insert_id;
+                $ins->close();    
+                
                 // Insertar una línea de detalle por cada línea original del grupo
                 foreach ($grupo['lineas'] as $linea) {
                     $stmt_det = $mysqli->prepare("
@@ -294,7 +305,7 @@ switch ($action) {
                         VALUES (?, ?, ?, ?, ?, ?, ?)
                     ");
                     $stmt_det->bind_param(
-                        'iiiidid',
+                        'iiidiid',
                         $ingreso_id,
                         $med_id,
                         $lote_id,

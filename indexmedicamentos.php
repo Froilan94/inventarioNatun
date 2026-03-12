@@ -98,7 +98,7 @@ requireRoles([
     <div class="menu-item" onclick="toggleMenu('reportes')">📊 Reportes</div>
     <div id="reportes" class="submenu">
         <a onclick="mostrarSeccion('VistaReporteExistencias')">Existencias</a>
-        <a onclick="mostrarSeccion('VistaReporteMovimientos')">Movimientos</a>
+        <a onclick="mostrarSeccion('vistaReporteMovimientos')">Movimientos</a>
         <a onclick="mostrarSeccion('VistaReporteValorizacion')">Valorización</a>
     </div>
 
@@ -110,11 +110,11 @@ requireRoles([
     ===============================-->
 <div id="vistaMedicamentos" class="seccion" style="display:none;">
     <h2 class="d-flex justify-content-center">Lista de Medicamentos</h2>
-
+   
     <button id="btnCargarMedicamentos" class="btn btn-primary mt-3">
         Cargar Medicamentos
     </button>
-
+    <div class="mt-4 col-md-15 mx-auto p-4 shadow-sm rounded bg-light"> 
     <table class="table table-bordered table-striped mt-4">
         <thead class="table-dark">
             <tr>
@@ -127,6 +127,7 @@ requireRoles([
         </thead>
         <tbody id="tablaMedicamentos"></tbody>
     </table>
+    </div>
 </div>
 
     <!-- ============================
@@ -820,101 +821,145 @@ requireRoles([
 </div>
 
 <!-- ================== REPORTE DE MOVIMIENTOS ================== -->
-<div id="VistaReporteMovimientos" class="seccion" style="display:none;">
-    
-    <h2 class="d-flex justify-content-center">Reporte de Movimientos</h2>
+<div id="vistaReporteMovimientos" class="seccion" style="display:none;">
 
-    <!-- ======= FILTROS ======= -->
-    <div class="card mb-4">
+    <h2 class="d-flex justify-content-center">📋 Reporte de Movimientos</h2>
+
+    <!-- ══ FILTROS ══ -->
+    <div class="card shadow-sm mb-3 mt-3 col-md-15 mx-auto">
         <div class="card-body">
-            <h5 class="card-title mb-3">🔍 Filtros de Búsqueda</h5>
+            <h5 class="mb-3">🔍 Filtros de Búsqueda</h5>
 
-            <div class="row" style="display: flex; gap: 15px;">
-                <div style="flex: 1;">
+            <!-- Fila 1: Tipo + Fechas (siempre visibles) -->
+            <div class="row g-2 mb-2">
+                <div class="col-md-3">
                     <label class="form-label">Tipo de Movimiento</label>
-                    <select id="filtro-tipo" class="form-control">
+                    <select id="filtroTipoMov" class="form-select form-select-sm"
+                            onchange="cambiarFiltrosTipoMov(this.value)">
                         <option value="">Todos</option>
-                        <option value="INGRESO">Ingresos</option>
-                        <option value="SALIDA">Salidas</option>
+                        <option value="Ingresos">Ingresos</option>
+                        <option value="Salidas">Salidas</option>
                     </select>
                 </div>
-            </div>                
-
-            <div class="row" style="display: flex; gap: 15px;">
-                <div style="flex: 1;">
-                    <label class="form-label">Fecha inicio</label>
-                    <input type="date" id="fechaInicio" class="form-control">
+                <div class="col-md-2">
+                    <label class="form-label">Fecha desde</label>
+                    <input type="date" id="filtroFechaIniMov" class="form-control form-control-sm">
                 </div>
-
-                <div style="flex: 1;">
-                    <label class="form-label">Fecha fin</label>
-                    <input type="date" id="fechaFin" class="form-control">
+                <div class="col-md-2">
+                    <label class="form-label">Fecha hasta</label>
+                    <input type="date" id="filtroFechaFinMov" class="form-control form-control-sm">
                 </div>
-
-                <div style="flex: 1;">
+                <div class="col-md-3">
                     <label class="form-label">Medicamento</label>
-                    <select id="filtroMedicamento" class="form-control">
-                        <option value="">Todos</option>
-                    </select>
-                </div>
-
-                <div style="flex: 1;">
-                    <label class="form-label">No. Lote</label>
-                    <select id="filtroLote" class="form-control">
-                        <option value="">Todos</option>
-                    </select>
-                </div>
-
-                <div style="flex: 1;">
-                    <label class="form-label">Proveedor / Donante</label>
-                    <select id="filtroProveedor" class="form-control">
+                    <select id="filtroMedMov" class="form-select form-select-sm">
                         <option value="">Todos</option>
                     </select>
                 </div>
             </div>
 
-            <div class="mt-3 text-end">
-                <button class="btn btn-secondary" onclick="limpiarFiltros()">🔄 Limpiar</button>
-                <button id="btnAplicarFiltros" class="btn btn-primary" onclick="aplicarFiltros()">🔍 Buscar</button>                
+            <!-- Fila 2: Filtros de INGRESO -->
+            <div class="row g-2 mb-2" id="filtrosIngreso">
+                <div class="col-md-3">
+                    <label class="form-label">No. Lote</label>
+                    <input type="text" id="filtroLoteMov" class="form-control form-control-sm"
+                           list="lotesDatalist" placeholder="Todos">
+                    <datalist id="lotesDatalist"></datalist>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Proveedor / Donante</label>
+                    <select id="filtroProvMov" class="form-select form-select-sm">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Fila 3: Filtros de SALIDA -->
+            <div class="row g-2 mb-2" id="filtrosSalida" style="display:none;">
+                <div class="col-md-3">
+                    <label class="form-label">Responsable (entregó)</label>
+                    <select id="filtroResponsableMov" class="form-select form-select-sm">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Componente / Comunidad</label>
+                    <select id="filtroComponenteMov" class="form-select form-select-sm">
+                        <option value="">Todos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-2">
+                <button class="btn btn-secondary btn-sm" onclick="limpiarFiltrosMov()">
+                    🔄 Limpiar
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="buscarMovimientos()">
+                    🔍 Buscar
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- ======= BOTONES DE EXPORTACIÓN ======= -->
+    <!-- ══ RESUMEN ══ -->
+    <div class="row g-2 mb-3 col-md-15 mx-auto" id="resumenMovimientos"></div>
 
-    <div class="card">
-    <div class="card-body">
+    <!-- ══ TABLA ══ -->
+    <div class="card shadow-sm col-md-15 mx-auto">
+        <div class="card-body">
 
-    <div class="d-flex justify-content-end mb-3">
-        <button id="btnExportarExcel" class="btn btn-success" onclick="exportarReporte('excel')">📊 Excel</button>        
-        <button id="btnExportarPDF" class="btn btn-danger me-2" onclick="exportarReporte('pdf')">📄 PDF</button>
-        <button id="btnExportarCSV" class="btn btn-success" onclick="exportarReporte('csv')">📋 CSV</button>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <small class="text-muted">
+                    Marca las casillas para exportar registros específicos.
+                    Sin selección → exporta todos.
+                </small>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-success btn-sm" onclick="exportarMovExcel()">
+                        📊 Excel
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="exportarMovPDF()">
+                        📄 PDF
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="exportarMovCSV()">
+                        📋 CSV
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-sm">
+                    <thead class="table-dark">
+                        <tr>
+                            <th style="width:35px;">
+                                <input type="checkbox" class="form-check-input"
+                                       id="chkTodosMov" title="Seleccionar todos">
+                            </th>
+                            <th>Tipo</th>
+                            <th>Fecha</th>
+                            <th>Medicamento</th>
+                            <th>Lote</th>
+                            <th>Vencimiento</th>
+                            <th>Cantidad</th>
+                            <th>Unidad</th>
+                            <th>Precio Unit.</th>
+                            <th>Monto</th>
+                            <th>Proveedor / Componente</th>
+                            <th>Responsable</th>
+                            <th>Beneficiaria</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyMovimientos">
+                        <tr>
+                            <td colspan="13" class="text-center text-muted py-4">
+                                Aplica los filtros y presiona Buscar.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
 
-
-    <!-- ======= TABLA DE REPORTE ======= -->
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>No.</th>
-                <th>Medicamento</th>
-                <th>Nombre genérico</th>
-                <th>Lote</th>
-                <th>Fecha ingreso</th>
-                <th>Fecha vencimiento</th>
-                <th>Cantidad existente</th>
-                <th>Valor unitario</th>
-                <th>Monto existente</th>
-                <th>Proveedor / Donante</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody id="tablaReporteExistencias">
-            <!-- Contenido dinámico -->
-        </tbody>
-    </table>
-</div>
-</div>
 </div>
 <!-- ================== REPORTE DE VALORIZACIÓN-EXISTENCIAS ================== -->
 <div id="VistaReporteValorizacion" class="seccion" style="display:none;">
@@ -1019,12 +1064,12 @@ requireRoles([
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="js2/core.js?v=<?= filemtime('js2/core.js') ?>"></script>
-<script src="js2/maestros/medicamentos.js?v=<?= filemtime('js2/maestros/medicamentos.js') ?>"></script>
-<script src="js2/movimientos/entradas8.js?v=<?= filemtime('js2/movimientos/entradas8.js') ?>"></script>
-<script src="js2/movimientos/salidas.js?v=<?= filemtime('js2/movimientos/salidas.js') ?>"></script>
-<script src="js2/reportes/existencias.js?v=<?= filemtime('js2/reportes/existencias.js') ?>"></script>
-<!--<script src="js/reporte_existencias.js"></script>-->
+<script src="js2/med_invent/core.js?v=<?= filemtime('js2/med_invent/core.js') ?>"></script>
+<script src="js2/med_invent/maestros/medicamentos.js?v=<?= filemtime('js2/med_invent/maestros/medicamentos.js') ?>"></script>
+<script src="js2/med_invent/movimientos/entradas.js?v=<?= filemtime('js2/med_invent/movimientos/entradas.js') ?>"></script>
+<script src="js2/med_invent/movimientos/salidas.js?v=<?= filemtime('js2/med_invent/movimientos/salidas.js') ?>"></script>
+<script src="js2/med_invent/reportes/existencias.js?v=<?= filemtime('js2/med_invent/reportes/existencias.js') ?>"></script>
+<script src="js2/med_invent/reportes/movimientos.js?v=<?= filemtime('js2/med_invent/reportes/movimientos.js') ?>"></script>
 <script>
     window.USER_ROLE = "<?= $_SESSION['role_name'] ?>";
 </script>
