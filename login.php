@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <!-- Background Slider -->
     <div class="login-background">
-        <div class="bg-slide active" style="background-image: url('assets/img/login/bg-1.jpg');"></div>
+        <div class="bg-slide active" style="background-image: url('img/login/bg-1.jpg');"></div>
         <div class="bg-slide" style="background-image: url('img/login/bg-2.jpg');"></div>
         <div class="bg-slide" style="background-image: url('img/login/bg-3.jpg');"></div>
         <div class="bg-slide" style="background-image: url('img/login/bg-4.jpg');"></div>

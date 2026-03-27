@@ -393,11 +393,11 @@ async function registrarSalida() {
 
         mostrarToast('exito', `${json.msg} — ID: ${json.salida_id}`);
 
-        // Abrir planilla en nueva pestaña
+        /* Abrir planilla en nueva pestaña
         window.open(
             `api/inventarios/medicamentos/movimientos/planilla_salida.php?salida_id=${json.salida_id}`,
             '_blank'
-        );
+        );*/
 
         _resetFormSalida();
 

@@ -114,6 +114,11 @@ INSERT INTO comunidades (nombre_comunidad, direccion) VALUES
 ('Peña Blanca','aldea Peña Blanca, Sololá, Sololá'),
 ('Santa María','Caserío Santa María, aldea El Tablon, Sololá, Sololá');;
 
+INSERT INTO firmas_planilla_med (cargo, nombre, orden) VALUES
+    ('Coordinadora Creciendo Sano',   'Olga Tuiz',     1),
+    ('Asistente Administrativa',       'Teresa Panjoj', 2),
+    ('Directora de Salud y Nutrición', 'Ilka Saloj',    3);
+
 -- usuarios
 INSERT INTO usuarios (nombre_completo, nombre_usuario, correo, telefono, password_hash, rol_id, dpi_usuario, genero_usuario,  departamento_id) VALUES
 ('Froilan Sánchez Calabay','froilan','micorreo@gmail.com','12548798','$2y$10$yuPys94z1RHzGEuL1l0Gm.keeYEce/tj3Sya5wXM27umE5gE4aKii',7,'147258369789','Masculino',4);

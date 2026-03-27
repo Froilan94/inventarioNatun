@@ -39,6 +39,14 @@ requireRoles([
         </div>
 
         <!-- Submenú unidades_de_medida anidado -->
+<?php if (hasRole(['admin_super', 'operadormed'])): ?>           
+        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('firmas')"> 💊Firmas</div>
+        <div id="firmas" class="sub-submenu">
+            <a onclick="mostrarSeccion('vistaVerFirmas')">Ver Unidades de Medida</a>                      
+        </div>
+<?php endif; ?> 
+
+        <!-- Submenú unidades_de_medida anidado -->
         <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('unidades_de_medida')"> &#x1F4D0 Unidades de Medida </div>
         <div id="unidades_de_medida" class="sub-submenu">
             <a onclick="mostrarSeccion('vistaVerUnidades')">Ver Unidades de Medida</a>
@@ -50,10 +58,7 @@ requireRoles([
         <!-- Submenú Lote de Medicamentos anidado -->
         <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('lote_de_medicamentos')"> &#x1F4DD Lote de Medicamentos </div>
         <div id="lote_de_medicamentos" class="sub-submenu">
-            <a onclick="mostrarSeccion('vistaVerLotedeMedicamentos')">Ver Lote de Medicamentos</a>
-<?php if (hasRole(['admin_super', 'operadormed'])): ?>              
-            <a onclick="mostrarSeccion('vistaRegistrarLotedeMedicamentos')">Ingresar Numero de Lotes</a>
-<?php endif; ?>  
+            <a onclick="mostrarSeccion('vistaVerLotes')">Ver Lote de Medicamentos</a>
         </div>
 
         <!-- Submenú Presentacion de medicinas anidado -->
@@ -77,9 +82,9 @@ requireRoles([
         <!-- Submenú Benericiarios anidado -->
         <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('beneficiarios')"> 🙍‍♀ Participantes </div>
         <div id="beneficiarios" class="sub-submenu">
-            <a onclick="mostrarSeccion('vistaVerBeneficiarios')">Ver Beneficiarios</a>
+            <a onclick="mostrarSeccion('vistaVerParticipantes')">Ver Beneficiarios</a>
 <?php if (hasRole(['admin_super', 'operadormed'])): ?> 
-            <a onclick="mostrarSeccion('vistaRegistrarBeneficiarios')">Ingresar Beneficiarios</a>
+            <a onclick="mostrarSeccion('vistaRegistrarParticipantes')">Ingresar Beneficiarios</a>
 <?php endif; ?>
         </div>
     </div>
@@ -199,297 +204,371 @@ requireRoles([
   </div>
 </div>
 
-    <!-- ============================
-         REGISTRO DE CATEGORIAS
-    ===============================-->
-    <div id="vistaRegistrarCategorias" class="seccion" style="display:none;">
-        <h2>Registro de Categorias</h2>
+<!-- ══════════════════════════════════════
+     UNIDADES DE MEDIDA
+══════════════════════════════════════ -->
+<div id="vistaVerUnidades" class="seccion" style="display:none;">
+    <h2>Unidades de Medida</h2>
+    <button id="btnCargarUnidades" class="btn btn-primary mt-3">Cargar Unidades</button>
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="table-dark">
+            <tr><th>No.</th><th>Nombre</th><th>Acciones</th></tr>
+        </thead>
+        <tbody id="tablaUnidades"></tbody>
+    </table>
+</div>
 
-        <form action="insert_categoria.php" method="POST" class="mt-4 col-md-8">
+<div id="vistaRegistrarUnidades" class="seccion" style="display:none;">
+    <h2 class="d-flex justify-content-center">Registrar Unidad de Medida</h2>
+    <form id="formUnidad" class="mt-4 col-md-5 mx-auto p-4 shadow-sm rounded bg-light">
+        <div class="mb-3">
+            <label class="form-label">Nombre de la Unidad</label>
+            <input type="text" name="nombre_unidad" class="form-control" maxlength="50" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrar</button>
+        <div id="mensajeUnidad" style="margin-top:10px;"></div>
+    </form>
+</div>
 
-            <div class="mb-3">
-                <label class="form-label">Nombre Categoría</label>
-                <input type="text" name="nombre_categoria" class="form-control" required>
+<!-- Modal Editar Unidad -->
+<div class="modal fade" id="modalEditarUnidad" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Editar Unidad</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            <form id="formEditarUnidad">
+                <input type="hidden" name="id_unidad_med" id="editU_id">
+                <div class="mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" name="nombre_unidad" id="editU_nombre" class="form-control" required>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" form="formEditarUnidad" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+    </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PRESENTACIONES
+══════════════════════════════════════ -->
+<div id="vistaVerPresentaciones" class="seccion" style="display:none;">
+    <h2>Presentaciones</h2>
+    <button id="btnCargarPresentaciones" class="btn btn-primary mt-3">Cargar Presentaciones</button>
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="table-dark">
+            <tr><th>No.</th><th>Nombre</th><th>Acciones</th></tr>
+        </thead>
+        <tbody id="tablaPresentaciones"></tbody>
+    </table>
+</div>
+
+<div id="vistaRegistrarPresentaciones" class="seccion" style="display:none;">
+    <h2 class="d-flex justify-content-center">Registrar Presentación</h2>
+    <form id="formPresentacion" class="mt-4 col-md-5 mx-auto p-4 shadow-sm rounded bg-light">
+        <div class="mb-3">
+            <label class="form-label">Nombre de la Presentación</label>
+            <input type="text" name="nombre_presentacion" class="form-control" maxlength="25" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrar</button>
+        <div id="mensajePresentacion" style="margin-top:10px;"></div>
+    </form>
+</div>
+
+<!-- Modal Editar Presentación -->
+<div class="modal fade" id="modalEditarPresentacion" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Editar Presentación</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            <form id="formEditarPresentacion">
+                <input type="hidden" name="id_presentacion_med" id="editP_id">
+                <div class="mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" name="nombre_presentacion" id="editP_nombre" class="form-control" required>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" form="formEditarPresentacion" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+    </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PROVEEDORES / DONANTES
+══════════════════════════════════════ -->
+<div id="vistaVerProveedores" class="seccion" style="display:none;">
+    <h2>Proveedores / Donantes</h2>
+    <button id="btnCargarProveedores" class="btn btn-primary mt-3">Cargar Proveedores</button>
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr><th>No.</th><th>Nombre</th><th>NIT</th><th>Tipo</th><th>Teléfono</th><th>Correo</th><th>Estado</th><th>Acciones</th></tr>
+            </thead>
+            <tbody id="tablaProveedores"></tbody>
+        </table>
+    </div>
+</div>
+
+<div id="vistaRegistrarProveedores" class="seccion" style="display:none;">
+    <h2 class="d-flex justify-content-center">Registrar Proveedor / Donante</h2>
+    <form id="formProveedor" class="mt-4 col-md-7 mx-auto p-4 shadow-sm rounded bg-light">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Nombre</label>
+                <input type="text" name="nombre_proveedor" class="form-control" maxlength="50" required>
             </div>
-
-            <button type="submit" class="btn btn-primary">Registrar Usuario</button>
-        </form>
-    </div>
-
-    <!-- ============================
-         ELIMINAR CATEGORIAS
-    ===============================-->
-    <div id="vistaActualizarEliminarCategorias" class="seccion" style="display:none;">
-        <h2>Actualizar/Eliminar Unidades de Medida</h2>
-        <p>Aquí irá el formulario de eliminación.</p>
-    </div>
-
-    <!-- ============================
-         VER UNIDAD DE MEDIDA
-    ===============================-->
-    <div id="vistaVerUnidades" class="seccion" style="display:none;">
-        <h2>Lista de Unidades de Medida</h2>
-        <p>Aquí irá la tabla con las Unidades de medida.</p>
-    </div>
-
-    <!-- ============================
-         REGISTRO UNIDAD DE MEDIDA
-    ===============================-->
-    <div id="vistaRegistrarUnidades" class="seccion" style="display:none;">
-        <h2>Registro de Unidades de Medida</h2>
-
-        <form action="insert_unidad.php" method="POST" class="mt-4 col-md-8">
-
-            <div class="mb-3">
-                <label class="form-label">Nombre Unidad de Medida</label>
-                <input type="text" name="nombre_unidad" class="form-control" required>
+            <div class="col-md-6">
+                <label class="form-label">NIT</label>
+                <input type="text" name="nit_proveedor" class="form-control" maxlength="20">
             </div>
-
-            <button type="submit" class="btn btn-primary">Registrar Unidad de Medida</button>
-        </form>
-    </div>
-
-    <!-- ============================
-         ELIMINAR UNIDAD DE MEDIDA
-    ===============================-->
-    <div id="vistaActualizarEliminarUnidades" class="seccion" style="display:none;">
-        <h2>Actualizar/Eliminar Unidades de Medida</h2>
-        <p>Aquí irá el formulario de eliminación.</p>
-    </div>
-
-    <!-- ============================
-         VER LOTES DE MEDICAMENTOS
-    ===============================-->
-    <div id="vistaVerLotedeMedicamentos" class="seccion" style="display:none;">
-        <h2>Lista de Lote de Medicamentos</h2>
-        <p>Aquí irá la tabla con lotes de medicamentos.</p>
-    </div>
-
-    <!-- ============================
-         REGISTRO LOTE DE MEDICAMENTOS
-    ===============================-->
-    <div id="vistaRegistrarLotedeMedicamentos" class="seccion" style="display:none;">
-        <h2>Registro de Lotes de Medicamentos</h2>
-
-        <form action="insert_lote.php" method="POST" class="mt-4 col-md-8">
-
-            <div class="mb-3">
-                <label class="form-label">Medicamento</label>
-                <select name="medicamento_id" class="form-select">
-                    <option value="">Seleccione...</option>
-                    <option value="1">Aspirina</option>
-                    <option value="2">Acetaminofen</option>
-                    <option value="3">Loratadina</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Numero_lote</label>
-                <input type="text" name="numero_lote" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Fecha de vencimiento</label>
-                <input type="date" name="fecha_vencimiento" class="form-control" maxlength="10" required>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Cantidad Inicial</label>
-                <input type="text" name="cantidad_inicial" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Cantidad Actual</label>
-                <input type="text" name="cantidad_actual" class="form-control">
-            </div>
-
-            <button type="submit" class="btn btn-primary">Registrar Lotes</button>
-        </form>
-    </div>
-
-    <!-- ============================
-         ELIMINAR LOTES
-    ===============================-->
-    <div id="vistaActualizarEliminarLotes" class="seccion" style="display:none;">
-        <h2>Actualizar/Eliminar Lotes de Medicamentos</h2>
-        <p>Aquí irá el formulario de eliminación.</p>
-    </div>
-
-    <!-- ============================
-         VER PRESENTACION DE MEDICAMENTOS
-    ===============================-->
-    <div id="vistaVerPresentaciones" class="seccion" style="display:none;">
-        <h2>Lista de Presentacion de medicamentos</h2>
-        <p>Aquí irá la tabla con las Presentaciones.</p>
-    </div>
-
-    <!-- ============================
-         REGISTRO PRESENTACION DE MEDICAMENTOS
-    ===============================-->
-    <div id="vistaRegistrarPresentaciones" class="seccion" style="display:none;">
-        <h2>Registro de Presentacion de medicamentos</h2>
-
-        <form action="insert_presentacion.php" method="POST" class="mt-4 col-md-8">
-
-            <div class="mb-3">
-                <label class="form-label">Nombre Presentacion de medicamentos</label>
-                <input type="text" name="nombre_presentacion" class="form-control" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Registrar Presentaciones</button>
-        </form>
-    </div>
-
-    <!-- ============================
-         ELIMINAR PRESENTACION DE MEDICAMENTOS
-    ===============================-->
-    <div id="vistaActualizarEliminarPresentaciones" class="seccion" style="display:none;">
-        <h2>Actualizar/Eliminar Presentaciones</h2>
-        <p>Aquí irá el formulario de eliminación.</p>
-    </div>
-
-    <!-- ============================
-         VER PROVEEDORES
-    ===============================-->
-    <div id="vistaVerProveedores" class="seccion" style="display:none;">
-        <h2>Lista de Proveedores</h2>
-        <p>Aquí irá la tabla con los Proveedores.</p>
-    </div>
-
-    <!-- ============================
-         REGISTRO DE PROVEEDORES
-    ===============================-->
-    <div id="vistaRegistrarProveedores" class="seccion" style="display:none;">
-        <h2>Registro de Proveedores</h2>
-
-        <form action="insert_proveedor.php" method="POST" class="mt-4 col-md-8">
-
-            <div class="mb-3">
-                <label class="form-label">Nit Proveedor</label>
-                <input type="text" name="nit_proveedor" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Nombre del Proveedor</label>
-                <input type="text" name="nombre_proveedor" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
+            <div class="col-md-6">
                 <label class="form-label">Género</label>
                 <select name="genero_proveedor" class="form-select" required>
                     <option value="">Seleccione...</option>
-                    <option value="Masculino">Masculino</option>
-                    <option value="Femimenino">Femenino</option>
-                    <option value="Otros">Otros</option>
+                    <option>Masculino</option><option>Femenino</option><option>Otros</option>
                 </select>
             </div>
-
-            <div class="mb-3">
-                <label class="form-label">Tipo de Proveedor</label>
+            <div class="col-md-6">
+                <label class="form-label">Tipo</label>
                 <select name="tipo_proveedor" class="form-select" required>
                     <option value="">Seleccione...</option>
-                    <option value="Fabricante">Fabricante</option>
-                    <option value="Proveedor">Proveedor</option>
-                    <option value="Donante">Donante</option>
+                    <option>Fabricante</option><option>Proveedor</option><option>Donante</option>
                 </select>
             </div>
-
-            <div class="mb-3">
+            <div class="col-md-6">
                 <label class="form-label">Teléfono</label>
-                <input type="text" name="telefono" class="form-control" maxlength="8">
+                <input type="text" name="telefono" class="form-control" maxlength="20">
             </div>
-
-            <div class="mb-3">
-                <label class="form-label">Direccion Domiciliar</label>
-                <input type="text" name="direccion" class="form-control" >
-            </div>
-
-            <div class="mb-3">
+            <div class="col-md-6">
                 <label class="form-label">Correo</label>
-                <input type="email" name="correo" class="form-control">
+                <input type="email" name="correo" class="form-control" maxlength="25">
             </div>
+            <div class="col-12">
+                <label class="form-label">Dirección</label>
+                <input type="text" name="direccion" class="form-control" maxlength="150">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Registrar</button>
+        <div id="mensajeProveedor" style="margin-top:10px;"></div>
+    </form>
+</div>
 
-            <button type="submit" class="btn btn-primary">Registrar Proveedor</button>
-        </form>
+<!-- Modal Editar Proveedor -->
+<div class="modal fade" id="modalEditarProveedor" tabindex="-1">
+    <div class="modal-dialog modal-lg"><div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Editar Proveedor</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            <form id="formEditarProveedor">
+                <input type="hidden" name="id_proveedor_med" id="editProv_id">
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="form-label">Nombre</label>
+                        <input type="text" name="nombre_proveedor" id="editProv_nombre" class="form-control" required></div>
+                    <div class="col-md-6"><label class="form-label">NIT</label>
+                        <input type="text" name="nit_proveedor" id="editProv_nit" class="form-control"></div>
+                    <div class="col-md-6"><label class="form-label">Género</label>
+                        <select name="genero_proveedor" id="editProv_genero" class="form-select">
+                            <option>Masculino</option><option>Femenino</option><option>Otros</option>
+                        </select></div>
+                    <div class="col-md-6"><label class="form-label">Tipo</label>
+                        <select name="tipo_proveedor" id="editProv_tipo" class="form-select">
+                            <option>Fabricante</option><option>Proveedor</option><option>Donante</option>
+                        </select></div>
+                    <div class="col-md-6"><label class="form-label">Teléfono</label>
+                        <input type="text" name="telefono" id="editProv_tel" class="form-control"></div>
+                    <div class="col-md-6"><label class="form-label">Correo</label>
+                        <input type="email" name="correo" id="editProv_correo" class="form-control"></div>
+                    <div class="col-md-8"><label class="form-label">Dirección</label>
+                        <input type="text" name="direccion" id="editProv_dir" class="form-control"></div>
+                    <div class="col-md-4"><label class="form-label">Estado</label>
+                        <select name="activo" id="editProv_activo" class="form-select">
+                            <option value="1">Activo</option><option value="0">Inactivo</option>
+                        </select></div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" form="formEditarProveedor" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+    </div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PARTICIPANTES
+══════════════════════════════════════ -->
+<div id="vistaVerParticipantes" class="seccion" style="display:none;">
+    <h2>Participantes</h2>
+    <button id="btnCargarParticipantes" class="btn btn-primary mt-3">Cargar Participantes</button>
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr><th>No.</th><th>Nombre</th><th>DPI</th><th>Teléfono</th><th>Género</th><th>Departamento</th><th>Estado</th><th>Acciones</th></tr>
+            </thead>
+            <tbody id="tablaParticipantes"></tbody>
+        </table>
     </div>
+</div>
 
-    <!-- ============================
-         ELIMINAR PROVEEDORES
-    ===============================-->
-    <div id="vistaActualizarEliminarProveedores" class="seccion" style="display:none;">
-        <h2>Eliminar Proveedores</h2>
-        <p>Aquí irá el formulario de eliminación.</p>
-    </div>
-
-
-    <!-- ============================
-         VER BENEFICIARIO
-    ===============================-->
-    <div id="vistaVerBeneficiarios" class="seccion" style="display:none;">
-        <h2>Lista de Beneficiarios</h2>
-        <p>Aquí irá la tabla con los Beneficiarios.</p>
-    </div>
-
-    <!-- ============================
-         REGISTRO DE BENEFICIARIO
-    ===============================-->
-    <div id="vistaRegistrarBeneficiarios" class="seccion" style="display:none;">
-        <h2>Registro de Beneficiarios</h2>
-
-        <form action="insert_beneficiario.php" method="POST" class="mt-4 col-md-8">
-
-            <div class="mb-3">
-                <label class="form-label">Nombre del Beneficiario</label>
-                <input type="text" name="nombre_beneficiario" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">DPI del Beneficiario</label>
-                <input type="text" name="dpi_beneficiario" class="form-control" maxlength="12">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Direccion Domiciliar</label>
-                <input type="text" name="direccion_beneficiario" class="form-control" >
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Teléfono del Beneficiario</label>
-                <input type="text" name="telefono" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Género</label>
+<div id="vistaRegistrarParticipantes" class="seccion" style="display:none;">
+    <h2 class="d-flex justify-content-center">Registrar Participante</h2>
+    <form id="formParticipante" class="mt-4 col-md-7 mx-auto p-4 shadow-sm rounded bg-light">
+        <div class="row g-3">
+            <div class="col-md-8"><label class="form-label">Nombre Completo</label>
+                <input type="text" name="nombre_beneficiario" class="form-control" maxlength="200" required></div>
+            <div class="col-md-4"><label class="form-label">DPI</label>
+                <input type="text" name="dpi_beneficiario" class="form-control" maxlength="12" required></div>
+            <div class="col-md-6"><label class="form-label">Teléfono</label>
+                <input type="text" name="telefono" class="form-control" maxlength="50"></div>
+            <div class="col-md-6"><label class="form-label">Género</label>
                 <select name="genero_beneficiario" class="form-select" required>
                     <option value="">Seleccione...</option>
-                    <option value="Masculino">Masculino</option>
-                    <option value="Femenino">Femenino</option>
-                    <option value="Otros">Otros</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Departamento</label>
-                <select name="departamento_id" class="form-select">
+                    <option>Masculino</option><option>Femenino</option><option>Otros</option>
+                </select></div>
+            <div class="col-md-6"><label class="form-label">Departamento</label>
+                <select name="departamento_id" id="departamento_id" class="form-select">
                     <option value="">Seleccione...</option>
-                    <option value="1">Salud Y Nutrición</option>
-                    <option value="2">Desarrollo Economico</option>
-                    <option value="3">Operaciones</option>
-                    <option value="4">Contabilidad</option>
-                </select>
-            </div>
+                </select></div>
+            <div class="col-12"><label class="form-label">Dirección</label>
+                <textarea name="direccion_beneficiario" class="form-control" rows="2"></textarea></div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Registrar</button>
+        <div id="mensajeParticipante" style="margin-top:10px;"></div>
+    </form>
+</div>
 
-            <button type="submit" class="btn btn-primary">Registrar Beneficiario</button>
-        </form>
-    </div>
+<!-- Modal Editar Participante -->
+<div class="modal fade" id="modalEditarParticipante" tabindex="-1">
+    <div class="modal-dialog modal-lg"><div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Editar Participante</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            <form id="formEditarParticipante">
+                <input type="hidden" name="id_beneficiario_med" id="editPart_id">
+                <div class="row g-3">
+                    <div class="col-md-8"><label class="form-label">Nombre</label>
+                        <input type="text" name="nombre_beneficiario" id="editPart_nombre" class="form-control" required></div>
+                    <div class="col-md-4"><label class="form-label">DPI</label>
+                        <input type="text" name="dpi_beneficiario" id="editPart_dpi" class="form-control" required></div>
+                    <div class="col-md-6"><label class="form-label">Teléfono</label>
+                        <input type="text" name="telefono" id="editPart_tel" class="form-control"></div>
+                    <div class="col-md-6"><label class="form-label">Género</label>
+                        <select name="genero_beneficiario" id="editPart_genero" class="form-select">
+                            <option>Masculino</option><option>Femenino</option><option>Otros</option>
+                        </select></div>
+                    <div class="col-md-6"><label class="form-label">Departamento</label>
+                        <select name="departamento_id" id="editPart_depto" class="form-select">
+                            <option value="">Seleccione...</option>
+                        </select></div>
+                    <div class="col-md-6"><label class="form-label">Estado</label>
+                        <select name="activo" id="editPart_activo" class="form-select">
+                            <option value="1">Activo</option><option value="0">Inactivo</option>
+                        </select></div>
+                    <div class="col-12"><label class="form-label">Dirección</label>
+                        <textarea name="direccion_beneficiario" id="editPart_dir" class="form-control" rows="2"></textarea></div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" form="formEditarParticipante" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+    </div></div>
+</div>
 
-    <!-- ============================
-         ELIMINAR BENEFICIARIOS
-    ===============================-->
-    <div id="vistaActualizarEliminarBeneficiarios" class="seccion" style="display:none;">
-        <h2>Eliminar Beneficiarios</h2>
-        <p>Aquí irá el formulario de eliminación.</p>
+<!-- ══════════════════════════════════════
+     LOTES — solo lectura
+══════════════════════════════════════ -->
+<div id="vistaVerLotes" class="seccion" style="display:none;">
+    <h2>Lotes de Medicamentos</h2>
+    <div class="d-flex gap-2 mt-3 align-items-end">
+        <div>
+            <label class="form-label">Filtrar por medicamento</label>
+            <select id="filtroMedLotes" class="form-select form-select-sm" style="min-width:200px;">
+                <option value="">Todos</option>
+            </select>
+        </div>
+        <button id="btnCargarLotes" class="btn btn-primary btn-sm" onclick="cargarLotes()">Buscar</button>
     </div>
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr><th>No.</th><th>Medicamento</th><th>No. Lote</th><th>Vencimiento</th><th>Cant. Inicial</th><th>Cant. Actual</th><th>Registrado</th></tr>
+            </thead>
+            <tbody id="tablaLotes"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     FIRMAS DE PLANILLA — solo admin_super
+══════════════════════════════════════ -->
+<div id="vistaVerFirmas" class="seccion" style="display:none;">
+    <h2>Firmas de Planilla</h2>
+    <button id="btnCargarFirmas" class="btn btn-primary mt-3">Cargar Firmas</button>
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="table-dark">
+            <tr><th>Orden</th><th>Nombre</th><th>Cargo</th><th>Estado</th><th>Acciones</th></tr>
+        </thead>
+        <tbody id="tablaFirmas"></tbody>
+    </table>
+</div>
+
+<div id="vistaRegistrarFirmas" class="seccion" style="display:none;">
+    <h2 class="d-flex justify-content-center">Registrar Firma de Planilla</h2>
+    <form id="formFirma" class="mt-4 col-md-6 mx-auto p-4 shadow-sm rounded bg-light">
+        <div class="mb-3"><label class="form-label">Nombre</label>
+            <input type="text" name="nombre" class="form-control" maxlength="100" required></div>
+        <div class="mb-3"><label class="form-label">Cargo</label>
+            <input type="text" name="cargo" class="form-control" maxlength="100" required></div>
+        <div class="mb-3"><label class="form-label">Orden</label>
+            <input type="number" name="orden" class="form-control" min="1" value="1" required></div>
+        <button type="submit" class="btn btn-primary">Registrar</button>
+        <div id="mensajeFirma" style="margin-top:10px;"></div>
+    </form>
+</div>
+
+<!-- Modal Editar Firma -->
+<div class="modal fade" id="modalEditarFirma" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Editar Firma</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            <form id="formEditarFirma">
+                <input type="hidden" name="id_firma" id="editF_id">
+                <div class="mb-3"><label class="form-label">Nombre</label>
+                    <input type="text" name="nombre" id="editF_nombre" class="form-control" required></div>
+                <div class="mb-3"><label class="form-label">Cargo</label>
+                    <input type="text" name="cargo" id="editF_cargo" class="form-control" required></div>
+                <div class="mb-3"><label class="form-label">Orden</label>
+                    <input type="number" name="orden" id="editF_orden" class="form-control" min="1"></div>
+                <div class="mb-3"><label class="form-label">Estado</label>
+                    <select name="activo" id="editF_activo" class="form-select">
+                        <option value="1">Activo</option><option value="0">Inactivo</option>
+                    </select></div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" form="formEditarFirma" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+    </div></div>
+</div>
 
     <!-- ============================
          Registro Documento
@@ -922,6 +1001,9 @@ requireRoles([
                     <button class="btn btn-secondary btn-sm" onclick="exportarMovCSV()">
                         📋 CSV
                     </button>
+                    <button class="btn btn-warning btn-sm" onclick="generarPlanillaNatun()">
+                            📋 Planilla Natún
+                    </button>
                 </div>
             </div>
 
@@ -1064,12 +1146,13 @@ requireRoles([
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="js2/med_invent/core.js?v=<?= filemtime('js2/med_invent/core.js') ?>"></script>
-<script src="js2/med_invent/maestros/medicamentos.js?v=<?= filemtime('js2/med_invent/maestros/medicamentos.js') ?>"></script>
-<script src="js2/med_invent/movimientos/entradas.js?v=<?= filemtime('js2/med_invent/movimientos/entradas.js') ?>"></script>
-<script src="js2/med_invent/movimientos/salidas.js?v=<?= filemtime('js2/med_invent/movimientos/salidas.js') ?>"></script>
-<script src="js2/med_invent/reportes/existencias.js?v=<?= filemtime('js2/med_invent/reportes/existencias.js') ?>"></script>
-<script src="js2/med_invent/reportes/movimientos.js?v=<?= filemtime('js2/med_invent/reportes/movimientos.js') ?>"></script>
+<script src="js/med_invent/core.js?v=<?= filemtime('js/med_invent/core.js') ?>"></script>
+<script src="js/med_invent/maestros/medicamentos.js?v=<?= filemtime('js/med_invent/maestros/medicamentos.js') ?>"></script>
+<script src="js/med_invent/maestros/maestros_med.js?v=<?= filemtime('js/med_invent/maestros/maestros_med.js') ?>"></script>
+<script src="js/med_invent/movimientos/entradas.js?v=<?= filemtime('js/med_invent/movimientos/entradas.js') ?>"></script>
+<script src="js/med_invent/movimientos/salidas.js?v=<?= filemtime('js/med_invent/movimientos/salidas.js') ?>"></script>
+<script src="js/med_invent/reportes/existencias.js?v=<?= filemtime('js/med_invent/reportes/existencias.js') ?>"></script>
+<script src="js/med_invent/reportes/movimientos.js?v=<?= filemtime('js/med_invent/reportes/movimientos.js') ?>"></script>
 <script>
     window.USER_ROLE = "<?= $_SESSION['role_name'] ?>";
 </script>
@@ -1113,6 +1196,10 @@ requireRoles([
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
         </div>
     </div>
+</div>
+<div id="toastContainer"
+     class="toast-container position-fixed top-0 end-0 p-3"
+     style="z-index: 9999;">
 </div>
 </body>
 </html>

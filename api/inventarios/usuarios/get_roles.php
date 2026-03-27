@@ -1,5 +1,5 @@
 <?php
-require_once "config/db.php";
+require_once "../../../config/db.php";
 
 $sql = "SELECT id_rol, nombre_rol FROM roles ORDER BY nombre_rol ASC";
 $result = $mysqli->query($sql);

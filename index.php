@@ -11,13 +11,11 @@ requireRoles([
     <meta charset="UTF-8">
     <title>Panel de Inventarios</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
     <style>
         body {
             background: #f4f6f9;
@@ -104,7 +102,7 @@ requireRoles([
 
                 <!-- Gestionar Usuarios -->
         <div class="col-md-4">
-            <a href="backup/indexmedicamentosbackup.php" class="text-decoration-none">
+            <a href="views/operador_super/indexusuarios.php" class="text-decoration-none">
                 <div class="card card-dashboard text-center p-4">
                     <div class="icon-box text-success mb-3">
                         <i class="bi bi-people-fill"></i>

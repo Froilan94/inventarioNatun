@@ -1,6 +1,6 @@
 <?php
 // me llamo obtener usuario
-include "config/db.php";
+include "../../../config/db.php";
 
 $id = intval($_GET["id"]);
 

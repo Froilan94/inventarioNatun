@@ -1,10 +1,10 @@
 <?php
 require_once '../../../auth/roles.php';
-
 requireRoles(['admin_super', 'operadormed']);
 
 include "../../../config/db.php";
 
+header('Content-Type: application/json');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -36,36 +36,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("ss", $nombre_comercial, $nombre_generico);
+        $stmt->execute();
 
-        if ($stmt->execute()) {
-            echo json_encode([
-                "status" => "success",
-                "mensaje" => "Medicamento registrado correctamente."
-            ]);
-        } else {
-
-            // Detectar error por nombre duplicado (UNIQUE)
-            if ($mysqli->errno == 1062) {
-                echo json_encode([
-                    "status" => "error",
-                    "mensaje" => "Ya existe un medicamento con ese nombre comercial."
-                ]);
-            } else {
-                echo json_encode([
-                    "status" => "error",
-                    "mensaje" => $stmt->error
-                ]);
-            }
-        }
+        echo json_encode([
+            "status" => "success",
+            "mensaje" => "Medicamento registrado correctamente."
+        ]);
 
         $stmt->close();
 
-    } catch (Exception $e) {
+    } catch (mysqli_sql_exception $e) {
 
-        echo json_encode([
-            "status" => "error",
-            "mensaje" => "Error interno del servidor."
-        ]);
+        // 🔥 AQUÍ ESTÁ LA CLAVE
+        if ($e->getCode() == 1062) {
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "⚠️ Nombre duplicado: ya existe un medicamento con ese nombre comercial."
+            ]);
+        } else {
+            echo json_encode([
+                "status" => "error",
+                "mensaje" => "Error interno del servidor."
+            ]);
+        }
     }
 }
 ?>

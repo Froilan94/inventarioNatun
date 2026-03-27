@@ -319,3 +319,29 @@ function exportarMovPDF() {
     form.submit();
     document.body.removeChild(form);
 }
+
+function generarPlanillaNatun() {
+    // ⚠️ Sin selección → pedir que seleccione (no abrir todo)
+    const checks = [...document.querySelectorAll('.chk-mov:checked')];
+    if (!checks.length)
+        return mostrarToast('error', 'Selecciona al menos una Salida para generar la planilla.');
+
+    const seleccionados = checks.map(c => _movData[parseInt(c.dataset.idx)]);
+    const salidas = seleccionados.filter(r => r.tipo === 'Salida');
+
+    if (!salidas.length)
+        return mostrarToast('error', 'Los registros seleccionados no contienen Salidas.');
+
+    // IDs únicos de salida
+    const ids = [...new Set(salidas.map(r => r.id_movimiento))];
+
+    // Abrir con delay para evitar bloqueo del navegador
+    ids.forEach((id, i) => {
+        setTimeout(() => {
+            window.open(
+                `api/inventarios/medicamentos/reportes/planilla_salida.php?salida_id=${id}`,
+                '_blank'
+            );
+        }, i * 300);
+    });
+}

@@ -1,7 +1,7 @@
 <?php
 // insert_usuario.php
 session_start();
-require_once "config/db.php";
+require_once "../../../config/db.php";
 
 // Solo admin puede registrar
 if (!isset($_SESSION['role_name']) || $_SESSION['role_name'] !== 'admin_super') {

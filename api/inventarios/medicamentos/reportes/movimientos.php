@@ -72,10 +72,10 @@ switch ($action) {
 
         // Componentes/Comunidades
         $componentes = query_rows($mysqli, "
-            SELECT id_comunidad     AS id,
-                   nombre_comunidad AS nombre
-            FROM   comunidades
-            ORDER  BY nombre_comunidad
+            SELECT id_programa     AS id,
+                   nombre_programa AS nombre
+            FROM   programas
+            ORDER  BY nombre_programa
         ");
 
         echo json_encode([
@@ -101,7 +101,7 @@ switch ($action) {
         $lote_txt       = trim($_GET['numero_lote']     ?? '');
         $prov_id        = isset($_GET['proveedor_id'])    && $_GET['proveedor_id']    !== '' ? (int)$_GET['proveedor_id']    : 0;
         $responsable_id = isset($_GET['responsable_id'])  && $_GET['responsable_id']  !== '' ? (int)$_GET['responsable_id']  : 0;
-        $componente_id  = isset($_GET['componente_id'])   && $_GET['componente_id']   !== '' ? (int)$_GET['componente_id']   : 0;
+        $componente_id  = isset($_GET['programa_id'])   && $_GET['programa_id']   !== '' ? (int)$_GET['programa_id']   : 0;
 
         // ── Filtros comunes ───────────────────────────────────────────
         $w_med  = $med_id  ? "AND d.medicamento_id = $med_id" : '';
@@ -150,7 +150,7 @@ switch ($action) {
         if ($fecha_ini) $w_sal_fecha .= "AND s.fecha_salida >= '$fecha_ini'";
         if ($fecha_fin) $w_sal_fecha .= " AND s.fecha_salida <= '$fecha_fin'";
         $w_resp = $responsable_id ? "AND s.entregado_por = $responsable_id" : '';
-        $w_comp = $componente_id  ? "AND s.comunidad_id  = $componente_id"  : '';
+        $w_comp = $componente_id  ? "AND s.programa_id  = $componente_id"  : '';
 
         $sql_sal = "
             SELECT
@@ -166,7 +166,7 @@ switch ($action) {
                 COALESCE(pm.nombre_presentacion, '—')   AS presentacion,
                 d.precio_unitario,
                 d.subtotal                              AS monto,
-                COALESCE(c.nombre_comunidad, '—')       AS proveedor_donante,
+                COALESCE(c.nombre_programa, '—')       AS proveedor_donante,
                 COALESCE(u.nombre_completo,  '—')       AS responsable,
                 COALESCE(b.nombre_beneficiario, '—')    AS beneficiario,
                 COALESCE(doc.tipo_documento, '—')       AS tipo_documento,
@@ -177,7 +177,7 @@ switch ($action) {
             LEFT JOIN lotes_med         l   ON l.id_lote_med     = d.lote_id
             LEFT JOIN unidades_medida_med um ON um.id_unidad_med = d.unidad_id
             LEFT JOIN presentaciones_med  pm ON pm.id_presentacion_med = d.presentacion_id
-            LEFT JOIN comunidades        c   ON c.id_comunidad   = s.comunidad_id
+            LEFT JOIN programas        c   ON c.id_programa   = s.programa_id
             LEFT JOIN usuarios           u   ON u.id_usuario     = s.entregado_por
             LEFT JOIN beneficiarios_med  b   ON b.id_beneficiario_med = d.beneficiario_id
             LEFT JOIN documentos_med     doc ON doc.id_documento_med  = s.documento_id

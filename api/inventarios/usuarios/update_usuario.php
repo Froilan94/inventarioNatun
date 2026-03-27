@@ -1,5 +1,5 @@
 <?php
-include "config/db.php";
+include "../../../config/db.php";
 
 $id = intval($_POST["id_usuario"]);
 $nombre = $_POST["nombre_completo"];

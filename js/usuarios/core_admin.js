@@ -1,7 +1,7 @@
 function toggleMenu(id) {
     let submenu = document.getElementById(id);
     if (!submenu) return; // ✅ El menú no existe en el DOM
-
+    
     // Verificar si está visible actualmente
     let estabaVisible = (submenu.style.display === "block");
     
@@ -40,58 +40,23 @@ function toggleMenu(id) {
     }
 }
 
-function mostrarSeccion(id) {
-    // Ocultar todas
-    document.querySelectorAll(".seccion").forEach(sec => {
-        sec.style.display = "none";
-    });
-
-    const seccion = document.getElementById(id);
-    if (!seccion) {
-        console.warn("No existe la sección:", id);
-        return;
-    }
-
-    seccion.style.display = "block";
-
-        // ── Inicializadores por sección ──────────────────
-    if (id === 'vistaRegistrarIngresoMed') initFormIngresoMed();
-    if (id === 'vistaRegistrarEgresosMed')  initFormSalidaMed();
-    if (id === 'VistaReporteExistencias')  initVistaExistencias();
-    if (id === 'vistaReporteMovimientos') initVistaMovimientos();
-}
-
-/**
- * Muestra un toast de Bootstrap
- * @param {string} tipo - 'exito', 'error', 'warning', 'info'
- * @param {string} mensaje - Mensaje a mostrar
- * @param {number} duracion - Duración en ms (opcional, default 3000)
- */
+// ─────────────────────────────────────────────
+// TOASTS
+// ─────────────────────────────────────────────
 function mostrarToast(tipo, mensaje, duracion = 3000) {
     const tipos = {
-        'exito': { id: 'toastExito', spanId: 'mensajeExito' },
-        'error': { id: 'toastError', spanId: 'mensajeError' },
+        'exito':   { id: 'toastExito',   spanId: 'mensajeExito'   },
+        'error':   { id: 'toastError',   spanId: 'mensajeError'   },
         'warning': { id: 'toastWarning', spanId: 'mensajeWarning' },
-        'info': { id: 'toastInfo', spanId: 'mensajeInfo' }
+        'info':    { id: 'toastInfo',    spanId: 'mensajeInfo'    },
     };
-
     const config = tipos[tipo];
-    if (!config) {
-        console.error('Tipo de toast no válido');
-        return;
-    }
+    if (!config) return;
 
-    const toastEl = document.getElementById(config.id);
-    const mensajeSpan = document.getElementById(config.spanId);
-    
-    // Actualizar mensaje
-    mensajeSpan.textContent = mensaje;
-
-    // Crear y mostrar toast
-    const toast = new bootstrap.Toast(toastEl, {
+    document.getElementById(config.spanId).textContent = mensaje;
+    const toast = new bootstrap.Toast(document.getElementById(config.id), {
         autohide: true,
-        delay: duracion
+        delay: duracion,
     });
-
     toast.show();
 }

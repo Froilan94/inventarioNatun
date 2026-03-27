@@ -60,10 +60,10 @@ switch ($action) {
         ");
 
         $componentes = query_rows($mysqli, "
-            SELECT id_comunidad     AS id,
-                   nombre_comunidad AS nombre
-            FROM   comunidades
-            ORDER  BY nombre_comunidad
+            SELECT id_programa     AS id,
+                   nombre_programa AS nombre
+            FROM   programas
+            ORDER  BY nombre_programa
         ");
 
         $usuario_sesion = null;
@@ -247,7 +247,7 @@ switch ($action) {
             // 2. Cabecera salida
             $stmt = $mysqli->prepare("
                 INSERT INTO salidas_med
-                    (fecha_salida, documento_id, comunidad_id, entregado_por)
+                    (fecha_salida, documento_id, programa_id, entregado_por)
                 VALUES (?, ?, ?, ?)
             ");
             $stmt->bind_param('siii', $fecha_salida, $documento_id, $componente_id, $entregado_por);
