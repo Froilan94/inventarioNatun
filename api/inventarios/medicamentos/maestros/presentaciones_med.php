@@ -44,10 +44,13 @@ switch ($action) {
         if (!$nombre) error_json('El nombre es requerido.');
         $stmt = $mysqli->prepare("INSERT INTO presentaciones_med (nombre_presentacion) VALUES (?)");
         $stmt->bind_param('s', $nombre);
-        if (!$stmt->execute()) {
-            if ($mysqli->errno === 1062) error_json('Ya existe esa presentación.');
-            error_json('Error: ' . $stmt->error);
-        }
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062)
+                error_json('Ya existe esa presentación.');
+            error_json('Error interno: ' . $e->getMessage());
+        }        
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Presentación registrada correctamente.'], JSON_UNESCAPED_UNICODE);
         break;
@@ -59,10 +62,13 @@ switch ($action) {
         if (!$id || !$nombre) error_json('Datos incompletos.');
         $stmt = $mysqli->prepare("UPDATE presentaciones_med SET nombre_presentacion=? WHERE id_presentacion_med=?");
         $stmt->bind_param('si', $nombre, $id);
-        if (!$stmt->execute()) {
-            if ($mysqli->errno === 1062) error_json('Ya existe esa presentación.');
-            error_json('Error: ' . $stmt->error);
-        }
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062)
+                error_json('Ya existe esa presentación.');
+            error_json('Error interno: ' . $e->getMessage());
+        }         
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Presentación actualizada correctamente.'], JSON_UNESCAPED_UNICODE);
         break;
@@ -73,10 +79,13 @@ switch ($action) {
         if (!$id) error_json('ID requerido.');
         $stmt = $mysqli->prepare("DELETE FROM presentaciones_med WHERE id_presentacion_med=?");
         $stmt->bind_param('i', $id);
-        if (!$stmt->execute()) {
-            if ($mysqli->errno === 1451) error_json('No se puede eliminar: presentación en uso.');
-            error_json('Error: ' . $stmt->error);
-        }
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1451)
+                error_json('No se puede eliminar: presentación en uso.');
+            error_json('Error interno: ' . $e->getMessage());
+        }         
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Presentación eliminada correctamente.'], JSON_UNESCAPED_UNICODE);
         break;

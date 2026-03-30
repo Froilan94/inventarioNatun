@@ -70,10 +70,13 @@ switch ($action) {
             VALUES (?,?,?,?,?,?,?)
         ");
         $stmt->bind_param('sssssss', $nit, $nombre, $genero, $tipo, $tel, $dir, $correo);
-        if (!$stmt->execute()) {
-            if ($mysqli->errno === 1062) error_json('Ya existe un proveedor con ese nombre o NIT.');
-            error_json('Error: ' . $stmt->error);
-        }
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062)
+                error_json('Ya existe un proveedor con ese nombre o NIT.');
+            error_json('Error interno: ' . $e->getMessage());
+        }        
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Proveedor registrado correctamente.'], JSON_UNESCAPED_UNICODE);
         break;
@@ -99,10 +102,13 @@ switch ($action) {
             WHERE id_proveedor_med=?
         ");
         $stmt->bind_param('sssssssii', $nit, $nombre, $genero, $tipo, $tel, $dir, $correo, $activo, $id);
-        if (!$stmt->execute()) {
-            if ($mysqli->errno === 1062) error_json('Ya existe un proveedor con ese nombre o NIT.');
-            error_json('Error: ' . $stmt->error);
-        }
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062)
+                error_json('Ya existe un proveedor con ese nombre o NIT.');
+            error_json('Error interno: ' . $e->getMessage());
+        }        
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Proveedor actualizado correctamente.'], JSON_UNESCAPED_UNICODE);
         break;
@@ -113,10 +119,13 @@ switch ($action) {
         if (!$id) error_json('ID requerido.');
         $stmt = $mysqli->prepare("DELETE FROM proveedores_med WHERE id_proveedor_med=?");
         $stmt->bind_param('i', $id);
-        if (!$stmt->execute()) {
-            if ($mysqli->errno === 1451) error_json('No se puede eliminar: proveedor en uso.');
-            error_json('Error: ' . $stmt->error);
-        }
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1451)
+                error_json('No se puede eliminar: proveedor en uso.');
+            error_json('Error interno: ' . $e->getMessage());
+        }        
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Proveedor eliminado correctamente.'], JSON_UNESCAPED_UNICODE);
         break;

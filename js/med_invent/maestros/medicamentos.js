@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
             btnCargarMedicamentos.disabled = true;
             btnCargarMedicamentos.textContent = "Cargando...";
 
-            fetch("api/inventarios/medicamentos/consultar_medicamentos.php")
+            fetch("../../api/inventarios/medicamentos/consultar_medicamentos.php")
                 .then(res => res.json())
                 .then(data => {
                     let filas = "";
@@ -62,7 +62,7 @@ document.getElementById("formMedicamento").addEventListener("submit", function(e
     const form = this;
     const formData = new FormData(form);
 
-    fetch("api/inventarios/medicamentos/insert_medicamento.php", {
+    fetch("../../api/inventarios/medicamentos/insert_medicamento.php", {
         method: "POST",
         body: formData
     })
@@ -93,7 +93,7 @@ document.getElementById("formMedicamento").addEventListener("submit", function(e
 
 function abrirModalEditarMed(id) {
 
-    fetch("api/inventarios/medicamentos/obtener_medicamento.php?id=" + id)
+    fetch("../../api/inventarios/medicamentos/obtener_medicamento.php?id=" + id)
         .then(res => res.json())
         .then(m => {
 
@@ -121,7 +121,7 @@ document.getElementById("formEditarMedicamento").addEventListener("submit", func
 
     const datos = new FormData(this);
 
-    fetch("api/inventarios/medicamentos/update_medicamento.php", {
+    fetch("../../api/inventarios/medicamentos/update_medicamento.php", {
         method: "POST",
         body: datos
     })
@@ -191,7 +191,7 @@ function eliminarMedicamento(id) {
                 }
             });
 
-            fetch(`api/inventarios/medicamentos/eliminar_medicamento.php?id=${id}`)
+            fetch(`../../api/inventarios/medicamentos/eliminar_medicamento.php?id=${id}`)
                 .then(response => response.text())
                 .then(resp => {
                     Swal.close(); // Cerrar loading

@@ -45,7 +45,7 @@ requireRoles([
             <a onclick="mostrarSeccion('vistaRegistrarComunidades')">Ingresar Categorias</a>
         </div>
     </div>
-    <a class="menu-item" href="../../logout.php" style="background:#dc2626;">🚪 Cerrar sesión</a>
+    <a class="menu-item" href="../../auth/logout.php" style="background:#dc2626;">🚪 Cerrar sesión</a>
 </div>
 
 <div class="content">

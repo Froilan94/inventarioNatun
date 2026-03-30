@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 function requireRoles(array $rolesPermitidos)
 {
     if (!isset($_SESSION['user_id'])) {
-        header('Location: login.php');
+        header('Location: auth/login.php');
         exit;
     }
 
@@ -16,7 +16,7 @@ function requireRoles(array $rolesPermitidos)
 
     if (!in_array($role, $rolesPermitidos, true)) {
         http_response_code(403);
-        header('Location: login.php');
+        header('Location: auth/login.php');
         exit;
     }
 }

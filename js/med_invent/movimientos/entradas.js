@@ -40,7 +40,7 @@ document.addEventListener('input', function (e) {
 // ─────────────────────────────────────────────
 async function initFormIngresoMed() {
     try {
-        const res  = await fetch('api/inventarios/medicamentos/movimientos/registromed/ingreso_med.php?action=get_datos_iniciales');
+        const res  = await fetch('../../api/inventarios/medicamentos/movimientos/registromed/ingreso_med.php?action=get_datos_iniciales');
         const json = await res.json();
         if (!json.ok) throw new Error(json.msg);
 
@@ -247,7 +247,7 @@ async function registrarIngreso() {
     btn.textContent = 'Guardando…';
 
     try {
-        const res  = await fetch('api/inventarios/medicamentos/movimientos/registromed/ingreso_med.php?action=registrar_ingreso', {
+        const res  = await fetch('../../api/inventarios/medicamentos/movimientos/registromed/ingreso_med.php?action=registrar_ingreso', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify(payload),

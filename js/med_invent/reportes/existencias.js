@@ -19,7 +19,7 @@ async function initVistaExistencias() {
 // ─────────────────────────────────────────────
 async function cargarFiltrosExistencias() {
     try {
-        const res  = await fetch('api/inventarios/medicamentos/reportes/existencias.php?action=get_filtros');
+        const res  = await fetch('../../api/inventarios/medicamentos/reportes/existencias.php?action=get_filtros');
         const json = await res.json();
         if (!json.ok) throw new Error(json.msg);
 
@@ -84,7 +84,7 @@ async function buscarExistencias() {
         </tr>`;
 
     try {
-        const res  = await fetch(`api/inventarios/medicamentos/reportes/existencias.php?${params}`);
+        const res  = await fetch(`../../api/inventarios/medicamentos/reportes/existencias.php?${params}`);
         const json = await res.json();
         if (!json.ok) throw new Error(json.msg);
 

@@ -42,7 +42,7 @@ requireRoles([
     <div class="text-white">
         <?= $_SESSION['user_name'] ?> |
         <strong><?= $_SESSION['role_name'] ?></strong>
-        <a href="logout.php" class="btn btn-sm btn-outline-warning ms-3">Salir</a>
+        <a href="auth/logout.php" class="btn btn-sm btn-outline-warning ms-3">Salir</a>
     </div>
 </nav>
 
@@ -57,7 +57,7 @@ requireRoles([
 
         <!-- Medicamentos -->
         <div class="col-md-4">
-            <a href="indexmedicamentos.php" class="text-decoration-none">
+            <a href="views/editores/indexmedicamentos.php" class="text-decoration-none">
                 <div class="card card-dashboard text-center p-4">
                     <div class="icon-box text-primary mb-3">
                         <i class="bi bi-capsule"></i>
@@ -72,7 +72,7 @@ requireRoles([
 
         <!-- Artesanías -->
         <div class="col-md-4">
-            <a href="indexartesanias.php" class="text-decoration-none">
+            <a href="views/editores/indexartesanias.php" class="text-decoration-none">
                 <div class="card card-dashboard text-center p-4">
                     <div class="icon-box text-success mb-3">
                         <i class="bi bi-palette"></i>
@@ -87,7 +87,7 @@ requireRoles([
 
         <!-- Materia Prima -->
         <div class="col-md-4">
-            <a href="indexmateria_prima.php" class="text-decoration-none">
+            <a href="views/editores/indexmateria_prima.php" class="text-decoration-none">
                 <div class="card card-dashboard text-center p-4">
                     <div class="icon-box text-warning mb-3">
                         <i class="bi bi-box-seam"></i>

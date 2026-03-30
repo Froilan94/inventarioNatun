@@ -16,7 +16,7 @@ function cargarUnidades() {
     const btn = document.getElementById('btnCargarUnidades');
     if (btn) { btn.disabled = true; btn.textContent = 'Cargando...'; }
 
-    fetch('api/inventarios/medicamentos/maestros/unidades_med.php?action=get_all')
+    fetch('../../api/inventarios/medicamentos/maestros/unidades_med.php?action=get_all')
         .then(r => r.json())
         .then(json => {
             if (!json.ok) throw new Error(json.msg);
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formU) formU.addEventListener('submit', e => {
         e.preventDefault();
         const msg = document.getElementById('mensajeUnidad');
-        fetch('api/inventarios/medicamentos/maestros/unidades_med.php?action=insertar', { method:'POST', body: new FormData(formU) })
+        fetch('../../api/inventarios/medicamentos/maestros/unidades_med.php?action=insertar', { method:'POST', body: new FormData(formU) })
             .then(r => r.json())
             .then(json => {
                 if (json.ok) { mostrarToast('exito', json.msg); formU.reset(); }
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formEU = document.getElementById('formEditarUnidad');
     if (formEU) formEU.addEventListener('submit', e => {
         e.preventDefault();
-        _submitModal(formEU, 'api/inventarios/medicamentos/maestros/unidades_med.php?action=actualizar',
+        _submitModal(formEU, '../../api/inventarios/medicamentos/maestros/unidades_med.php?action=actualizar',
             'modalEditarUnidad', cargarUnidades);
     });
 
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formP) formP.addEventListener('submit', e => {
         e.preventDefault();
         const msg = document.getElementById('mensajePresentacion');
-        fetch('api/inventarios/medicamentos/maestros/presentaciones_med.php?action=insertar', { method:'POST', body: new FormData(formP) })
+        fetch('../../api/inventarios/medicamentos/maestros/presentaciones_med.php?action=insertar', { method:'POST', body: new FormData(formP) })
             .then(r => r.json())
             .then(json => {
                 if (json.ok) { mostrarToast('exito', json.msg); formP.reset(); }
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formEP = document.getElementById('formEditarPresentacion');
     if (formEP) formEP.addEventListener('submit', e => {
         e.preventDefault();
-        _submitModal(formEP, 'api/inventarios/medicamentos/maestros/presentaciones_med.php?action=actualizar',
+        _submitModal(formEP, '../../api/inventarios/medicamentos/maestros/presentaciones_med.php?action=actualizar',
             'modalEditarPresentacion', cargarPresentaciones);
     });
 
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formProv) formProv.addEventListener('submit', e => {
         e.preventDefault();
         const msg = document.getElementById('mensajeProveedor');
-        fetch('api/inventarios/medicamentos/maestros/proveedores_med.php?action=insertar', { method:'POST', body: new FormData(formProv) })
+        fetch('../../api/inventarios/medicamentos/maestros/proveedores_med.php?action=insertar', { method:'POST', body: new FormData(formProv) })
             .then(r => r.json())
             .then(json => {
                 if (json.ok) { mostrarToast('exito', json.msg); formProv.reset(); }
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formEProv = document.getElementById('formEditarProveedor');
     if (formEProv) formEProv.addEventListener('submit', e => {
         e.preventDefault();
-        _submitModal(formEProv, 'api/inventarios/medicamentos/maestros/proveedores_med.php?action=actualizar',
+        _submitModal(formEProv, '../../api/inventarios/medicamentos/maestros/proveedores_med.php?action=actualizar',
             'modalEditarProveedor', cargarProveedores);
     });
 
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formPart) formPart.addEventListener('submit', e => {
         e.preventDefault();
         const msg = document.getElementById('mensajeParticipante');
-        fetch('api/inventarios/medicamentos/maestros/participantes_med.php?action=insertar', { method:'POST', body: new FormData(formPart) })
+        fetch('../../api/inventarios/medicamentos/maestros/participantes_med.php?action=insertar', { method:'POST', body: new FormData(formPart) })
             .then(r => r.json())
             .then(json => {
                 if (json.ok) { mostrarToast('exito', json.msg); formPart.reset(); }
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formEPart = document.getElementById('formEditarParticipante');
     if (formEPart) formEPart.addEventListener('submit', e => {
         e.preventDefault();
-        _submitModal(formEPart, 'api/inventarios/medicamentos/maestros/participantes_med.php?action=actualizar',
+        _submitModal(formEPart, '../../api/inventarios/medicamentos/maestros/participantes_med.php?action=actualizar',
             'modalEditarParticipante', cargarParticipantes);
     });
 
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formF) formF.addEventListener('submit', e => {
         e.preventDefault();
         const msg = document.getElementById('mensajeFirma');
-        fetch('api/inventarios/medicamentos/maestros/firmas_planilla.php?action=insertar', { method:'POST', body: new FormData(formF) })
+        fetch('../../api/inventarios/medicamentos/maestros/firmas_planilla.php?action=insertar', { method:'POST', body: new FormData(formF) })
             .then(r => r.json())
             .then(json => {
                 if (json.ok) { mostrarToast('exito', json.msg); formF.reset(); }
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formEF = document.getElementById('formEditarFirma');
     if (formEF) formEF.addEventListener('submit', e => {
         e.preventDefault();
-        _submitModal(formEF, 'api/inventarios/medicamentos/maestros/firmas_planilla.php?action=actualizar',
+        _submitModal(formEF, '../../api/inventarios/medicamentos/maestros/firmas_planilla.php?action=actualizar',
             'modalEditarFirma', cargarFirmas);
     });
 });
@@ -170,7 +170,7 @@ function _submitModal(form, url, modalId, recargar) {
 }
 
 function abrirEditarUnidad(id) {
-    fetch(`api/inventarios/medicamentos/maestros/unidades_med.php?action=get_one&id=${id}`)
+    fetch(`../../api/inventarios/medicamentos/maestros/unidades_med.php?action=get_one&id=${id}`)
         .then(r => r.json()).then(json => {
             if (!json.ok) return mostrarToast('error', json.msg);
             document.getElementById('editU_id').value     = json.data.id_unidad_med;
@@ -179,7 +179,7 @@ function abrirEditarUnidad(id) {
         });
 }
 
-function eliminarUnidad(id) { _eliminar(id, 'api/inventarios/medicamentos/maestros/unidades_med.php', cargarUnidades, 'unidad'); }
+function eliminarUnidad(id) { _eliminar(id, '../../api/inventarios/medicamentos/maestros/unidades_med.php', cargarUnidades, 'unidad'); }
 
 // ══════════════════════════════════════════════════════
 // PRESENTACIONES
@@ -191,7 +191,7 @@ function cargarPresentaciones() {
     if (btn) { btn.disabled = true; btn.textContent = 'Cargando...'; }
     const puedeEditar = ['admin_super','operadormed'].includes(USER_ROLE);
 
-    fetch('api/inventarios/medicamentos/maestros/presentaciones_med.php?action=get_all')
+    fetch('../../api/inventarios/medicamentos/maestros/presentaciones_med.php?action=get_all')
         .then(r => r.json())
         .then(json => {
             if (!json.ok) throw new Error(json.msg);
@@ -216,7 +216,7 @@ function cargarPresentaciones() {
 }
 
 function abrirEditarPresentacion(id) {
-    fetch(`api/inventarios/medicamentos/maestros/presentaciones_med.php?action=get_one&id=${id}`)
+    fetch(`../../api/inventarios/medicamentos/maestros/presentaciones_med.php?action=get_one&id=${id}`)
         .then(r => r.json()).then(json => {
             if (!json.ok) return mostrarToast('error', json.msg);
             document.getElementById('editP_id').value     = json.data.id_presentacion_med;
@@ -225,7 +225,7 @@ function abrirEditarPresentacion(id) {
         });
 }
 
-function eliminarPresentacion(id) { _eliminar(id, 'api/inventarios/medicamentos/maestros/presentaciones_med.php', cargarPresentaciones, 'presentación'); }
+function eliminarPresentacion(id) { _eliminar(id, '../../api/inventarios/medicamentos/maestros/presentaciones_med.php', cargarPresentaciones, 'presentación'); }
 
 // ══════════════════════════════════════════════════════
 // PROVEEDORES / DONANTES
@@ -237,7 +237,7 @@ function cargarProveedores() {
     if (btn) { btn.disabled = true; btn.textContent = 'Cargando...'; }
     const puedeEditar = ['admin_super','operadormed'].includes(USER_ROLE);
 
-    fetch('api/inventarios/medicamentos/maestros/proveedores_med.php?action=get_all')
+    fetch('../../api/inventarios/medicamentos/maestros/proveedores_med.php?action=get_all')
         .then(r => r.json())
         .then(json => {
             if (!json.ok) throw new Error(json.msg);
@@ -268,7 +268,7 @@ function cargarProveedores() {
 }
 
 function abrirEditarProveedor(id) {
-    fetch(`api/inventarios/medicamentos/maestros/proveedores_med.php?action=get_one&id=${id}`)
+    fetch(`../../api/inventarios/medicamentos/maestros/proveedores_med.php?action=get_one&id=${id}`)
         .then(r => r.json()).then(json => {
             if (!json.ok) return mostrarToast('error', json.msg);
             const p = json.data;
@@ -285,14 +285,14 @@ function abrirEditarProveedor(id) {
         });
 }
 
-function eliminarProveedor(id) { _eliminar(id, 'api/inventarios/medicamentos/maestros/proveedores_med.php', cargarProveedores, 'proveedor'); }
+function eliminarProveedor(id) { _eliminar(id, '../../api/inventarios/medicamentos/maestros/proveedores_med.php', cargarProveedores, 'proveedor'); }
 
 // ══════════════════════════════════════════════════════
 // PARTICIPANTES
 // ══════════════════════════════════════════════════════
 function initVerParticipantes() { cargarParticipantes(); }
 function initRegistrarParticipante() {
-    fetch('api/inventarios/medicamentos/maestros/participantes_med.php?action=get_departamentos')
+    fetch('../../api/inventarios/medicamentos/maestros/participantes_med.php?action=get_departamentos')
         .then(r => r.json()).then(json => {
             if (!json.ok) return;
             ['departamento_id','editPart_depto'].forEach(selId => {
@@ -309,7 +309,7 @@ function cargarParticipantes() {
     if (btn) { btn.disabled = true; btn.textContent = 'Cargando...'; }
     const puedeEditar = ['admin_super','operadormed'].includes(USER_ROLE);
 
-    fetch('api/inventarios/medicamentos/maestros/participantes_med.php?action=get_all')
+    fetch('../../api/inventarios/medicamentos/maestros/participantes_med.php?action=get_all')
         .then(r => r.json())
         .then(json => {
             if (!json.ok) throw new Error(json.msg);
@@ -341,7 +341,7 @@ function cargarParticipantes() {
 
 function abrirEditarParticipante(id) {
     initRegistrarParticipante();
-    fetch(`api/inventarios/medicamentos/maestros/participantes_med.php?action=get_one&id=${id}`)
+    fetch(`../../api/inventarios/medicamentos/maestros/participantes_med.php?action=get_one&id=${id}`)
         .then(r => r.json()).then(json => {
             if (!json.ok) return mostrarToast('error', json.msg);
             const p = json.data;
@@ -357,13 +357,13 @@ function abrirEditarParticipante(id) {
         });
 }
 
-function eliminarParticipante(id) { _eliminar(id, 'api/inventarios/medicamentos/maestros/participantes_med.php', cargarParticipantes, 'participante'); }
+function eliminarParticipante(id) { _eliminar(id, '../../api/inventarios/medicamentos/maestros/participantes_med.php', cargarParticipantes, 'participante'); }
 
 // ══════════════════════════════════════════════════════
 // LOTES — solo lectura
 // ══════════════════════════════════════════════════════
 function initVerLotes() {
-    fetch('api/inventarios/medicamentos/maestros/lotes_med.php?action=get_medicamentos')
+    fetch('../../api/inventarios/medicamentos/maestros/lotes_med.php?action=get_medicamentos')
         .then(r => r.json()).then(json => {
             if (!json.ok) return;
             const sel = document.getElementById('filtroMedLotes');
@@ -379,7 +379,7 @@ function cargarLotes() {
     const med_id = document.getElementById('filtroMedLotes')?.value ?? '';
     if (btn) { btn.disabled = true; btn.textContent = 'Cargando...'; }
 
-    fetch(`api/inventarios/medicamentos/maestros/lotes_med.php?action=get_all&medicamento_id=${med_id}`)
+    fetch(`../../api/inventarios/medicamentos/maestros/lotes_med.php?action=get_all&medicamento_id=${med_id}`)
         .then(r => r.json())
         .then(json => {
             if (!json.ok) throw new Error(json.msg);
@@ -420,7 +420,7 @@ function cargarFirmas() {
     const btn = document.getElementById('btnCargarFirmas');
     if (btn) { btn.disabled = true; btn.textContent = 'Cargando...'; }
 
-    fetch('api/inventarios/medicamentos/maestros/firmas_planilla.php?action=get_all')
+    fetch('../../api/inventarios/medicamentos/maestros/firmas_planilla.php?action=get_all')
         .then(r => r.json())
         .then(json => {
             if (!json.ok) throw new Error(json.msg);
@@ -448,7 +448,7 @@ function cargarFirmas() {
 }
 
 function abrirEditarFirma(id) {
-    fetch(`api/inventarios/medicamentos/maestros/firmas_planilla.php?action=get_one&id=${id}`)
+    fetch(`../../api/inventarios/medicamentos/maestros/firmas_planilla.php?action=get_one&id=${id}`)
         .then(r => r.json()).then(json => {
             if (!json.ok) return mostrarToast('error', json.msg);
             const f = json.data;
@@ -461,7 +461,7 @@ function abrirEditarFirma(id) {
         });
 }
 
-function eliminarFirma(id) { _eliminar(id, 'api/inventarios/medicamentos/maestros/firmas_planilla.php', cargarFirmas, 'firma'); }
+function eliminarFirma(id) { _eliminar(id, '../../api/inventarios/medicamentos/maestros/firmas_planilla.php', cargarFirmas, 'firma'); }
 
 // ══════════════════════════════════════════════════════
 // HELPER ELIMINAR GENÉRICO

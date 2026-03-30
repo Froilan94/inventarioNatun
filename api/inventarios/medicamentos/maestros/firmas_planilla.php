@@ -44,6 +44,19 @@ switch ($action) {
         $stmt = $mysqli->prepare("INSERT INTO firmas_planilla_med (cargo, nombre, orden) VALUES (?,?,?)");
         $stmt->bind_param('ssi', $cargo, $nombre, $orden);
         if (!$stmt->execute()) error_json('Error: ' . $stmt->error);
+/*        if (!$stmt->execute()) {
+            if ($mysqli->errno === 1062)
+                error_json('Ya existe una comunidad con ese nombre.');
+            error_json('Error al registrar: ' . $stmt->error);
+        }
+
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062)
+                error_json('Ya existe una comunidad con ese nombre.');
+            error_json('Error interno al registrar: ' . $e->getMessage());
+        }*/          
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Firma registrada correctamente.'], JSON_UNESCAPED_UNICODE);
         break;

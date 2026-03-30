@@ -46,7 +46,7 @@ document.addEventListener('click', function (e) {
 // ─────────────────────────────────────────────
 async function initFormSalidaMed() {
     try {
-        const res  = await fetch('api/inventarios/medicamentos/movimientos/salidas_med.php?action=get_datos_iniciales');
+        const res  = await fetch('../../api/inventarios/medicamentos/movimientos/salidas_med.php?action=get_datos_iniciales');
         const json = await res.json();
         if (!json.ok) throw new Error(json.msg);
 
@@ -214,7 +214,7 @@ async function cargarLotesSalida(selectMed) {
     }
 
     try {
-        const res  = await fetch(`api/inventarios/medicamentos/movimientos/salidas_med.php?action=get_lotes_medicamento&medicamento_id=${med_id}`);
+        const res  = await fetch(`../../api/inventarios/medicamentos/movimientos/salidas_med.php?action=get_lotes_medicamento&medicamento_id=${med_id}`);
         const json = await res.json();
         if (!json.ok) throw new Error(json.msg);
 
@@ -267,7 +267,7 @@ async function _buscarBeneficiario(input) {
     }
 
     try {
-        const res  = await fetch(`api/inventarios/medicamentos/movimientos/salidas_med.php?action=get_beneficiarios&q=${encodeURIComponent(q)}`);
+        const res  = await fetch(`../../api/inventarios/medicamentos/movimientos/salidas_med.php?action=get_beneficiarios&q=${encodeURIComponent(q)}`);
         const json = await res.json();
         if (!json.ok) throw new Error(json.msg);
 
@@ -383,7 +383,7 @@ async function registrarSalida() {
     btn.textContent = 'Guardando…';
 
     try {
-        const res  = await fetch('api/inventarios/medicamentos/movimientos/salidas_med.php?action=registrar_salida', {
+        const res  = await fetch('../../api/inventarios/medicamentos/movimientos/salidas_med.php?action=registrar_salida', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify(payload),

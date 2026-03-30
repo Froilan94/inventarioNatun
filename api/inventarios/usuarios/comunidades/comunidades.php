@@ -69,11 +69,13 @@ switch ($action) {
         $dir_val = $direccion ?: null;
         $stmt->bind_param('ss', $nombre, $dir_val);
 
-        if (!$stmt->execute()) {
-            if ($mysqli->errno === 1062)
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062)
                 error_json('Ya existe una comunidad con ese nombre.');
-            error_json('Error al registrar: ' . $stmt->error);
-        }
+            error_json('Error interno: ' . $e->getMessage());
+        }        
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Comunidad registrada correctamente.'],
                          JSON_UNESCAPED_UNICODE);
@@ -97,11 +99,13 @@ switch ($action) {
         $dir_val = $direccion ?: null;
         $stmt->bind_param('ssi', $nombre, $dir_val, $id);
 
-        if (!$stmt->execute()) {
-            if ($mysqli->errno === 1062)
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062)
                 error_json('Ya existe una comunidad con ese nombre.');
-            error_json('Error al actualizar: ' . $stmt->error);
-        }
+            error_json('Error interno: ' . $e->getMessage());
+        }  
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Comunidad actualizada correctamente.'],
                          JSON_UNESCAPED_UNICODE);
@@ -115,12 +119,14 @@ switch ($action) {
         $stmt = $mysqli->prepare("DELETE FROM comunidades WHERE id_comunidad = ?");
         $stmt->bind_param('i', $id);
 
-        if (!$stmt->execute()) {
-            // FK violation — comunidad en uso
-            if ($mysqli->errno === 1451)
+        try {
+            $stmt->execute();
+           // FK violation — comunidad en uso            
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1451)
                 error_json('No se puede eliminar: la comunidad está en uso.');
-            error_json('Error al eliminar: ' . $stmt->error);
-        }
+            error_json('Error al Eliminar, error interno: ' . $e->getMessage());
+        }          
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Comunidad eliminada correctamente.'],
                          JSON_UNESCAPED_UNICODE);

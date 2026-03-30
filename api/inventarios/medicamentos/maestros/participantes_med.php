@@ -80,10 +80,13 @@ switch ($action) {
             VALUES (?,?,?,?,?,?)
         ");
         $stmt->bind_param('sssssi', $nombre, $dpi, $dir, $tel, $genero, $depto);
-        if (!$stmt->execute()) {
-            if ($mysqli->errno === 1062) error_json('Ya existe un participante con ese nombre o DPI.');
-            error_json('Error: ' . $stmt->error);
-        }
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062)
+                error_json('Ya existe un participante con ese nombre o DPI.');
+            error_json('Error interno: ' . $e->getMessage());
+        }        
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Participante registrado correctamente.'], JSON_UNESCAPED_UNICODE);
         break;
@@ -108,10 +111,13 @@ switch ($action) {
             WHERE id_beneficiario_med=?
         ");
         $stmt->bind_param('sssssiii', $nombre, $dpi, $dir, $tel, $genero, $depto, $activo, $id);
-        if (!$stmt->execute()) {
-            if ($mysqli->errno === 1062) error_json('Ya existe un participante con ese nombre o DPI.');
-            error_json('Error: ' . $stmt->error);
-        }
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062)
+                error_json('Ya existe un participante con ese nombre o DPI.');
+            error_json('Error interno: ' . $e->getMessage());
+        }        
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Participante actualizado correctamente.'], JSON_UNESCAPED_UNICODE);
         break;
@@ -122,10 +128,13 @@ switch ($action) {
         if (!$id) error_json('ID requerido.');
         $stmt = $mysqli->prepare("DELETE FROM beneficiarios_med WHERE id_beneficiario_med=?");
         $stmt->bind_param('i', $id);
-        if (!$stmt->execute()) {
-            if ($mysqli->errno === 1451) error_json('No se puede eliminar: participante en uso.');
-            error_json('Error: ' . $stmt->error);
-        }
+        try {
+            $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1451)
+                error_json('No se puede eliminar: participante en uso.');
+            error_json('Error interno: ' . $e->getMessage());
+        }        
         $stmt->close();
         echo json_encode(['ok' => true, 'msg' => 'Participante eliminado correctamente.'], JSON_UNESCAPED_UNICODE);
         break;

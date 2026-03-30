@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 session_start();
-require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '../../config/db.php';
 
 $errors = [];
 
@@ -43,19 +43,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // 🏗 Mapa profesional de redirecciones
                 $redirectMap = [
-                    'admin_super'   => 'index.php',
+                    'admin_super'   => '../index.php',
 
                     // Medicamentos
-                    'operadormed'   => 'indexmedicamentos.php',
-                    'supervisormed' => 'indexmedicamentos.php',
+                    'operadormed'   => '../views/editores/indexmedicamentos.php',
+                    'supervisormed' => '../views/editores/indexmedicamentos.php',
 
                     // Materia Prima
-                    'operadormp'    => 'materiaprima/dashboard.php',
-                    'supervisormp'  => 'materiaprima/dashboard.php',
+                    'operadormp'    => '../views/editores/indexmateria_prima.php',
+                    'supervisormp'  => '../views/editores/indexmateria_prima.php',
 
                     // Artículos
-                    'operadorart'   => 'articulos/dashboard.php',
-                    'supervisorart' => 'articulos/dashboard.php',
+                    'operadorart'   => '../views/editores/indexartesanias.php',
+                    'supervisorart' => '../views/editores/indexartesanias.php',
                 ];
 
                 if (isset($redirectMap[$role])) {
@@ -86,15 +86,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles/login.css">
+    <link rel="stylesheet" href="../styles/login.css">
 </head>
 <body>
     <!-- Background Slider -->
     <div class="login-background">
-        <div class="bg-slide active" style="background-image: url('img/login/bg-1.jpg');"></div>
-        <div class="bg-slide" style="background-image: url('img/login/bg-2.jpg');"></div>
-        <div class="bg-slide" style="background-image: url('img/login/bg-3.jpg');"></div>
-        <div class="bg-slide" style="background-image: url('img/login/bg-4.jpg');"></div>
+        <div class="bg-slide active" style="background-image: url('../img/login/bg-1.jpg');"></div>
+        <div class="bg-slide" style="background-image: url('../img/login/bg-2.jpg');"></div>
+        <div class="bg-slide" style="background-image: url('../img/login/bg-3.jpg');"></div>
+        <div class="bg-slide" style="background-image: url('../img/login/bg-4.jpg');"></div>
     </div>
 
     <!-- Login Container -->
@@ -150,6 +150,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/login.js"></script>
+    <script src="../js/login.js"></script>
 </body>
 </html>

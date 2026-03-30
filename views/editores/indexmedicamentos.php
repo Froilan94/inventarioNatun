@@ -1,5 +1,5 @@
 <?php
-require_once 'auth/roles.php';
+require_once '../../auth/roles.php';
 
 requireRoles([
     'admin_super',
@@ -13,7 +13,7 @@ requireRoles([
     <meta charset="UTF-8">
     <title>Sistema de Inventarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/style.css">
 </head>
 <body>
 
@@ -21,9 +21,9 @@ requireRoles([
     <h2>Inventario</h2>
 
 <?php if (hasRole(['admin_super'])): ?>
-    <div class="menu-item" onclick="window.location.href='index.php'">🗄️ Ir al Panel principal</div>
+    <div class="menu-item" onclick="window.location.href='../../index.php'">🗄️ Ir al Panel principal</div>
 <?php else: ?>
-    <div class="menu-item" onclick="window.location.href='indexmedicamentos.php'">🔄 Actualizar panel</div>
+    <div class="menu-item" onclick="window.location.href='../../views/editor/indexmedicamentos.php'">🔄 Actualizar panel</div>
 <?php endif; ?>
 
     <!-- MAESTROS -->
@@ -40,7 +40,7 @@ requireRoles([
 
         <!-- Submenú unidades_de_medida anidado -->
 <?php if (hasRole(['admin_super', 'operadormed'])): ?>           
-        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('firmas')"> 💊Firmas</div>
+        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('firmas')"> 🖋️ Firmas</div>
         <div id="firmas" class="sub-submenu">
             <a onclick="mostrarSeccion('vistaVerFirmas')">Ver Unidades de Medida</a>                      
         </div>
@@ -95,7 +95,7 @@ requireRoles([
        <div id="movimientos" class="submenu">      
             <a onclick="mostrarSeccion('vistaRegistrarIngresoMed')">Entradas</a> 
             <a onclick="mostrarSeccion('vistaRegistrarEgresosMed')">Salidas</a>
-            <a onclick="mostrarSeccion('vistaActualizarEliminarBeneficiarios')">Ajustes</a>
+            <!--<a onclick="mostrarSeccion('vistaActualizarEliminarBeneficiarios')">Ajustes</a> -->
         </div>
 <?php endif; ?>
 
@@ -104,10 +104,10 @@ requireRoles([
     <div id="reportes" class="submenu">
         <a onclick="mostrarSeccion('VistaReporteExistencias')">Existencias</a>
         <a onclick="mostrarSeccion('vistaReporteMovimientos')">Movimientos</a>
-        <a onclick="mostrarSeccion('VistaReporteValorizacion')">Valorización</a>
+        <!--<a onclick="mostrarSeccion('VistaReporteValorizacion')">Valorización</a> -->
     </div>
 
-    <a class="menu-item" href="logout.php" style="background:#dc2626;">🚪 Cerrar sesión</a>
+    <a class="menu-item" href="../../auth/logout.php" style="background:#dc2626;">🚪 Cerrar sesión</a>
 </div>
 <div class="content">
     <!-- ============================
@@ -1146,13 +1146,13 @@ requireRoles([
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="js/med_invent/core.js?v=<?= filemtime('js/med_invent/core.js') ?>"></script>
-<script src="js/med_invent/maestros/medicamentos.js?v=<?= filemtime('js/med_invent/maestros/medicamentos.js') ?>"></script>
-<script src="js/med_invent/maestros/maestros_med.js?v=<?= filemtime('js/med_invent/maestros/maestros_med.js') ?>"></script>
-<script src="js/med_invent/movimientos/entradas.js?v=<?= filemtime('js/med_invent/movimientos/entradas.js') ?>"></script>
-<script src="js/med_invent/movimientos/salidas.js?v=<?= filemtime('js/med_invent/movimientos/salidas.js') ?>"></script>
-<script src="js/med_invent/reportes/existencias.js?v=<?= filemtime('js/med_invent/reportes/existencias.js') ?>"></script>
-<script src="js/med_invent/reportes/movimientos.js?v=<?= filemtime('js/med_invent/reportes/movimientos.js') ?>"></script>
+<script src="../../js/med_invent/core.js?v=<?= filemtime('../../js/med_invent/core.js') ?>"></script>
+<script src="../../js/med_invent/maestros/medicamentos.js?v=<?= filemtime('../../js/med_invent/maestros/medicamentos.js') ?>"></script>
+<script src="../../js/med_invent/maestros/maestros_med.js?v=<?= filemtime('../../js/med_invent/maestros/maestros_med.js') ?>"></script>
+<script src="../../js/med_invent/movimientos/entradas.js?v=<?= filemtime('../../js/med_invent/movimientos/entradas.js') ?>"></script>
+<script src="../../js/med_invent/movimientos/salidas.js?v=<?= filemtime('../../js/med_invent/movimientos/salidas.js') ?>"></script>
+<script src="../../js/med_invent/reportes/existencias.js?v=<?= filemtime('../../js/med_invent/reportes/existencias.js') ?>"></script>
+<script src="../../js/med_invent/reportes/movimientos.js?v=<?= filemtime('../../js/med_invent/reportes/movimientos.js') ?>"></script>
 <script>
     window.USER_ROLE = "<?= $_SESSION['role_name'] ?>";
 </script>

@@ -20,7 +20,7 @@ async function initVistaMovimientos() {
 
 async function _cargarFiltrosMovimientos() {
     try {
-        const res  = await fetch('api/inventarios/medicamentos/reportes/movimientos.php?action=get_filtros');
+        const res  = await fetch('../../api/inventarios/medicamentos/reportes/movimientos.php?action=get_filtros');
         const json = await res.json();
         if (!json.ok) throw new Error(json.msg);
 
@@ -106,7 +106,7 @@ async function buscarMovimientos() {
         </tr>`;
 
     try {
-        const res  = await fetch(`api/inventarios/medicamentos/reportes/movimientos.php?${params}`);
+        const res  = await fetch(`../../api/inventarios/medicamentos/reportes/movimientos.php?${params}`);
         const json = await res.json();
         if (!json.ok) throw new Error(json.msg);
 
@@ -285,7 +285,7 @@ function exportarMovExcel() {
 
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = 'api/inventarios/medicamentos/reportes/exportar_movimientos_excel.php';
+    form.action = '../../api/inventarios/medicamentos/reportes/exportar_movimientos_excel.php';
     form.target = '_blank';
 
     const input = document.createElement('input');
@@ -307,7 +307,7 @@ function exportarMovPDF() {
 
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = 'api/inventarios/medicamentos/reportes/exportar_movimientos_pdf.php';
+    form.action = '../../api/inventarios/medicamentos/reportes/exportar_movimientos_pdf.php';
     form.target = '_blank';
 
     const input = document.createElement('input');
@@ -339,7 +339,7 @@ function generarPlanillaNatun() {
     ids.forEach((id, i) => {
         setTimeout(() => {
             window.open(
-                `api/inventarios/medicamentos/reportes/planilla_salida.php?salida_id=${id}`,
+                `../../api/inventarios/medicamentos/reportes/planilla_salida.php?salida_id=${id}`,
                 '_blank'
             );
         }, i * 300);

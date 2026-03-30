@@ -26,7 +26,7 @@ function cargarComunidades() {
     btn.disabled = true;
     btn.textContent = 'Cargando...';
 
-    fetch('../../api/inventarios/maestros/comunidades.php?action=get_all')
+    fetch('../../api/inventarios/usuarios/comunidades/comunidades.php?action=get_all')
         .then(r => r.json())
         .then(json => {
             if (!json.ok) throw new Error(json.msg);
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-        fetch('../../api/inventarios/maestros/comunidades.php?action=insertar', {
+        fetch('../../api/inventarios/usuarios/comunidades/comunidades.php?action=insertar', {
             method: 'POST',
             body: new FormData(this),
         })
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ── Editar ────────────────────────────────────────────
 function abrirModalEditarComunidad(id) {
-    fetch(`../../api/inventarios/maestros/comunidades.php?action=get_one&id=${id}`)
+    fetch(`../../api/inventarios/usuarios/comunidades/comunidades.php?action=get_one&id=${id}`)
         .then(r => r.json())
         .then(json => {
             if (!json.ok) return mostrarToast('error', json.msg);
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
         texto.classList.add('d-none');
         spinner.classList.remove('d-none');
 
-        fetch('../../api/inventarios/maestros/comunidades.php?action=actualizar', {
+        fetch('../../api/inventarios/usuarios/comunidades/comunidades.php?action=actualizar', {
             method: 'POST',
             body: new FormData(this),
         })
@@ -158,7 +158,7 @@ function eliminarComunidad(id) {
         Swal.fire({ title: 'Eliminando...', allowOutsideClick: false,
                     didOpen: () => Swal.showLoading() });
 
-        fetch(`../../api/inventarios/maestros/comunidades.php?action=eliminar&id=${id}`)
+        fetch(`../../api/inventarios/usuarios/comunidades/comunidades.php?action=eliminar&id=${id}`)
             .then(r => r.json())
             .then(json => {
                 Swal.close();
@@ -183,7 +183,7 @@ function cargarProgramas() {
     btn.disabled = true;
     btn.textContent = 'Cargando...';
 
-    fetch('../../api/inventarios/maestros/programas.php?action=get_all')
+    fetch('../../api/inventarios/usuarios/programas/programas.php?action=get_all')
         .then(r => r.json())
         .then(json => {
             if (!json.ok) throw new Error(json.msg);
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-        fetch('../../api/inventarios/maestros/programas.php?action=insertar', {
+        fetch('../../api/inventarios/usuarios/programas/programas.php?action=insertar', {
             method: 'POST',
             body: new FormData(this),
         })
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ── Editar ────────────────────────────────────────────
 function abrirModalEditarPrograma(id) {
-    fetch(`../../api/inventarios/maestros/programas.php?action=get_one&id=${id}`)
+    fetch(`../../api/inventarios/usuarios/programas/programas.php?action=get_one&id=${id}`)
         .then(r => r.json())
         .then(json => {
             if (!json.ok) return mostrarToast('error', json.msg);
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
         texto.classList.add('d-none');
         spinner.classList.remove('d-none');
 
-        fetch('../../api/inventarios/maestros/programas.php?action=actualizar', {
+        fetch('../../api/inventarios/usuarios/programas/programas.php?action=actualizar', {
             method: 'POST',
             body: new FormData(this),
         })
@@ -315,7 +315,7 @@ function eliminarPrograma(id) {
         Swal.fire({ title: 'Eliminando...', allowOutsideClick: false,
                     didOpen: () => Swal.showLoading() });
 
-        fetch(`../../api/inventarios/maestros/programas.php?action=eliminar&id=${id}`)
+        fetch(`../../api/inventarios/usuarios/programas/programas.php?action=eliminar&id=${id}`)
             .then(r => r.json())
             .then(json => {
                 Swal.close();
