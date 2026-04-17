@@ -25,7 +25,7 @@ switch ($action) {
         $res  = $mysqli->query("
             SELECT id_proveedor_med, nit_proveedor, nombre_proveedor,
                    genero_proveedor, tipo_proveedor, telefono,
-                   direccion, correo, activo
+                   direccion, correo, observacion_proveedor, activo
             FROM   proveedores_med
             ORDER  BY nombre_proveedor
         ");
@@ -41,7 +41,7 @@ switch ($action) {
         $res = $mysqli->query("
             SELECT id_proveedor_med, nit_proveedor, nombre_proveedor,
                    genero_proveedor, tipo_proveedor, telefono,
-                   direccion, correo, activo
+                   direccion, correo, observacion_proveedor, activo
             FROM   proveedores_med WHERE id_proveedor_med=$id LIMIT 1
         ");
         $row = $res->fetch_assoc(); $res->free();
@@ -58,6 +58,7 @@ switch ($action) {
         $tel     = trim($_POST['telefono']          ?? '') ?: null;
         $dir     = trim($_POST['direccion']         ?? '') ?: null;
         $correo  = trim($_POST['correo']            ?? '') ?: null;
+        $obs     = trim($_POST['observacion_proveedor']         ?? '') ?: null;
 
         if (!$nombre) error_json('El nombre es requerido.');
         if (!in_array($genero, ['Masculino','Femenino','Otros'])) error_json('Género inválido.');
@@ -66,10 +67,10 @@ switch ($action) {
         $stmt = $mysqli->prepare("
             INSERT INTO proveedores_med
                 (nit_proveedor, nombre_proveedor, genero_proveedor,
-                 tipo_proveedor, telefono, direccion, correo)
-            VALUES (?,?,?,?,?,?,?)
+                 tipo_proveedor, telefono, direccion, correo, observacion_proveedor)
+            VALUES (?,?,?,?,?,?,?,?)
         ");
-        $stmt->bind_param('sssssss', $nit, $nombre, $genero, $tipo, $tel, $dir, $correo);
+        $stmt->bind_param('ssssssss', $nit, $nombre, $genero, $tipo, $tel, $dir, $correo, $obs);
         try {
             $stmt->execute();
         } catch (mysqli_sql_exception $e) {
@@ -91,6 +92,7 @@ switch ($action) {
         $tel     = trim($_POST['telefono']           ?? '') ?: null;
         $dir     = trim($_POST['direccion']          ?? '') ?: null;
         $correo  = trim($_POST['correo']             ?? '') ?: null;
+        $obs     = trim($_POST['observacion_proveedor']         ?? '') ?: null;        
         $activo  = isset($_POST['activo']) ? (int)$_POST['activo'] : 1;
 
         if (!$id || !$nombre) error_json('Datos incompletos.');
@@ -98,10 +100,10 @@ switch ($action) {
         $stmt = $mysqli->prepare("
             UPDATE proveedores_med
             SET nit_proveedor=?, nombre_proveedor=?, genero_proveedor=?,
-                tipo_proveedor=?, telefono=?, direccion=?, correo=?, activo=?
+                tipo_proveedor=?, telefono=?, direccion=?, correo=?, observacion_proveedor=?, activo=?
             WHERE id_proveedor_med=?
         ");
-        $stmt->bind_param('sssssssii', $nit, $nombre, $genero, $tipo, $tel, $dir, $correo, $activo, $id);
+        $stmt->bind_param('ssssssssii', $nit, $nombre, $genero, $tipo, $tel, $dir, $correo, $obs, $activo, $id);
         try {
             $stmt->execute();
         } catch (mysqli_sql_exception $e) {

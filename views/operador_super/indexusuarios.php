@@ -38,6 +38,13 @@ requireRoles([
             <a onclick="mostrarSeccion('vistaRegistrarProgramas')">Ingresar Programas</a>
         </div>
 
+        <!-- Submenú Departamentos anidado -->
+        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('componentes')">📋 Componentes </div>
+        <div id="programas" class="sub-submenu">
+            <a onclick="mostrarSeccion('vistaVerComponentes')">Ver Programas</a>
+            <a onclick="mostrarSeccion('vistaRegistrarComponentes')">Ingresar Programas</a>
+        </div>
+
         <!-- Submenú Categorias anidado -->
         <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('comunidades')"> 🤝👥Comunidades </div>
         <div id="comunidades" class="sub-submenu">
@@ -71,6 +78,7 @@ requireRoles([
                 <th>Usuario</th>
                 <th>Correo</th>
                 <th>Teléfono</th>
+                <th>Cargo</th>                
                 <th>DPI</th>
                 <th>Género</th>
                 <th>Estado</th>
@@ -112,6 +120,11 @@ requireRoles([
                 <label class="form-label">Contraseña</label>
                 <input type="password" name="password" class="form-control" required>
             </div>
+
+            <div class="mb-3">
+                <label class="form-label">Cargo</label>
+                <input type="text" name="cargo" class="form-control" required>
+            </div>            
 
             <div class="mb-3">
                 <label class="form-label">Rol</label>
@@ -180,6 +193,11 @@ requireRoles([
             <div class="mb-3">
                 <label class="form-label">Teléfono</label>
                 <input type="text" name="telefono" id="edit_telefono" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Cargo</label>
+                <input type="text" name="cargo" id="edit_cargo" class="form-control">
             </div>
 
             <div class="mb-3">

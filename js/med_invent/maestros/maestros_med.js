@@ -151,6 +151,39 @@ document.addEventListener('DOMContentLoaded', () => {
         _submitModal(formEF, '../../api/inventarios/medicamentos/maestros/firmas_planilla.php?action=actualizar',
             'modalEditarFirma', cargarFirmas);
     });
+
+    // Programas
+const formProg = document.getElementById('formPrograma');
+if (formProg) formProg.addEventListener('submit', e => {
+    e.preventDefault();
+
+    fetch('../../api/inventarios/medicamentos/maestros/programas.php?action=insertar', {
+        method: 'POST',
+        body: new FormData(formProg)
+    })
+    .then(r => r.json())
+    .then(json => {
+        if (json.ok) {
+            mostrarToast('exito', json.msg);
+            formProg.reset();
+        } else {
+            mostrarToast('error', json.msg);
+        }
+    })
+    .catch(() => mostrarToast('error', 'Error de conexión.'));
+});
+
+const formEProg = document.getElementById('formEditarPrograma');
+if (formEProg) formEProg.addEventListener('submit', e => {
+    e.preventDefault();
+
+    _submitModal(
+        formEProg,
+        '../../api/inventarios/medicamentos/maestros/programas.php?action=actualizar',
+        'modalEditarPrograma',
+        cargarProgramas
+    );
+});
 });
 
 // Helper modal submit
@@ -252,7 +285,9 @@ function cargarProveedores() {
                         <td>${p.nit_proveedor ?? '—'}</td>
                         <td>${p.tipo_proveedor}</td>
                         <td>${p.telefono ?? '—'}</td>
+                        <td>${p.direccion ?? '—'}</td>                        
                         <td>${p.correo ?? '—'}</td>
+                        <td>${p.observacion_proveedor ?? '—'}</td>                        
                         <td>${p.activo == 1 ? '<span class="badge bg-success">Activo</span>' : '<span class="badge bg-danger">Inactivo</span>'}</td>
                         <td>
                             ${puedeEditar ? `<button class="btn btn-warning btn-sm me-1" onclick="abrirEditarProveedor(${p.id_proveedor_med})">Editar</button>` : ''}
@@ -280,6 +315,7 @@ function abrirEditarProveedor(id) {
             document.getElementById('editProv_tel').value    = p.telefono ?? '';
             document.getElementById('editProv_dir').value    = p.direccion ?? '';
             document.getElementById('editProv_correo').value = p.correo ?? '';
+            document.getElementById('editProv_obs').value    = p.observacion_proveedor ?? '';
             document.getElementById('editProv_activo').value = p.activo;
             new bootstrap.Modal(document.getElementById('modalEditarProveedor')).show();
         });
@@ -462,7 +498,74 @@ function abrirEditarFirma(id) {
 }
 
 function eliminarFirma(id) { _eliminar(id, '../../api/inventarios/medicamentos/maestros/firmas_planilla.php', cargarFirmas, 'firma'); }
+// ══════════════════════════════════════════════════════
+// PROGRAMAS / COMPONENTES
+// ══════════════════════════════════════════════════════
 
+function initVerProgramas() { 
+    cargarProgramas(); 
+}
+
+function cargarProgramas() {
+    const btn = document.getElementById('btnCargarProgramas');
+    if (btn) { btn.disabled = true; btn.textContent = 'Cargando...'; }
+
+    const puedeEditar = ['admin_super','operadormed'].includes(USER_ROLE);
+
+    fetch('../../api/inventarios/medicamentos/maestros/programas.php?action=get_all')
+        .then(r => r.json())
+        .then(json => {
+            if (!json.ok) throw new Error(json.msg);
+
+            let filas = '';
+
+            if (!json.data.length) {
+                filas = `<tr><td colspan="4" class="text-center">No hay programas</td></tr>`;
+            } else {
+                json.data.forEach((p, i) => {
+                    filas += `<tr>
+                        <td>${i+1}</td>
+                        <td>${p.nombre_programa}</td>
+                        <td>${p.descripcion ?? '—'}</td>
+                        <td>
+                            ${puedeEditar ? `<button class="btn btn-warning btn-sm me-1" onclick="abrirEditarPrograma(${p.id_programa})">Editar</button>` : ''}
+                            ${USER_ROLE === 'admin_super' ? `<button class="btn btn-danger btn-sm" onclick="eliminarPrograma(${p.id_programa})">Eliminar</button>` : ''}
+                        </td>
+                    </tr>`;
+                });
+            }
+
+            document.getElementById('tablaProgramas').innerHTML = filas;
+        })
+        .catch(err => mostrarToast('error', err.message))
+        .finally(() => { 
+            if (btn) { btn.disabled = false; btn.textContent = 'Cargar Programas'; } 
+        });
+}
+
+function abrirEditarPrograma(id) {
+    fetch(`../../api/inventarios/medicamentos/maestros/programas.php?action=get_one&id=${id}`)
+        .then(r => r.json())
+        .then(json => {
+            if (!json.ok) return mostrarToast('error', json.msg);
+
+            const p = json.data;
+            document.getElementById('editProg_id').value = p.id_programa;
+            document.getElementById('editProg_nombre').value = p.nombre_programa;
+            document.getElementById('editProg_desc').value = p.descripcion ?? '';
+
+            new bootstrap.Modal(document.getElementById('modalEditarPrograma')).show();
+        });
+}
+
+function eliminarPrograma(id) {
+    _eliminar(
+        id,
+        '../../api/inventarios/medicamentos/maestros/programas.php',
+        cargarProgramas,
+        'programa'
+    );
+}
 // ══════════════════════════════════════════════════════
 // HELPER ELIMINAR GENÉRICO
 // ══════════════════════════════════════════════════════

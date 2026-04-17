@@ -73,6 +73,9 @@ function mostrarSeccion(id) {
     if (id === 'vistaRegistrarEgresosMed')  initFormSalidaMed();
     if (id === 'VistaReporteExistencias')  initVistaExistencias();
     if (id === 'vistaReporteMovimientos') initVistaMovimientos();
+// Componentes
+    if (id === 'vistaProgramas')      initVerProgramas();
+    if (id === 'vistaRegistrarProgramas') initRegistrarProgramas();    
 }
 
 /**

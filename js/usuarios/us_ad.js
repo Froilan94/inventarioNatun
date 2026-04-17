@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <td>${u.nombre_usuario}</td>
                                     <td>${u.correo ?? ""}</td>
                                     <td>${u.telefono ?? ""}</td>
+                                    <td>${u.cargo}</td>                                    
                                     <td>${u.dpi_usuario ?? ""}</td>
                                     <td>${u.genero_usuario}</td>
                                     <td>
@@ -148,6 +149,7 @@ function abrirModalEditar(id) {
             document.getElementById("edit_nombre_usuario").value = u.nombre_usuario;
             document.getElementById("edit_correo").value = u.correo;
             document.getElementById("edit_telefono").value = u.telefono;
+            document.getElementById("edit_cargo").value = u.cargo;           
             document.getElementById("edit_dpi_usuario").value = u.dpi_usuario;
             document.getElementById("edit_genero_usuario").value = u.genero_usuario;
             document.getElementById("edit_activo").value = u.activo;

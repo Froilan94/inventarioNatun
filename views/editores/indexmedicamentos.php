@@ -36,7 +36,7 @@ requireRoles([
 <?php if (hasRole(['admin_super', 'operadormed'])): ?>            
             <a onclick="mostrarSeccion('vistaRegistrarMedicamentos')">Ingresar Medicamentos</a>
 <?php endif; ?>            
-        </div>
+        </div>       
 
         <!-- Submenú unidades_de_medida anidado -->
 <?php if (hasRole(['admin_super', 'operadormed'])): ?>           
@@ -87,6 +87,15 @@ requireRoles([
             <a onclick="mostrarSeccion('vistaRegistrarParticipantes')">Ingresar Beneficiarios</a>
 <?php endif; ?>
         </div>
+
+        <!-- Submenú componentes anidado -->
+        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('componentes')">🔗 Componentes </div>
+        <div id="componentes" class="sub-submenu">
+            <a onclick="mostrarSeccion('vistaProgramas')">Ver Componentes</a>
+<?php if (hasRole(['admin_super', 'operadormed'])): ?>            
+            <a onclick="mostrarSeccion('vistaRegistrarProgramas')">Ingresar Componentes</a>
+<?php endif; ?>            
+        </div>         
     </div>
     
        <!-- MOVIMIENTOS -->
@@ -306,12 +315,12 @@ requireRoles([
      PROVEEDORES / DONANTES
 ══════════════════════════════════════ -->
 <div id="vistaVerProveedores" class="seccion" style="display:none;">
-    <h2>Proveedores / Donantes</h2>
+    <h2 class="d-flex justify-content-center">Proveedores / Donantes</h2>
     <button id="btnCargarProveedores" class="btn btn-primary mt-3">Cargar Proveedores</button>
-    <div class="table-responsive mt-4">
+    <div class="mt-4 col-md-15 mx-auto p-4 shadow-sm rounded bg-light">
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
-                <tr><th>No.</th><th>Nombre</th><th>NIT</th><th>Tipo</th><th>Teléfono</th><th>Correo</th><th>Estado</th><th>Acciones</th></tr>
+                <tr><th>No.</th><th>Nombre</th><th>NIT</th><th>Tipo</th><th>Teléfono</th><th>Dirección</th><th>Correo</th><th>Observaciones</th><th>Estado</th><th>Acciones</th></tr>
             </thead>
             <tbody id="tablaProveedores"></tbody>
         </table>
@@ -356,6 +365,10 @@ requireRoles([
                 <label class="form-label">Dirección</label>
                 <input type="text" name="direccion" class="form-control" maxlength="150">
             </div>
+            <div class="col-12">
+                <label class="form-label">Observaciones</label>
+                <input type="text" name="observacion" class="form-control" maxlength="150">
+            </div>            
         </div>
         <button type="submit" class="btn btn-primary mt-3">Registrar</button>
         <div id="mensajeProveedor" style="margin-top:10px;"></div>
@@ -391,6 +404,8 @@ requireRoles([
                         <input type="email" name="correo" id="editProv_correo" class="form-control"></div>
                     <div class="col-md-8"><label class="form-label">Dirección</label>
                         <input type="text" name="direccion" id="editProv_dir" class="form-control"></div>
+                    <div class="col-md-8"><label class="form-label">Observaciones</label>
+                        <input type="text" name="observacion_proveedor" id="editProv_obs" class="form-control"></div>                        
                     <div class="col-md-4"><label class="form-label">Estado</label>
                         <select name="activo" id="editProv_activo" class="form-select">
                             <option value="1">Activo</option><option value="0">Inactivo</option>
@@ -570,6 +585,90 @@ requireRoles([
     </div></div>
 </div>
 
+    <!-- ============================
+         VER Componentes
+    ===============================-->
+<div id="vistaProgramas" class="seccion" style="display:none;">
+    <h2 class="d-flex justify-content-center">Lista de Componentes</h2>
+   
+    <button id="btnCargarProgramas" class="btn btn-primary mt-3">
+        Cargar Componentes
+    </button>
+    <div class="mt-4 col-md-15 mx-auto p-4 shadow-sm rounded bg-light"> 
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>No.</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Acciones</th>                 
+            </tr>
+        </thead>
+        <tbody id="tablaProgramas"></tbody>
+    </table>
+    </div>
+</div>
+
+    <!-- ============================
+         REGISTRO DE MEDICAMENTOS
+    ===============================-->
+    <div id="vistaRegistrarProgramas" class="seccion" style="display:none;">
+        <h2 class="d-flex justify-content-center">Registro de Componentes</h2>
+
+        <form id="formComponente" class="mt-4 col-md-6 mx-auto p-4 shadow-sm rounded bg-light">
+            <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" name="nombre_programa" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                <input type="text" name="descripcion" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar Componente</button>          
+        </form>
+    </div>
+
+    <!-- ============================
+         Modal Editar Componente
+    ===============================-->
+<div class="modal fade" id="modalEditarPrograma" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Componente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="formEditarPrograma">
+
+            <input type="hidden" name="id_programa" id="editProg_id">
+
+            <div class="mb-3">
+                <label class="form-label">Nombre Programa</label>
+                <input type="text" name="nombre_programa" id="editProg_nombre" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Nombre Genérico</label>
+                <input type="text" name="descripcion" id="editProg_desc" class="form-control">
+            </div>
+ <!-- ===Agregar div para edicion Activo/inactivo===-->
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" form="formEditarComponente" class="btn btn-success" id="btnGuardarCambios">
+        <span id="textoGuardar">Guardar Cambios</span>
+        <span id="spinnerGuardar" class="spinner-border spinner-border-sm d-none"></span></button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
     <!-- ============================
          Registro Documento
     ===============================-->

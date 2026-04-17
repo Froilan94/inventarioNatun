@@ -24,7 +24,7 @@ $res = $mysqli->query("
         s.fecha_salida,
         COALESCE(c.nombre_programa, '')  AS componente,
         COALESCE(u.nombre_completo,  '')  AS responsable,
-        COALESCE(r.nombre_rol,       '')  AS cargo_responsable,
+        COALESCE(u.cargo,       '')  AS cargo_responsable,
         COALESCE(doc.numero_documento,'') AS numero_factura
     FROM  salidas_med s
     LEFT JOIN programas    c   ON c.id_programa     = s.programa_id
