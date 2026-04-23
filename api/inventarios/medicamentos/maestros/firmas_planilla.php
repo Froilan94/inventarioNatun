@@ -6,7 +6,7 @@
 
 header('Content-Type: application/json; charset=utf-8');
 require_once '../../../../auth/roles.php';
-requireRoles(['admin_super']);
+requireRoles(['admin_super', 'operadormed', 'supervisormed']);
 include '../../../../config/db.php';
 
 $action = $_GET['action'] ?? '';

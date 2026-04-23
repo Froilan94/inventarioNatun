@@ -23,7 +23,7 @@ requireRoles([
 <?php if (hasRole(['admin_super'])): ?>
     <div class="menu-item" onclick="window.location.href='../../index.php'">🗄️ Ir al Panel principal</div>
 <?php else: ?>
-    <div class="menu-item" onclick="window.location.href='../../views/editor/indexmedicamentos.php'">🔄 Actualizar panel</div>
+    <div class="menu-item" onclick="window.location.href='../../views/editores/indexmedicamentos.php'">🔄 Actualizar panel</div>
 <?php endif; ?>
 
     <!-- MAESTROS -->
@@ -39,7 +39,7 @@ requireRoles([
         </div>       
 
         <!-- Submenú unidades_de_medida anidado -->
-<?php if (hasRole(['admin_super', 'operadormed'])): ?>           
+<?php if (hasRole(['admin_super', 'operadormed', 'supervisormed'])): ?>           
         <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('firmas')"> 🖋️ Firmas</div>
         <div id="firmas" class="sub-submenu">
             <a onclick="mostrarSeccion('vistaVerFirmas')">Ver Unidades de Medida</a>                      
@@ -116,7 +116,27 @@ requireRoles([
         <!--<a onclick="mostrarSeccion('VistaReporteValorizacion')">Valorización</a> -->
     </div>
 
-    <a class="menu-item" href="../../auth/logout.php" style="background:#dc2626;">🚪 Cerrar sesión</a>
+<hr class="text-secondary">
+
+<div class="px-3 mt-3">
+  <small class="text-muted">Cuenta</small>
+</div>
+
+<ul class="nav flex-column">
+
+  <li class="nav-item">
+    <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#modalCambiarPass">
+      🔑 Cambiar contraseña
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a href="../../auth/logout.php" class="nav-link text-danger">
+      🚪 Cerrar sesión
+    </a>
+  </li>
+
+</ul>  
 </div>
 <div class="content">
     <!-- ============================
@@ -133,8 +153,8 @@ requireRoles([
         <thead class="table-dark">
             <tr>
                 <th>No.</th>
-                <th>Nombre Comercial</th>
-                <th>Nombre Genérico</th>
+                <th>Nombre </th>
+                <th>Otros nombres</th>
                 <th>Estado</th>
                 <th>Acciones</th>                 
             </tr>
@@ -152,12 +172,12 @@ requireRoles([
 
         <form id="formMedicamento" class="mt-4 col-md-6 mx-auto p-4 shadow-sm rounded bg-light">
             <div class="mb-3">
-                <label class="form-label">Nombre Comercial</label>
+                <label class="form-label">Nombre</label>
                 <input type="text" name="nombre_comercial" class="form-control" required>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Nombre Generico</label>
+                <label class="form-label">Otro u otros Nombres</label>
                 <input type="text" name="nombre_generico" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary">Registrar Medicamento</button>          
@@ -182,12 +202,12 @@ requireRoles([
             <input type="hidden" name="id_medicamento" id="edit_id_medicamento">
 
             <div class="mb-3">
-                <label class="form-label">Nombre Comercial</label>
+                <label class="form-label">Nombre </label>
                 <input type="text" name="nombre_comercial" id="edit_nombre_comercial" class="form-control">
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Nombre Genérico</label>
+                <label class="form-label">Otro u otros Nombres</label>
                 <input type="text" name="nombre_generico" id="edit_nombre_generico" class="form-control">
             </div>
 
@@ -695,6 +715,7 @@ requireRoles([
                     <option value="Recibo_donacion">Recibo Donación</option>
                     <option value="Cardex">Cardex</option>
                     <option value="Acta">Acta</option>
+                    <option value="N/A">N/A</option>
                 </select>
             </div>
             <div style="flex: 1;">
@@ -802,6 +823,7 @@ requireRoles([
                     <option value="Recibo_donacion">Recibo Donación</option>
                     <option value="Cardex">Cardex</option>
                     <option value="Acta">Acta</option>
+                    <option value="N/A">N/A</option>                    
                 </select>
             </div>
             <div style="flex: 1;">
@@ -1239,6 +1261,50 @@ requireRoles([
     </div>
 
 </div>
+<!-- Cambiar Contraseña -->
+<div class="modal fade" id="modalCambiarPass" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Cambiar Contraseña</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="formCambiarPassword">
+
+            <input type="hidden" name="id_usuario" id="edit_id_usuario">
+
+            <div class="mb-3">
+                <label class="form-label">Contraseña Anterior</label>
+                <input type="password" name="password_actual" id="password_actual" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Nueva Contraseña</label>
+                <input type="password" name="password_nueva" id="password_nueva" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Confirmar Contraseña</label>
+                <input type="password" name="password_confirmar" id="password_confirmar" class="form-control" required>
+            </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" form="formCambiarPassword" class="btn btn-success" id="btnGuardarCambios">
+          <span id="textoGuardar">Guardar Cambios</span>
+          <span id="spinnerGuardar" class="spinner-border spinner-border-sm d-none"></span>
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+
+    </div>
+  </div>
+</div> 
 </div> <!--cierre div content-->
 <!-- ================== FIN REPORTE DE EXISTENCIAS ================== -->
 

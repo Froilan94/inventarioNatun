@@ -159,7 +159,7 @@ switch ($action) {
         if (!$fecha_ingreso) error_json('Fecha de ingreso requerida.',    422);
         if (empty($detalles))error_json('Debe agregar al menos un detalle.', 422);
 
-        $tipos_validos = ['Factura', 'Recibo_donacion', 'Cardex', 'Acta'];
+        $tipos_validos = ['Factura', 'Recibo_donacion', 'Cardex', 'Acta', 'N/A'];
         if (!in_array($tipo_doc, $tipos_validos)) error_json('Tipo de documento inválido.', 422);
 
         // Validar detalles

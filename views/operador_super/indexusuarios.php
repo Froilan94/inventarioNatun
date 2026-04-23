@@ -38,13 +38,6 @@ requireRoles([
             <a onclick="mostrarSeccion('vistaRegistrarProgramas')">Ingresar Programas</a>
         </div>
 
-        <!-- Submenú Departamentos anidado -->
-        <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('componentes')">📋 Componentes </div>
-        <div id="programas" class="sub-submenu">
-            <a onclick="mostrarSeccion('vistaVerComponentes')">Ver Programas</a>
-            <a onclick="mostrarSeccion('vistaRegistrarComponentes')">Ingresar Programas</a>
-        </div>
-
         <!-- Submenú Categorias anidado -->
         <div class="menu-item" style="padding-left:40px;" onclick="toggleMenu('comunidades')"> 🤝👥Comunidades </div>
         <div id="comunidades" class="sub-submenu">
@@ -245,7 +238,6 @@ requireRoles([
     </div>
   </div>
 </div>
-
 <!-- ============================
      VER COMUNIDADES
 ==============================-->

@@ -112,3 +112,51 @@ function mostrarToast(tipo, mensaje, duracion = 3000) {
 
     toast.show();
 }
+
+document.getElementById("formCambiarPassword").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById("btnGuardarCambios");
+    const spinner = document.getElementById("spinnerGuardar");
+    const texto = document.getElementById("textoGuardar");
+
+    spinner.classList.remove("d-none");
+    texto.textContent = "Guardando...";
+    btn.disabled = true;
+
+    const formData = new FormData(this);
+
+    try {
+        const response = await fetch("../../api/inventarios/medicamentos/maestros/cambiar_password.php", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.status === "success") {
+            alert(data.mensaje);
+
+            // cerrar modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById("modalCambiarPass"));
+            modal.hide();
+
+            this.reset();
+
+        } else {
+            if (data.errores) {
+                alert(data.errores.join("\n"));
+            } else {
+                alert(data.mensaje);
+            }
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert("Error en la conexión");
+    }
+
+    spinner.classList.add("d-none");
+    texto.textContent = "Guardar Cambios";
+    btn.disabled = false;
+});
