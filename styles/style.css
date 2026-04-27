@@ -89,3 +89,11 @@ h1 {
     margin-bottom: 20px;
     color: #2f3640;
 }
+
+.toggle-password {
+    cursor: pointer;
+}
+
+.toggle-password:hover {
+    background-color: #f1f1f1;
+}

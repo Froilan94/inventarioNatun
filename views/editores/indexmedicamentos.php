@@ -13,6 +13,7 @@ requireRoles([
     <meta charset="UTF-8">
     <title>Sistema de Inventarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">    
     <link rel="stylesheet" type="text/css" href="../../styles/style.css">
 </head>
 <body>
@@ -1278,17 +1279,35 @@ requireRoles([
 
             <div class="mb-3">
                 <label class="form-label">Contraseña Anterior</label>
-                <input type="password" name="password_actual" id="password_actual" class="form-control" required>
+                  <div class="input-group">
+                <input type="password" class="form-control" id="password_actual" name="password_actual" required>
+
+                <span class="input-group-text toggle-password" data-target="password_actual">
+                 <i class="bi bi-eye"></i>
+                </span>
+                  </div>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Nueva Contraseña</label>
+                  <div class="input-group">                
                 <input type="password" name="password_nueva" id="password_nueva" class="form-control" required>
+
+                <span class="input-group-text toggle-password" data-target="password_nueva">
+                 <i class="bi bi-eye"></i>
+                </span>
+                  </div>                
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Confirmar Contraseña</label>
+                  <div class="input-group">                
                 <input type="password" name="password_confirmar" id="password_confirmar" class="form-control" required>
+
+                <span class="input-group-text toggle-password" data-target="password_confirmar">
+                 <i class="bi bi-eye"></i>
+                </span>
+                  </div>                 
             </div>
 
         </form>

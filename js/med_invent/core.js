@@ -129,13 +129,15 @@ document.getElementById("formCambiarPassword").addEventListener("submit", async 
     try {
         const response = await fetch("../../api/inventarios/medicamentos/maestros/cambiar_password.php", {
             method: "POST",
-            body: formData
+            body: formData,
+            credentials: "same-origin"
         });
 
         const data = await response.json();
 
         if (data.status === "success") {
-            alert(data.mensaje);
+
+            mostrarToast("exito", data.mensaje);
 
             // cerrar modal
             const modal = bootstrap.Modal.getInstance(document.getElementById("modalCambiarPass"));
@@ -144,19 +146,33 @@ document.getElementById("formCambiarPassword").addEventListener("submit", async 
             this.reset();
 
         } else {
-            if (data.errores) {
-                alert(data.errores.join("\n"));
-            } else {
-                alert(data.mensaje);
-            }
+            mostrarToast("error", data.mensaje || "Ocurrió un error");
         }
 
     } catch (error) {
         console.error(error);
-        alert("Error en la conexión");
+        mostrarToast("error", "Error de conexión con el servidor");
     }
 
     spinner.classList.add("d-none");
     texto.textContent = "Guardar Cambios";
     btn.disabled = false;
+});
+
+document.querySelectorAll(".toggle-password").forEach(toggle => {
+    toggle.addEventListener("click", function () {
+
+        const input = document.getElementById(this.dataset.target);
+        const icon = this.querySelector("i");
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
+        }
+    });
 });
