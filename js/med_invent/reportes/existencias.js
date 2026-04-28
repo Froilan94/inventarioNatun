@@ -77,7 +77,7 @@ async function buscarExistencias() {
     const tbody = document.getElementById('tablaExistencias');
     tbody.innerHTML = `
         <tr>
-            <td colspan="9" class="text-center py-3">
+            <td colspan="10" class="text-center py-3">
                 <div class="spinner-border spinner-border-sm text-primary me-2"></div>
                 Cargando…
             </td>
@@ -94,7 +94,7 @@ async function buscarExistencias() {
     } catch (err) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="9" class="text-danger text-center py-3">
+                <td colspan="10" class="text-danger text-center py-3">
                     ⚠️ Error al cargar existencias: ${err.message}
                 </td>
             </tr>`;
@@ -195,7 +195,7 @@ function _renderTabla(rows) {
     if (!rows.length) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="9" class="text-center text-muted py-4">
+                <td colspan="10" class="text-center text-muted py-4">
                     No se encontraron registros con los filtros aplicados.
                 </td>
             </tr>`;
@@ -239,8 +239,24 @@ function _renderTabla(rows) {
                 <td class="text-end fw-semibold">${fmt(r.stock)}</td>
                 <td class="text-end">Q ${fmt(r.precio_unitario)}</td>
                 <td class="text-end">Q ${fmt(r.valor_total)}</td>
+                <td>${r.no_factura || '—'}</td>
                 <td>${badgeStock}</td>
             </tr>
         `;
     }).join('');
+}
+
+function exportarReporte(formato) {
+    const params = new URLSearchParams({
+        action:          'exportar',
+        formato:         formato,
+        medicamento_id:  document.getElementById('filtroMedicamentoExistencia')?.value  ?? '',
+        presentacion_id: document.getElementById('filtroPresentacionExistencia')?.value ?? '',
+        lote_id:         document.getElementById('filtroLoteExistencia')?.value         ?? '',
+        filtro_stock:    document.getElementById('filtroStock')?.value                  ?? '',
+        filtro_venc:     document.getElementById('filtroVencimiento')?.value            ?? '',
+    });
+
+    // Abre en nueva pestaña → el navegador descarga el archivo
+    window.open(`../../api/inventarios/medicamentos/reportes/existencias.php?${params}`, '_blank');
 }

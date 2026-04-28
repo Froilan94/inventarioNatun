@@ -1001,6 +1001,7 @@ requireRoles([
 <th>Stock</th>
 <th>Precio Unitario</th>
 <th>Valor Total</th>
+<th>No. Factura</th> <!--Agregando...-->
 <th>Estado</th>
 
 </tr>

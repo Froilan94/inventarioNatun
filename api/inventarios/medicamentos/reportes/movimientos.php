@@ -6,15 +6,25 @@
  * GET ?action=get_filtros       → medicamentos, lotes, proveedores
  * GET ?action=get_movimientos   → ingresos y/o salidas con filtros
  */
+ob_start(); // ← Captura cualquier output/warning antes del JSON
 
 header('Content-Type: application/json; charset=utf-8');
 require_once '../../../../auth/roles.php';
 requireRoles(['admin_super', 'operadormed', 'supervisormed']);
 include '../../../../config/db.php';
 
+// ── AQUÍ, después de los includes ──────────────────────────
+$basura = ob_get_clean();
+if ($basura) {
+    echo json_encode(['ok' => false, 'msg' => 'PHP output: ' . strip_tags($basura)], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+// ───────────────────────────────────────────────────────────
+
 $action = $_GET['action'] ?? '';
 
 function error_json(string $msg, int $code = 500): void {
+    ob_clean(); // ← Limpiar antes de responder error
     http_response_code($code);
     echo json_encode(['ok' => false, 'msg' => $msg], JSON_UNESCAPED_UNICODE);
     exit;
@@ -196,6 +206,18 @@ switch ($action) {
         }
 
         $rows = query_rows($mysqli, $sql_final);
+
+        // ── Sin resultados: respuesta válida, no error ─────────────────
+        if (empty($rows)) {
+            echo json_encode([
+                'ok'              => true,
+                'data'            => [],
+                'total_ingresos'  => 0,
+                'total_salidas'   => 0,
+                'total_registros' => 0,
+            ], JSON_UNESCAPED_UNICODE);
+            break;
+        }
 
         // Totales resumen
         $total_ingresos = 0; $total_salidas = 0;

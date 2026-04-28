@@ -456,6 +456,8 @@ function cargarFirmas() {
     const btn = document.getElementById('btnCargarFirmas');
     if (btn) { btn.disabled = true; btn.textContent = 'Cargando...'; }
 
+        const puedeEditar = ['admin_super','operadormed'].includes(USER_ROLE);
+
     fetch('../../api/inventarios/medicamentos/maestros/firmas_planilla.php?action=get_all')
         .then(r => r.json())
         .then(json => {
@@ -471,8 +473,8 @@ function cargarFirmas() {
                         <td>${f.cargo}</td>
                         <td>${f.activo == 1 ? '<span class="badge bg-success">Activo</span>' : '<span class="badge bg-secondary">Inactivo</span>'}</td>
                         <td>
-                            <button class="btn btn-warning btn-sm me-1" onclick="abrirEditarFirma(${f.id_firma})">Editar</button>
-                            <button class="btn btn-danger btn-sm" onclick="eliminarFirma(${f.id_firma})">Eliminar</button>
+                            ${puedeEditar ? `<button class="btn btn-warning btn-sm me-1" onclick="abrirEditarFirma(${f.id_firma})">Editar</button>` : ''}
+                            ${USER_ROLE === 'admin_super' ? `<button class="btn btn-danger btn-sm" onclick="eliminarFirma(${f.id_firma})">Eliminar</button>` : ''}                            
                         </td>
                     </tr>`;
                 });
