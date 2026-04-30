@@ -187,7 +187,7 @@ switch ($action) {
             LEFT JOIN lotes_med         l   ON l.id_lote_med     = d.lote_id
             LEFT JOIN unidades_medida_med um ON um.id_unidad_med = d.unidad_id
             LEFT JOIN presentaciones_med  pm ON pm.id_presentacion_med = d.presentacion_id
-            LEFT JOIN programas        c   ON c.id_programa   = s.programa_id
+            LEFT JOIN programas        c   ON c.id_programa   = s.programa_id         
             LEFT JOIN usuarios           u   ON u.id_usuario     = s.entregado_por
             LEFT JOIN beneficiarios_med  b   ON b.id_beneficiario_med = d.beneficiario_id
             LEFT JOIN documentos_med     doc ON doc.id_documento_med  = s.documento_id
