@@ -105,7 +105,7 @@ requireRoles([
        <div id="movimientos" class="submenu">      
             <a onclick="mostrarSeccion('vistaRegistrarIngresoMed')">Entradas</a> 
             <a onclick="mostrarSeccion('vistaRegistrarEgresosMed')">Salidas</a>
-            <!--<a onclick="mostrarSeccion('vistaActualizarEliminarBeneficiarios')">Ajustes</a> -->
+            <a onclick="mostrarSeccion('vistaRevertirRegistro')">Ajustes</a>
         </div>
 <?php endif; ?>
 
@@ -1166,6 +1166,84 @@ requireRoles([
     </div>
 
 </div>
+
+ <!-- ================== REPORTE DE MOVIMIENTOS ================== -->
+<div id="vistaRevertirRegistro" class="seccion" style="display:none;">
+
+    <h2 class="d-flex justify-content-center">↩ Revertir Registros</h2>
+
+    <div class="card mb-4">    
+    <!-- Tabs de selección -->
+    <div class="d-flex gap-2 mb-4">
+        <button id="tabIngRevertir"
+                class="btn btn-sm px-4 py-2 tab-revertir active-ing"
+                onclick="switchTabRevertir('ingresos')">
+            📥 Ingresos
+        </button>
+        <button id="tabSalRevertir"
+                class="btn btn-sm px-4 py-2 tab-revertir"
+                onclick="switchTabRevertir('salidas')">
+            📤 Salidas
+        </button>
+    </div>
+    </div>
+
+    <!-- ── INGRESOS ─────────────────────────────────── -->
+    <div id="vistaRevertirIngresos">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <small class="text-muted">Ingresos registrados — selecciona uno para revertir</small>
+            <button class="btn btn-sm btn-outline-secondary"
+                    onclick="_cargarIngresos()">⟳ Recargar</button>
+        </div>
+        <div class="card border-0 shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>No.</th>
+                            <th>Fecha</th>
+                            <th>Proveedor</th>
+                            <th>Recibido por</th>
+                            <th>Documento</th>
+                            <th>Resumen</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyRevertirIngresos"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── SALIDAS ──────────────────────────────────── -->
+    <div id="vistaRevertirSalidas" style="display:none">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <small class="text-muted">Salidas registradas — selecciona una para revertir</small>
+            <button class="btn btn-sm btn-outline-secondary"
+                    onclick="_cargarSalidas()">⟳ Recargar</button>
+        </div>
+        <div class="card border-0 shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>No.</th>
+                            <th>Fecha</th>
+                            <th>Programa</th>
+                            <th>Entregado por</th>
+                            <th>Documento</th>
+                            <th>Resumen</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyRevertirSalidas"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 <!-- ================== REPORTE DE VALORIZACIÓN-EXISTENCIAS ================== -->
 <div id="VistaReporteValorizacion" class="seccion" style="display:none;">
 
@@ -1336,6 +1414,7 @@ requireRoles([
 <script src="../../js/med_invent/maestros/maestros_med.js?v=<?= filemtime('../../js/med_invent/maestros/maestros_med.js') ?>"></script>
 <script src="../../js/med_invent/movimientos/entradas.js?v=<?= filemtime('../../js/med_invent/movimientos/entradas.js') ?>"></script>
 <script src="../../js/med_invent/movimientos/salidas.js?v=<?= filemtime('../../js/med_invent/movimientos/salidas.js') ?>"></script>
+<script src="../../js/med_invent/movimientos/revertir.js?v=<?= filemtime('../../js/med_invent/movimientos/revertir.js') ?>"></script>
 <script src="../../js/med_invent/reportes/existencias.js?v=<?= filemtime('../../js/med_invent/reportes/existencias.js') ?>"></script>
 <script src="../../js/med_invent/reportes/movimientos.js?v=<?= filemtime('../../js/med_invent/reportes/movimientos.js') ?>"></script>
 <script>

@@ -76,6 +76,9 @@ function mostrarSeccion(id) {
 // Componentes
     if (id === 'vistaProgramas')      initVerProgramas();
     if (id === 'vistaRegistrarProgramas') initRegistrarProgramas();    
+// Reversiones
+    if (id === 'vistaRevertirRegistro')      initVistaRevertir();    
+
 }
 
 /**
