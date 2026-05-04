@@ -1,16 +1,16 @@
 <?php
-/**
- * unidades_med.php
- * CRUD Unidades de Medida.
- * admin_super → CRUD completo
- * operadormed → get_all, get_one, insertar, actualizar
- * supervisormed → get_all, get_one
- */
+ob_start();
 
 header('Content-Type: application/json; charset=utf-8');
 require_once '../../../../auth/roles.php';
 requireRoles(['admin_super', 'operadormed', 'supervisormed']);
 include '../../../../config/db.php';
+
+$basura = ob_get_clean();
+if ($basura) {
+    echo json_encode(['ok' => false, 'msg' => 'Error interno del servidor.'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
 $action = $_GET['action'] ?? '';
 $rol    = $_SESSION['role_name'] ?? '';

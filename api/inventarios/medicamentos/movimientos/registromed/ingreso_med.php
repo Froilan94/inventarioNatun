@@ -1,19 +1,16 @@
 <?php
-/**
- * ingreso_med.php
- * Endpoint para el formulario de Registro de Ingreso de Medicamentos.
- *
- * Acciones GET  ?action=...
- *   - get_datos_iniciales  → medicamentos, proveedores, unidades, presentaciones, usuario sesión
- *
- * Acciones POST ?action=...
- *   - registrar_ingreso    → graba documento, ingreso, lotes y detalles en transacción
- */
+ob_start();
 
 header('Content-Type: application/json; charset=utf-8');
 require_once '../../../../../auth/roles.php';
 requireRoles(['admin_super', 'operadormed', 'supervisormed']);
-include '../../../../../config/db.php'; // $mysqli disponible
+include '../../../../../config/db.php';
+
+$basura = ob_get_clean();
+if ($basura) {
+    echo json_encode(['ok' => false, 'msg' => 'Error interno del servidor.'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
 $action = $_GET['action'] ?? '';
 

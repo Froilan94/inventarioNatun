@@ -1,21 +1,16 @@
 <?php
-/**
- * salidas_med.php
- * Endpoint para el formulario de Registro de Salida de Medicamentos.
- *
- * Acciones GET  ?action=...
- *   - get_datos_iniciales   → medicamentos, componentes, usuarios
- *   - get_lotes_medicamento → lotes con stock > 0 + datos del último ingreso
- *   - get_beneficiarios     → búsqueda por nombre/DPI
- *
- * Acciones POST ?action=...
- *   - registrar_salida      → graba documento, salida, detalles y descuenta stock
- */
+ob_start();
 
 header('Content-Type: application/json; charset=utf-8');
 require_once '../../../../auth/roles.php';
 requireRoles(['admin_super', 'operadormed', 'supervisormed']);
 include '../../../../config/db.php';
+
+$basura = ob_get_clean();
+if ($basura) {
+    echo json_encode(['ok' => false, 'msg' => 'Error interno del servidor.'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
 $action = $_GET['action'] ?? '';
 

@@ -1,13 +1,4 @@
 <?php
-/**
- * exportar_movimientos_excel.php
- * Genera Excel (.xlsx) del reporte de movimientos con PhpSpreadsheet.
- */
-
-require_once '../../../../auth/roles.php';
-requireRoles(['admin_super', 'operadormed', 'supervisormed']);
-require_once '../../../../vendor/autoload.php';
-
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
@@ -15,12 +6,20 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 
+require_once '../../../../auth/roles.php';
+requireRoles(['admin_super', 'operadormed', 'supervisormed']);
+require_once '../../../../vendor/autoload.php';
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST['datos'])) {
-    die('Datos requeridos.');
+    http_response_code(400);
+    exit('Datos requeridos.');
 }
 
 $rows = json_decode($_POST['datos'], true);
-if (!$rows) die('Datos inválidos.');
+if (!$rows) {
+    http_response_code(400);
+    exit('Datos inválidos.');
+}
 
 $fmtFecha = fn($f) => $f ? date('d/m/Y', strtotime($f)) : '—';
 

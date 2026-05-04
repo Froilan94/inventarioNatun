@@ -1,21 +1,18 @@
 <?php
-/**
- * planilla_salida.php
- * Genera planilla de entrega de insumos formato Natún.
- *
- * Uso: planilla_salida.php?salida_id=123
- */
-
-require_once '../../../../auth/roles.php';
-requireRoles(['admin_super', 'operadormed', 'supervisormed']);
-include '../../../../config/db.php';
-require_once '../../../../vendor/autoload.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
+require_once '../../../../auth/roles.php';
+requireRoles(['admin_super', 'operadormed', 'supervisormed']);
+require_once '../../../../vendor/autoload.php';
+include '../../../../config/db.php';
+
 $salida_id = isset($_GET['salida_id']) ? (int)$_GET['salida_id'] : 0;
-if (!$salida_id) die('ID de salida requerido.');
+if (!$salida_id) {
+    http_response_code(400);
+    exit('ID de salida requerido.');
+}
 
 // ── Datos de la salida ────────────────────────────────────────────────────
 $res = $mysqli->query("

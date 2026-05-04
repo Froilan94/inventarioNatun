@@ -1,25 +1,21 @@
 <?php
-/**
- * exportar_movimientos_pdf.php
- * Genera PDF del reporte de movimientos con:
- *  - Línea de firma por cada registro de salida
- *  - Casilla de selección respetada (solo exporta los enviados)
- *  - Pie: Elaborado por / Autorizado por / Visto Bueno
- */
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 require_once '../../../../auth/roles.php';
 requireRoles(['admin_super', 'operadormed', 'supervisormed']);
 require_once '../../../../vendor/autoload.php';
 
-use Dompdf\Dompdf;
-use Dompdf\Options;
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST['datos'])) {
-    die('Datos requeridos.');
+    http_response_code(400);
+    exit('Datos requeridos.');
 }
 
 $rows = json_decode($_POST['datos'], true);
-if (!$rows) die('Datos inválidos.');
+if (!$rows) {
+    http_response_code(400);
+    exit('Datos inválidos.');
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 $fmt      = fn($n) => 'Q ' . number_format((float)$n, 2, '.', ',');

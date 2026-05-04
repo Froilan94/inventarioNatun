@@ -1,23 +1,16 @@
 <?php
-/**
- * existencias.php
- * Endpoint para el Reporte de Existencias de Medicamentos.
- *
- * Acciones (GET ?action=...):
- *   - get_filtros     → Opciones para los <select>
- *   - get_existencias → Inventario con filtros opcionales
- */
+ob_start();
 
 header('Content-Type: application/json; charset=utf-8');
 require_once '../../../../auth/roles.php';
+requireRoles(['admin_super', 'operadormed', 'supervisormed']);
+include '../../../../config/db.php';
 
-requireRoles([
-    'admin_super',
-    'operadormed',
-    'supervisormed'
-]);
-
-include "../../../../config/db.php";
+$basura = ob_get_clean();
+if ($basura) {
+    echo json_encode(['ok' => false, 'msg' => 'Error interno del servidor.'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
 $action = $_GET['action'] ?? '';
 

@@ -1,13 +1,18 @@
 <?php
-// insert_usuario.php
-session_start();
-require_once "../../../config/db.php";
+ob_start();
 
-// Solo admin puede registrar
-if (!isset($_SESSION['role_name']) || $_SESSION['role_name'] !== 'admin_super') {
-    http_response_code(403);
-    exit("No tiene permisos para realizar esta acción.");
+header('Content-Type: application/json; charset=utf-8');
+require_once '../../../auth/roles.php';
+requireRoles(['admin_super']);
+include '../../../config/db.php';
+
+$basura = ob_get_clean();
+if ($basura) {
+    echo json_encode(['ok' => false, 'msg' => 'Error interno del servidor.'], JSON_UNESCAPED_UNICODE);
+    exit;
 }
+
+$action = $_GET['action'] ?? '';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 

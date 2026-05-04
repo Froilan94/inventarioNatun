@@ -1,8 +1,18 @@
 <?php
-session_start();
-require_once "../../../../config/db.php";
+ob_start();
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
+require_once '../../../../auth/roles.php';
+requireRoles(['admin_super', 'operadormed', 'supervisormed']);
+include '../../../../config/db.php';
+
+$basura = ob_get_clean();
+if ($basura) {
+    echo json_encode(['ok' => false, 'msg' => 'Error interno del servidor.'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+$action = $_GET['action'] ?? '';
 
 // 🔹 Helper para respuestas de error
 function error_json($mensaje, $codigo = 400) {

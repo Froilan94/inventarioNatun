@@ -1,5 +1,18 @@
 <?php
-include "../../../config/db.php";
+ob_start();
+
+header('Content-Type: application/json; charset=utf-8');
+require_once '../../../auth/roles.php';
+requireRoles(['admin_super']); /* 'admin_super', 'operadormed', 'supervisormed' */
+include '../../../config/db.php';
+
+$basura = ob_get_clean();
+if ($basura) {
+    echo json_encode(['ok' => false, 'msg' => 'Error interno del servidor.'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+$action = $_GET['action'] ?? '';
 
 $id = intval($_POST["id_usuario"]);
 $nombre = $_POST["nombre_completo"];

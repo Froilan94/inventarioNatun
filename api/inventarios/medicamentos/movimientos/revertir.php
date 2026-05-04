@@ -1,8 +1,16 @@
 <?php
+ob_start();
+
 header('Content-Type: application/json; charset=utf-8');
 require_once '../../../../auth/roles.php';
 requireRoles(['admin_super', 'operadormed', 'supervisormed']);
 include '../../../../config/db.php';
+
+$basura = ob_get_clean();
+if ($basura) {
+    echo json_encode(['ok' => false, 'msg' => 'Error interno del servidor.'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
 $action = $_GET['action'] ?? '';
 
@@ -143,10 +151,13 @@ switch ($action) {
             $doc_id = $ingreso['documento_id'];
 
             // Eliminar lotes creados por este ingreso
+            $lotes_eliminados = [];
             foreach ($detalles as $d) {
                 $lote_id = (int)$d['lote_id'];
+                if (in_array($lote_id, $lotes_eliminados)) continue; // ya fue borrado
                 if (!$mysqli->query("DELETE FROM lotes_med WHERE id_lote_med = $lote_id"))
                     throw new Exception('Error al eliminar lote: ' . $mysqli->error);
+                $lotes_eliminados[] = $lote_id;
             }
 
             // Eliminar detalles
